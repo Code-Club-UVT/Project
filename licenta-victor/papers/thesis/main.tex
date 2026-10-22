@@ -1,0 +1,330 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{amsmath,amsthm,amssymb,graphicx,hyperref}
+\usepackage[left=1.2in,right=1.2in,top=1in,bottom=1in]{geometry}
+\usepackage{listings}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage[romanian]{babel}
+\usepackage{xcolor}
+\usepackage{paralist}
+\RequirePackage{hyphenat}
+\usepackage{algorithm, algpseudocode}%algorithmic
+\usepackage[inline]{enumitem}
+%\usepackage{...insert other packages here...}
+\newtheorem{thm}{Teorema}[section]
+\newtheorem{lem}[thm]{Lema}
+\newtheorem{cor}[thm]{Corolarul}
+\newtheorem{prop}[thm]{Propozi\c tia}
+\theoremstyle{definition}
+\newtheorem{defn}{Defini\c tia}[section]
+\theoremstyle{remark}
+\newtheorem{rem}{Remarca}[section]
+\newtheorem{exmp}{Exemplul}[section]
+
+\def\contentsname{Cuprins}
+\def\listfigurename{Lista figurilor}
+\def\listtablename{Lista tabelelor}
+\def\figurename{Figura}
+\def\tablename{Tabelul}
+\def\partname{Partea}
+\def\chaptername{Capitolul}
+\def\refname{Referin'te}
+%\def\bibname{Bibliografie}
+%\renewcommand{\refname}{Bibliografie}
+\def\appendixname{Anexa}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+\begin{figure}[h!]
+\vspace{-20pt}
+\begin{center}
+\includegraphics[width=100pt]{FI.png}
+\end{center}
+\end{figure}
+
+
+{\large{\bf UNIVERSITATEA DE VEST DIN TIMIȘOARA
+
+FACULTATEA DE INFORMATICĂ
+
+PROGRAMUL DE STUDII DE LICENȚĂ: Informatică }}
+
+\vspace{120pt}
+{\huge {\bf LUCRARE DE LICEN\c T\u A}}
+
+\vspace{150pt}
+\end{center}
+
+{\large\noindent{\bf COORDONATOR:\hfill ABSOLVENT:}
+
+\noindent Lect. Univ. Dr. Alexandra Fortiș \hfill Florea Victor}
+
+\vfill
+\begin{center}
+{\bf TIMI\c SOARA
+
+2027}
+\end{center}
+\newpage
+\thispagestyle{empty}
+\begin{center}
+{\large{\bf UNIVERSITATEA DE VEST DIN TIMI\c SOARA
+
+FACULTATEA DE INFORMATIC\u A
+
+
+PROGRAMUL DE STUDII DE LICEN\c T\u A: Informatică }}
+
+\vspace{120pt}
+{\Large {\bf TUTOR LOCAL DE PROGRAMARE CU \^INTREB\u ARI SOCRATICE}}
+
+\vspace{150pt}
+\end{center}
+
+{\large\noindent{\bf COORDONATOR:\hfill ABSOLVENT:}
+
+\noindent Lect. Univ. Dr. Alexandra Fortiș \hfill Florea Victor}
+
+\vfill
+\begin{center}
+{\bf TIMI\c SOARA
+
+2027}
+\end{center}
+\newpage
+\normalsize{}
+\section*{Abstract}
+This thesis explores whether a small language model personalized to each student can perform as well as, or even better than, a much larger general-purpose model when used as a programming tutor. Rather than providing complete solutions, the tutor helps students develop their problem-solving skills through targeted questions, useful hints, and feedback adapted to their progress over multiple sessions.
+
+The models will be fine-tuned using parameter-efficient techniques such as LoRA and QLoRA, starting from an open-source model designed for code-related tasks. Experiments will be conducted with models of different sizes to understand how model scale affects tutoring performance.
+
+The evaluation will combine simulated student interactions with a limited trial involving real learners. The results will be compared against those of a large, general-purpose model to determine whether personalization can help smaller models provide equally effective or better programming guidance.
+
+
+
+\newpage
+
+\section*{Declarație de integritate științifică}
+Declar că această lucrare de licență / disertație reprezintă un raport original și constituie propria mea muncă, realizată sub coordonarea Alexandra Fortiș. În această lucrare, metodele de cercetare, precum și procesele de colectare, analiză și interpretare a datelor, sunt prezentate corect, iar toate sursele au fost citate corespunzător acolo unde am utilizat idei și/sau materiale vizuale aparținând altor autori.
+
+
+\textcolor{blue}{Dacă nu ați utilizat instrumente de inteligență artificială generativă:} Nu am utilizat instrumente de inteligență artificială generativă în procesul de redactare și cercetare.
+
+\textcolor{blue}{Dacă ați utilizat instrumente de inteligență artificială generativă:} Am utilizat instrumente de inteligență artificială generativă în procesul de redactare și cercetare. Detaliile se regăsesc în Anexa \ref{genAIUsage}.
+
+\newpage
+
+\tableofcontents
+\newpage
+\chapter{Introducere}
+
+\section{Context}
+Învățarea programării presupune multă exersare și feedback constant, iar cel mai des ajutorul vine din partea cadrelor didactice sau a mentorilor, a căror disponibilitate este limitată. Odată cu apariția modelelor de limbaj de mari dimensiuni, tot mai mulți începători folosesc astfel de instrumente pentru a-și rezolva problemele de programare.
+
+Cu toate acestea, instrumentele de acest tip oferă de cele mai multe ori soluția completă, ceea ce poate reduce efortul de gândire al studentului și, implicit, ceea ce acesta reușește să învețe \cite{liffiton2023codehelp} . În plus, răspunsurile sunt aceleași pentru toți utilizatorii, indiferent de nivelul sau de greșelile lor anterioare. Folosirea unor servicii externe ridică și întrebări legate de cost și de confidențialitatea datelor.
+
+Această lucrare se concentrează asupra unui tutor de programare care ghidează studentul prin întrebări, în loc să îi ofere direct răspunsul, și care poate fi rulat local. Lucrarea este de tip aplicativ, cu o componentă de cercetare, urmărind să afle dacă un model mic, adaptat pentru fiecare student, poate fi comparat cu un model mare și generic.
+
+\section{Scopul și obiectivele lucrării}
+Motivația lucrării este nevoia unui tutor care să sprijine învățarea prin descoperire, fără să ofere soluția gata făcută.
+
+Principalul scop îl reprezintă crearea unui tutor local de programare care îl ajută pe student să ajungă singur la soluție, prin întrebări și indicii, și care ține cont de particularitățile fiecărui student.
+
+Primul și cel mai important obiectiv este realizarea unui tutor care să îndrume studentul în loc să ofere răspunsuri directe. Acest obiectiv formează baza sistemului.
+
+Un al doilea obiectiv constă în adaptarea tutorului la fiecare student, astfel încât feedbackul să țină cont de nivelul acestuia și de interacțiunile anterioare.
+
+Al treilea obiectiv este compararea unui model mic personalizat cu un model mare și generic, pentru a vedea cât de mult poate compensa personalizarea dimensiunea redusă a modelului.
+
+Lucrarea urmează o abordare experimentală. Se pornește de la un model de limbaj mic, care este adaptat prin LoRA \cite{hu2022lora} să ghideze studentul prin întrebări și personalizat pentru fiecare student, iar apoi este comparat cu un model mare și generic, folosind atât studenți reali, cât și unii simulați. Principalele funcționalități ale sistemului sunt dialogul pe probleme de programare, adaptarea feedbackului la fiecare student și rularea locală.
+
+
+\section{Contribuții}
+Principalele contribuții ale acestei lucrări sunt:
+\begin{itemize}
+    \item Un tutor local de programare, bazat pe întrebări relevante pentru a ajunge la raspunsul dorit.
+    \item O abordare de personalizare a feedbackului în funcție de fiecare student.
+    \item O comparație între un model mic personalizat și un model mare și generic.
+\end{itemize}
+
+\section{Structura lucrării}
+
+
+
+\chapter{Titlul capitolului 2}
+
+În acest capitol sunt  exemple de utilizare a instrucțiunilor din latex.
+
+\section{Utilizare enumerări}
+Enumerare cu etichetă:
+\begin{enumerate}
+    \item Opțiunea 1
+    \item Opțiunea 2
+    \item Opțiunea 3
+\end{enumerate}
+
+Enumerare fără etichetă:
+\begin{itemize}
+    \item Opțiunea 1
+    \item Opțiunea 2
+    \item Opțiunea 3
+\end{itemize}
+
+\section{Utilizare definiții, teoreme, ...}
+\begin{defn} ...
+\end{defn}
+\begin{thm} ...
+\end{thm}
+\begin{proof} ...
+\end{proof}
+\begin{cor} ...
+\end{cor}
+\begin{prop} ...
+\end{prop}
+\begin{exmp} ...
+\end{exmp}
+
+\section{Utilizare referințe bibliografice}
+Exemplu citare lucrare \cite{Bersani} ...
+
+\section{Utilizare figură}
+Fiecare figură trebuie să aibă caption, pentru a spune ce reprezintă figura (exemplu Figura \ref{fig:siglaUVT}).
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.25\linewidth]{FI.png}
+    \caption{Siglă FMI redimensionată la 25\% din lățimea textului}
+    \label{fig:siglaUVT}
+\end{figure}
+
+\section{Utilizare pseudocod algoritm}
+Exemplu de descriere a unui algoritm în pseudocod (vezi Algoritm \ref{alg:alg_ex}).
+
+\begin{algorithm}[!ht]
+\caption{An algorithm with caption}\label{alg:alg_ex}
+\begin{algorithmic}[1]
+\Require $n \geq 0$
+\Ensure $y = x^n$
+\State $y \gets 1$
+\State $X \gets x$
+\State $N \gets n$
+\While{$N \neq 0$}
+\If{$N$ is even}
+    \State $X \gets X \times X$
+    \State $N \gets \frac{N}{2}$  \Comment{This is a comment}
+\ElsIf{$N$ is odd}
+    \State $y \gets y \times X$
+    \State $N \gets N - 1$
+\EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\section{Utilizare cod din aplicație}
+Pentru a include secvențe de cod din aplicație utilizați se poate utiliza pachetul lstlisting (exemplu listing \ref{lst:p1}).
+\begin{lstlisting}[language=Python, numbers=left,
+    stepnumber=1, caption=Un exemplu de cod python, label=lst:p1]
+import numpy as np
+    
+def incmatrix(genl1,genl2):
+    m = len(genl1)
+    n = len(genl2)
+    M = None #to become the incidence matrix
+    VT = np.zeros((n*m,1), int)  #dummy variable
+    
+    #compute the bitwise xor matrix
+    M1 = bitxormatrix(genl1)
+    M2 = np.triu(bitxormatrix(genl2),1) 
+
+    for i in range(m-1):
+        for j in range(i+1, m):
+            [r,c] = np.where(M2 == M1[i,j])
+            for k in range(len(r)):
+                VT[(i)*n + r[k]] = 1;
+                VT[(i)*n + c[k]] = 1;
+                VT[(j)*n + r[k]] = 1;
+                VT[(j)*n + c[k]] = 1;
+                
+                if M is None:
+                    M = np.copy(VT)
+                else:
+                    M = np.concatenate((M, VT), 1)
+                
+                VT = np.zeros((n*m,1), int)
+    
+    return M
+\end{lstlisting}
+
+\section{Utilizare tabele}
+
+Un exemplu de tabel simplu (vezi Tabel \ref{tab:my_tabel}). 
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l | c |  c | c |} 
+ \hline
+ Criteriu de optim & \textbf{Alg.1} & \textbf{Alg.2} & \textbf{Alg.3} \\  
+ \hline\hline
+\textbf{ MSQ} & 0.97 & 0.8 & 00.60 \\ 
+ \hline
+ \textbf{R2} & 0.77 & 0.78 & 0.54 \\
+ \hline
+ 
+ \hline
+\end{tabular}
+    \caption{Exemplu tabel}
+    \label{tab:my_tabel}
+\end{table}
+
+
+Pentru mai multe detalii despre construirea unui tabel accesați linkul \url{https://www.overleaf.com/learn/latex/Tables}.
+
+\chapter{Un alt capitol}
+\section{Titlul sec\c tiunii 2.1}
+\section{Titlul sec\c tiunii 2.2}
+...etc...
+\chapter{Concluzii și direcții viitoare de dezvoltare}
+
+\bibliography{mybib}
+\bibliographystyle{ieeetr}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\appendix
+\chapter{Anexă – Utilizarea instrumentelor de inteligență artificială generativă}
+\label{genAIUsage}
+În această anexă este prezentată o sinteză a modului în care au fost utilizate instrumentele de inteligență artificială generativă în cadrul lucrării. O imagine de ansamblu este oferită în Tabelul \ref{tab:genAIOverview}.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|X|X|}
+            \hline \rowcolor{blue!20}
+         Instrument AI& Scopul utilizării & Secțiuni în care a fost utilizat & Observații \\\hline
+         \multirow{2}{*}{ChatGPT 5.0} & Generarea listei de funcționalități & Capitolul 1, secțiunea 1.3& Prompturi prezentate în secțiunea \ref{sectionGhatGPT}\\ \cline{2-4}
+          
+          & Generarea listei inițiale de referințe bibliografice (stadiul actual al cercetării) & Capitolul 2 & Prompturi prezentate în secțiunea \ref{sectionGhatGPT}\\ \hline
+         
+         Microsoft Copilot & Generarea de cod & Capitolul 4 pag. 2-21  & Detalii în secțiunea \ref{sectionCopilot}\\ \hline
+         Deep L &  Traducerea conținutului textual & Capitolul 2 & Prompturi prezentate în secțiunea \ref{sectionDeepL} \\ \hline
+         Grammarly & Corectarea erorilor gramaticale și de stil & Întreaga lucrare & Versiune gratuită\\ \hline
+         ... &  & & \\\hline
+    \end{tabularx}
+    \caption{Sinteza utilizării instrumentelor de inteligență artificială generativă}
+    \label{tab:genAIOverview}
+\end{table}
+
+
+\section{Detalii privind utilizarea ChatGPT}
+\label{sectionGhatGPT}
+Pentru fiecare utilizare a instrumentului ChatGPT, se vor preciza următoarele aspecte:
+\begin{enumerate}
+\item scopul utilizării;
+\item metoda utilizată (prompturile folosite și secțiunile lucrării în care au fost aplicate);
+\item modul de verificare și validare a rezultatelor generate (din punct de vedere al corectitudinii și fiabilității);
+\item modul de integrare și utilizare a rezultatelor în cadrul lucrării.
+\end{enumerate}
+\section{Detalii privind utilizarea DeepL}
+\label{sectionDeepL}
+\section{Detalii privind utilizarea Microsoft Copilot}
+\label{sectionCopilot}
+\end{document} 

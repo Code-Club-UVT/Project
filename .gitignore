@@ -1,0 +1,13 @@
+# Latex build files
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.out
+*.toc
+
+# Temporary files
+/docs
