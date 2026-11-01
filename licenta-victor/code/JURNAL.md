@@ -74,3 +74,20 @@ Format intrare: dată, de ce, ce am făcut, rezultat (cifre), decizie / ce urmea
 - Calculat pe train+val (464): încep cu „Observă/Observi/Uită-te" 3%; cel mai frecvent început „Ce crezi" 16%; return_in_bucla care spun greșeala 39/160 (24%); lungime medie 128. Un singur răspuns fără diacritice. Fără scurgere între grupe.
 - Încă trec răspunsuri care dau soluția: 39 la return_in_bucla, 10 la valoare_initiala_gresita.
 - Propunere: refacerea filtrului.
+
+## 2026-11-01 · Git, reguli de lucru, primul commit
+- De ce: istoric al scripturilor și datelor, ca să pot reveni la orice versiune; reguli clare pentru Claude Code (fără suprascrieri, testul atins o singură dată, jurnal după fiecare pas).
+- Ce am făcut: git init; .gitignore cu .venv/, outputs/, unsloth_compiled_cache/, *.safetensors, exercitii/*/tokenizer.json (2 copii ale tokenizer-ului Qwen, 11 MB fiecare, se pot regenera); folder rezultate/ pentru outputul rulărilor; JURNAL.md creat; în CLAUDE.md adăugate secțiunile „Reguli" și „Jurnal și salvare".
+- Rezultat: 39 fișiere în commit, ~1,4 MB (fără ignorarea tokenizer-ului ar fi fost ~24 MB). Adaptoarele din exercitii/ (71 MB fiecare) nu sunt în git.
+- Abateri de la reguli înainte să existe: Claude Code a suprascris date/mutanti.jsonl, date/raspunsuri_brute.jsonl (copie în raspunsuri_brute_v1.jsonl) și train/val/test.jsonl; a rulat singur pasul 2 (>10 min); a deschis test.jsonl de două ori, doar pentru verificarea suprapunerii task_id (nu pentru decizii).
+- Decizie / ce urmează: refacerea filtrului din 2_raspunsuri.py, cu rezultatele în fișiere noi (*_v2.jsonl).
+- Unelte AI: Claude Code (git, .gitignore, completarea jurnalului).
+- Commit: dc0131b („punct de pornire").
+
+## 2026-11-01 · Mutare pe GitHub (Code-Club-UVT/Project)
+- De ce: tot proiectul trebuie să fie în repository-ul clubului, github.com/Code-Club-UVT/Project, în folderul licenta-victor/ (structură creată de Bran Alexandru: code/, docs/, papers/ cu teza și articolul AINA 2027).
+- Ce am făcut: clonat Project în ~/Project; scos licenta-victor/code/.empty; importat istoricul local cu `git subtree add --prefix=licenta-victor/code` (commit-ul dc0131b rămâne în istoric); mutat restul fișierelor (inclusiv .venv, adaptoarele din exercitii/) în licenta-victor/code/; ~/licenta e acum o scurtătură (symlink) spre ~/Project/licenta-victor/code, deci comenzile și căile rămân aceleași. Vechiul folder, cu vechiul .git, păstrat ca rezervă în ~/licenta_vechi.
+- Verificat: venv funcționează, CUDA disponibil, git vede repository-ul ~/Project.
+- Decizie: CLAUDE.md se publică în repository (deși un alt CLAUDE.md fusese șters din rădăcină pe 2026-10-22). Autorul commit-urilor e doar victor05florea, fără coautor Claude.
+- Unelte AI: Claude Code (clonare, import, mutare fișiere).
+- Commit-uri: 130de1f (scos .empty), eb8781f (import cu istoric).
