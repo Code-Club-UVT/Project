@@ -91,3 +91,11 @@ Format intrare: dată, de ce, ce am făcut, rezultat (cifre), decizie / ce urmea
 - Decizie: CLAUDE.md se publică în repository (deși un alt CLAUDE.md fusese șters din rădăcină pe 2026-10-22). Autorul commit-urilor e doar victor05florea, fără coautor Claude.
 - Unelte AI: Claude Code (clonare, import, mutare fișiere).
 - Commit-uri: 130de1f (scos .empty), eb8781f (import cu istoric).
+
+## 2026-11-01 · Autentificare GitHub prin SSH, prima trimitere
+- De ce: push-ul prin HTTPS a eșuat de două ori („Invalid username or token"; GitHub nu acceptă parola contului, iar tokenul nu a fost recunoscut).
+- Ce am făcut: cheie SSH ed25519 (~/.ssh/id_ed25519, fără passphrase), adăugată în contul GitHub victor05florea; remote schimbat pe git@github.com:Code-Club-UVT/Project.git; verificat cu ssh -T și git push --dry-run.
+- Rezultat: ramura setup trimisă pe GitHub, la commit-ul 8a7513b (4 commit-uri peste main: dc0131b, 130de1f, eb8781f, 8a7513b). main de pe GitHub neatins (baa6dee).
+- Decizie: lucrez pe ramura setup; modificările ajung în main prin pull request, aprobat de Bran Alexandru.
+- Unelte AI: Claude Code (diagnostic autentificare, generare cheie, configurare remote).
+- Commit: hash-ul acestei intrări se notează în intrarea următoare.
