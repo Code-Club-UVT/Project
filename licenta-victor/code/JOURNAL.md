@@ -137,3 +137,13 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - Next: run step 2 (~1 h) to generate data/raw_responses.jsonl and data/train/val/test.jsonl, then the filter rework.
 - AI tools: Claude Code (editing the script, testing the prompt on val, docs).
 - Commit: noted in the next entry.
+
+## 2026-11-01 · English generation (step 2)
+- Why: first generation of the tutor data in English (see previous entry for the prompt).
+- Commit of the previous entry: 110918b.
+- Run: python scripts/2_responses.py, output in results/2026-11-01_1304_2_responses.txt (results/2026-11-01_1303_2_responses.txt is empty: a start that was stopped immediately; data checked: 661 rows, 661 unique ids, no duplicates).
+- Result: 661 generated, 540 kept, 121 rejected (all "does not point at the bug"). Kept per category: return_in_loop 212, deleted_initialization 155, wrong_initial_value 100, flipped_comparison 38, wrong_remainder 24, shortened_range 9, deleted_update 2. Split: 439 train / 59 val / 42 test.
+- Computed on train+val (498): no overlap between splits; openings "If you" 32% (two styles start with "If"), "What do" 18%, "On the" 16%, "How does" 15%, "Why did" 9%, "Why does" 9%; 0 start with Notice/Look at/Take a look; return_in_loop answers that say return is inside the loop 22/193 (11%, Romanian gen2: 24%); wrong_initial_value answers that suggest the correct value 9/93; mean length 136 characters; 33 answers contain two questions.
+- Decision / next: rework the filter (it still rejects good indirect questions and lets ~31 solution-giving answers through), results to new files; then decide on category balance (deleted_update 2, shortened_range 9).
+- AI tools: gemma3:12b (answers), Claude Code (run and checks).
+- Commit: noted in the next entry.
