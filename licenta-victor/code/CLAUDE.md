@@ -1,38 +1,45 @@
-# Proiect licență: tutore socratic pentru cod
+# Bachelor thesis project: Socratic code tutor
 
-Licență UVT, Informatică. Fine-tuning QLoRA pe un model mic, ca să fie tutore de programare
-pentru începători (CoderDojo): pune întrebări de ghidare în română, nu dă soluția.
+UVT bachelor thesis, Computer Science. QLoRA fine-tuning of a small model to act as a programming
+tutor for beginners (CoderDojo): it asks guiding questions in Romanian and does not give the solution.
 
-## Mediu
-- WSL2 Ubuntu pe Windows, RTX 4070 (12 GB VRAM), 32 GB RAM
-- Proiect în ~/licenta, mediu virtual .venv (activare: source .venv/bin/activate)
-- Instalat: torch, unsloth, peft, trl, bitsandbytes, transformers, datasets
-- Ollama în WSL, model profesor: gemma3:12b
+## Environment
+- WSL2 Ubuntu on Windows, RTX 4070 (12 GB VRAM), 32 GB RAM
+- Project in ~/licenta (a symlink to ~/Project/licenta-victor/code, a clone of github.com/Code-Club-UVT/Project), virtual env .venv (activate: source .venv/bin/activate)
+- Installed: torch, unsloth, peft, trl, bitsandbytes, transformers, datasets
+- Ollama in WSL, teacher model: gemma3:12b
 
-## Structură
-- exercitii/: experimentele vechi (date de jucărie, Qwen 1.5B), nu se mai modifică
-- scripturi/1_mutanti.py: ia programe din MBPP și introduce bug-uri controlate (7 categorii)
-- scripturi/2_raspunsuri.py: gemma3:12b scrie întrebarea tutorelui, un filtru aruncă răspunsurile proaste
-- date/: mutanti.jsonl, train/val/test.jsonl (împărțite după task_id ca să nu existe scurgere de date)
+## Structure
+- experiments/: the old experiments (toy data, Qwen 1.5B), no longer changed (see experiments/README.md)
+- scripts/1_mutants.py: takes programs from MBPP and injects controlled bugs (7 categories)
+- scripts/2_responses.py: gemma3:12b writes the tutor question, a filter drops bad answers
+- data/: mutants.jsonl, train/val/test.jsonl (split by task_id so there is no data leakage); older generations in data/archive/
+- results/: saved output of every run
 
-## Ce am învățat până acum
-- Pe date șablonate, modelul învață stilul tutorelui, nu să găsească bug-ul
-- Qwen 1.5B scrie română stricată; de verificat pe modele mai mari
-- Următorul pas: antrenare QLoRA pe Qwen2.5-Coder-7B-Instruct cu date/train.jsonl
+## Language
+- Code, file names, comments, docs and the journal are in English.
+- Everything the tutor model reads or writes stays in Romanian: tutor answers, simulated student complaints, the filter keywords that match Romanian text, and the verbatim model inputs in experiments/.
+- Talk to me in English.
 
-## Cum vreau să lucrezi
-- Sunt începător în ML: explică scurt și simplu, fără termeni neexplicați
-- Dă-mi comanda, o rulez, apoi explică ce s-a întâmplat
-- Nu atinge setul de test pentru decizii; deciziile se iau pe validare
+## What I have learned so far
+- On templated data, the model learns the tutor's style, not how to find the bug
+- Qwen 1.5B writes broken Romanian; to be checked on larger models
+- Next step: QLoRA training on Qwen2.5-Coder-7B-Instruct with data/train.jsonl
 
-## Reguli
-- Nu șterge și nu suprascrie fișiere fără să-mi ceri voie; scrie rezultatele în fișiere noi
-- Nu modifica exercitii/ și nu rula pip install fără aprobare
-- Antrenezi doar pe date/train.jsonl; setările se aleg pe val.jsonl; test.jsonl se atinge o singură dată, la final
-- Scripturile lungi (peste 10 minute): dă-mi comanda și le rulez eu
+## How I want you to work
+- I am a beginner in ML: explain briefly and simply, with no unexplained terms
+- Give me the command, I run it, then explain what happened
+- Do not use the test set for decisions; decisions are made on validation
 
-## Jurnal și salvare (obligatoriu după fiecare pas)
-1. Adaugă o intrare la finalul JURNAL.md, în formatul de acolo: de ce, ce ai făcut, cifre exacte, decizie, unelte AI și prompturile folosite.
-2. Salvează outputul rulărilor: python scripturi/X.py 2>&1 | tee rezultate/$(date +%F_%H%M)_X.txt
-3. Fă git commit cu un mesaj care descrie pasul, și notează hash-ul în jurnal.
-Nu șterge și nu rescrie intrări vechi din jurnal; doar adaugi.
+## Rules
+- Do not delete or overwrite files without asking me; write results to new files
+- Do not modify experiments/ and do not run pip install without approval
+- Train only on data/train.jsonl; settings are chosen on val.jsonl; test.jsonl is used only once, at the end
+- Long scripts (over 10 minutes): give me the command and I run them
+- Git commits are authored by me only: no Co-Authored-By or other Claude attribution
+
+## Journal and saving (required after every step)
+1. Add an entry at the end of JOURNAL.md, in the format used there: why, what you did, exact numbers, decision, AI tools and the prompts used.
+2. Save the output of runs: python scripts/X.py 2>&1 | tee results/$(date +%F_%H%M)_X.txt
+3. Make a git commit with a message that describes the step, and note the hash in the journal.
+Do not delete or rewrite old journal entries; only append.

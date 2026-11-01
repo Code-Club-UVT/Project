@@ -1,0 +1,204 @@
+[flipped_comparison] while n < 0:
+TARGET: Spune cu cuvintele tale ce verifică `n < 0`. Corespunde cu ce vrei să facă funcția?
+MODEL:  Urmărește `n` cu o trecere înainte de prima linie în care se opreie buclăa. Ce valoare are la un moment dat?
+
+[flipped_comparison] while n < 0:
+TARGET: Rulează funcția pe un exemplu mic și, la fiecare trecere, notează dacă `n < 0` e adevărată sau falsă. Ce observi?
+MODEL:  Rulează funcția cu o linie de exemplu, ar trebui să se oprească? Ce valoare ar trebui să aibă `n` înainte ca trecerea sa să înceapă să fie falsă?
+
+[flipped_comparison] if x < 0:
+TARGET: Rulează funcția pe un exemplu mic și, la fiecare trecere, notează dacă `x < 0` e adevărată sau falsă. Ce observi?
+MODEL:  Uită ce se întâmplă în interiorul buclei. Ce valori are `x` când `contor` ar trebui să fie egal cu lungimea listei?
+
+[wrong_initial_value] contor = 1
+TARGET: Compară ce returnează funcția cu ce te-ai aștepta pe un exemplu mic. Ce se întâmplă cu `contor` înainte de prima trecere prin buclă?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `contor` după primul buclă?
+
+[deleted_update] (line deleted)
+TARGET: Cum își schimbă valoarea `n` de la o trecere prin buclă la alta? Când devine falsă condiția din `while`?
+MODEL:  Urmărește `print`-ul la ultimul hârtie. Ce se întâmple cu `n` înainte lui să devine uite?
+
+[return_in_loop] return total
+TARGET: Uită-te la indentarea lui `return`. Din ce bloc face parte? Ar trebui să se execute la fiecare trecere sau o singură dată?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmplă după primul element?
+
+[return_in_loop] return total
+TARGET: Urmărește execuția: câte treceri prin buclă face funcția înainte să ajungă la `return`? Ce o oprește?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmplă după primul buclă?
+
+[wrong_initial_value] total = 1
+TARGET: Uită-te la linia `total = 1`. Ce valoare ar trebui să aibă `total` înainte ca bucla să înceapă să lucreze? De ce?
+MODEL:  Rulează funcția cu o listă cu trei elemente și verifică dacă `total` e egal cu `3`. Ce obții?
+
+[wrong_initial_value] total = 1
+TARGET: Compară ce returnează funcția cu ce te-ai aștepta pe un exemplu mic. Ce se întâmplă cu `total` înainte de prima trecere prin buclă?
+MODEL:  Uită ce face `total` înainte de primul bucla. Ce valoare are la început? De ce?
+
+[wrong_initial_value] total = 1
+TARGET: Ia o listă cu un singur element și rulează funcția pe hârtie. Ce ar trebui să returneze? Urmărește valoarea lui `total` de la început până la `return`: ce obții?
+MODEL:  Rulează funcția cu o listă cu trei elemente și verifică dacă `total` e egal cu `3`. Ce obții?
+
+[shortened_range] for i in range(len(lista) - 1):
+TARGET: Uită-te la `range(len(lista) - 1)`. Care e ultima valoare pe care o ia `i`? Ce poziție are ultimul element al listei?
+MODEL:  Uită ce se întâmplă în `range` cu `len(lista)`. Ce valoare are `i` în ultimul pas? De la hârtie?
+
+[deleted_initialization] (line deleted)
+TARGET: Unde îi dai prima valoare lui `total` în funcție? Se întâmplă înainte să o folosești?
+MODEL:  Uită ce se întâmplă în `total`. Ce valoare are la început? Se întâmplă o eroare cu acel parametru?
+
+[return_in_loop] return contor
+TARGET: Urmărește execuția: câte treceri prin buclă face funcția înainte să ajungă la `return`? Ce o oprește?
+MODEL:  Urmărește execuția: când funcția se începe să lucreze? Se face prima dată dupa ce `contor` are o valoare sau la începutul buclei?
+
+[deleted_initialization] (line deleted)
+TARGET: Urmărește `contor` de la începutul funcției. Care e prima linie în care apare? Ce valoare are în acel moment?
+MODEL:  Urmărește `contor` înainte de primul buclă. Ce valoare are la început? De unde o are?
+
+[return_in_loop] return contor
+TARGET: Rulează funcția pe hârtie cu o listă de trei elemente. Ce se întâmplă după primul element?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmplă după prima valoare?
+
+[deleted_initialization] (line deleted)
+TARGET: Urmărește `total` de la începutul funcției. Care e prima linie în care apare? Ce valoare are în acel moment?
+MODEL:  Urmărește `total` la începutul funcției. Ce valoare are prima dată? De ce?
+
+[deleted_initialization] (line deleted)
+TARGET: Rulează funcția pe hârtie, pas cu pas. La prima dată când `total` e folosită, are deja o valoare? De unde o are?
+MODEL:  Urmărește `total` înainte de prima trecere prin buclă. Ce valoare are la început? De ce?
+
+[wrong_initial_value] rezultat = 0
+TARGET: Uită-te la linia `rezultat = 0`. Ce valoare ar trebui să aibă `rezultat` înainte ca bucla să înceapă să lucreze? De ce?
+MODEL:  Urmărește execuția cu o listă mică și verifica dacă `rezultat` se modifie pe fiecare trecere. Ce observi?
+
+[return_in_loop] return contor
+TARGET: Uită-te la indentarea lui `return`. Din ce bloc face parte? Ar trebui să se execute la fiecare trecere sau o singură dată?
+MODEL:  Uită ce se întâmplă în `return`-ul: unde o folosești? Se întâmplă la prima dată sau o altă trecere?
+
+[wrong_remainder] if x % 2 == 1:
+TARGET: Ce fel de numere vrei să selectezi cu `if`? Selectează `x % 2 == 1` exact aceste numere?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu valoarea lui `x` în interiorul buclii? De ce?
+
+[shortened_range] for i in range(len(lista) - 1):
+TARGET: Numără câte treceri face bucla pentru o listă cu 3 elemente. Câte ar trebui să fie?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente și văd ce se întâmple cu `range`. Ce obții?
+
+[deleted_initialization] (line deleted)
+TARGET: Unde îi dai prima valoare lui `contor` în funcție? Se întâmplă înainte să o folosești?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `contor` după prima trecere prin buclă?
+
+[deleted_initialization] (line deleted)
+TARGET: Urmărește `rezultat` de la începutul funcției. Care e prima linie în care apare? Ce valoare are în acel moment?
+MODEL:  Urmărește `rezultat` înainte de prima trecere prin buclă. Ce valoare are la început? De ce?
+
+[wrong_remainder] if x % 2 == 1:
+TARGET: Ce rest dă un număr par la împărțirea cu 2? Dar unul impar? Compară cu ce testează `x % 2 == 1`.
+MODEL:  Uită ce se întâmplă cu `x % 2`. Ce valori are `x` înainte ca trecerea lui să fie opreștă? De ce?
+
+[deleted_update] (line deleted)
+TARGET: Ce ar trebui să se întâmple cu `n` în corpul buclei ca ciclul să se termine? Se întâmplă asta în cod?
+MODEL:  Rulează funcția pe hârtie cu o valoare arbitară de `n`. Ce se întâmple la ultimul buclui?
+
+[deleted_initialization] (line deleted)
+TARGET: Unde îi dai prima valoare lui `rezultat` în funcție? Se întâmplă înainte să o folosești?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `rezultat` înainte ca bucla să înceapă să lucreze?
+
+[return_in_loop] return total
+TARGET: Rulează funcția pe hârtie cu o listă de trei elemente. Ce se întâmplă după primul element?
+MODEL:  Urmărește execuția: când funcția se încheie? De ce? Ce ar trebui să se întâmpla?
+
+[flipped_comparison] while n < 0:
+TARGET: Alege un exemplu mic și urmărește condiția `n < 0`. Pentru ce valori e adevărată? Asta vrei să se întâmple?
+MODEL:  Rulează funcția pe hârtie cu un exemplu mic: câte treceri prin bucla face? Ce se întâmple la ultimul pas?
+
+[wrong_initial_value] contor = 1
+TARGET: Uită-te la linia `contor = 1`. Ce valoare ar trebui să aibă `contor` înainte ca bucla să înceapă să lucreze? De ce?
+MODEL:  Uită ce se întâmplă în interiorul buclei: câte treceri face? Se întâmplă la prima dată cu o valoare negativă?
+
+[return_in_loop] return total
+TARGET: Urmărește execuția: câte treceri prin buclă face funcția înainte să ajungă la `return`? Ce o oprește?
+MODEL:  Uită ce se întâmplă în `return`-ul: unde o face? Se întâmplă cu prima dată sau la ultima? De ce?
+
+[wrong_initial_value] contor = 1
+TARGET: Ia o listă cu un singur element și rulează funcția pe hârtie. Ce ar trebui să returneze? Urmărește valoarea lui `contor` de la început până la `return`: ce obții?
+MODEL:  Rulează funcția cu o listă cu trei elemente și verifică dacă `contor` e egal cu trecerea prin buclă. Ce obții?
+
+[return_in_loop] return rezultat
+TARGET: Urmărește execuția: câte treceri prin buclă face funcția înainte să ajungă la `return`? Ce o oprește?
+MODEL:  Urmărește execuția: câte treceri prin buclă face funcția? Ce se întâmplă după prima trecere?
+
+[return_in_loop] return rezultat
+TARGET: Rulează funcția pe hârtie cu o listă de trei elemente. Ce se întâmplă după primul element?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `rezultat` după primul buclă?
+
+[flipped_comparison] if x < 0:
+TARGET: Alege un exemplu mic și urmărește condiția `x < 0`. Pentru ce valori e adevărată? Asta vrei să se întâmple?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce opreie prin bucla? De unde e `x < 0`?
+
+[deleted_update] (line deleted)
+TARGET: Urmărește valoarea lui `n` pe hârtie, trecere cu trecere. Ajunge condiția din `while` să fie vreodată falsă?
+MODEL:  Urmărește `print("Gata")` din hârtie. Ce se întâmplă când funcția trecă prin buclă? De ce?
+
+[flipped_comparison] if x < 0:
+TARGET: Spune cu cuvintele tale ce verifică `x < 0`. Corespunde cu ce vrei să facă funcția?
+MODEL:  Rulează funcția cu o listă cu trei elemente și verifică dacă `x` e mai mic decât zero. Ce se întâmplie?
+
+[wrong_initial_value] total = 1
+TARGET: Uită-te la linia `total = 1`. Ce valoare ar trebui să aibă `total` înainte ca bucla să înceapă să lucreze? De ce?
+MODEL:  Uită ce face `total` înainte de primul bucla. Ce valoare are la început? De ce?
+
+[wrong_remainder] if x % 2 == 1:
+TARGET: Alege un număr par și unul impar și verifică pe hârtie, pentru fiecare, dacă `x % 2 == 1` e adevărată. Pentru care intră funcția în `if`?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmplă după prima valoare?
+
+[wrong_initial_value] rezultat = 0
+TARGET: Ia o listă cu un singur element și rulează funcția pe hârtie. Ce ar trebui să returneze? Urmărește valoarea lui `rezultat` de la început până la `return`: ce obții?
+MODEL:  Urmărește execuția cu o listă mică și verifica dacă `rezultat` se modifie pe fiecare trecere. Ce observi?
+
+[return_in_loop] return total
+TARGET: Rulează funcția pe hârtie cu o listă de trei elemente. Ce se întâmplă după primul element?
+MODEL:  Uită ce se întâmplă în `return`-ul: unde o face? Se întâmplă cu prima dată sau la ultima? De ce?
+
+[deleted_initialization] (line deleted)
+TARGET: Urmărește `total` de la începutul funcției. Care e prima linie în care apare? Ce valoare are în acel moment?
+MODEL:  Rulează funcția cu o listă cu trei elemente și verifică dacă `total` e initial nula. Ce se întâmplă?
+
+[deleted_initialization] (line deleted)
+TARGET: Unde îi dai prima valoare lui `total` în funcție? Se întâmplă înainte să o folosești?
+MODEL:  Rulează funcția cu o listă cu trei elemente și verifică dacă `total` e initial nula. Ce se întâmplă?
+
+[deleted_initialization] (line deleted)
+TARGET: Rulează funcția pe hârtie, pas cu pas. La prima dată când `contor` e folosită, are deja o valoare? De unde o are?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `contor` după prima trecere prin buclă?
+
+[return_in_loop] return rezultat
+TARGET: Uită-te la indentarea lui `return`. Din ce bloc face parte? Ar trebui să se execute la fiecare trecere sau o singură dată?
+MODEL:  Uită ce se întâmplă în `return`-ul: unde o folosești? Se întâmplă cu prima dată sau la ultima?
+
+[deleted_initialization] (line deleted)
+TARGET: Rulează funcția pe hârtie, pas cu pas. La prima dată când `total` e folosită, are deja o valoare? De unde o are?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmplă după primul element?
+
+[wrong_initial_value] total = 1
+TARGET: Ia o listă cu un singur element și rulează funcția pe hârtie. Ce ar trebui să returneze? Urmărește valoarea lui `total` de la început până la `return`: ce obții?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `total` după primul bucla?
+
+[wrong_initial_value] total = 1
+TARGET: Compară ce returnează funcția cu ce te-ai aștepta pe un exemplu mic. Ce se întâmplă cu `total` înainte de prima trecere prin buclă?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `total`?
+
+[return_in_loop] return total
+TARGET: Uită-te la indentarea lui `return`. Din ce bloc face parte? Ar trebui să se execute la fiecare trecere sau o singură dată?
+MODEL:  Uită ce se întâmplă în `return`-ul: unde o folosești? Se întâmplă la prima dată sau o altă trecere?
+
+[deleted_initialization] (line deleted)
+TARGET: Rulează funcția pe hârtie, pas cu pas. La prima dată când `rezultat` e folosită, are deja o valoare? De unde o are?
+MODEL:  Urmărește `rezultat` pe hârtie. Ce valoare are la început? De ce?
+
+[wrong_initial_value] rezultat = 0
+TARGET: Compară ce returnează funcția cu ce te-ai aștepta pe un exemplu mic. Ce se întâmplă cu `rezultat` înainte de prima trecere prin buclă?
+MODEL:  Uită ce face `rezultat` înainte de primul bucla. Ce valoare are la început? De ce?
+
+[shortened_range] for i in range(len(lista) - 1):
+TARGET: Ia o listă cu trei elemente. Ce valori ia `i` în `range(len(lista) - 1)`? Se ajunge la ultimul element?
+MODEL:  Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple la prima trecere prin buclă?
+

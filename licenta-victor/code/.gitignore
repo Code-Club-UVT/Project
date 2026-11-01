@@ -2,4 +2,4 @@
 outputs/
 unsloth_compiled_cache/
 *.safetensors
-exercitii/*/tokenizer.json
+experiments/*/tokenizer.json

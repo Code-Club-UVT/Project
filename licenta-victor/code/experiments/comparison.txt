@@ -7,7 +7,7 @@ def maxim(lista):
             m = x
     return m
 
---- MODEL ORIGINAL ---
+--- BASE MODEL ---
 Este o metodă corectă pentru a calcula cel mai mare număr într-o lista, dar nu este ceva direct către cel mai mic. Pentru a face asta, trebuie să foloseșteți metoda `min` din Python. Aici este cum ar fi:
 
 ```python
@@ -17,7 +17,7 @@ def minim(lista):
 
 Acest cod va returna cel mai mic număr din lista, ceea ce este ceva mai precis și clar pentru tine.
 
---- MODEL ANTRENAT ---
+--- TRAINED MODEL ---
 Sunt să urmărim codul prin buclă. Ce valoare are `x` la prima trecere prin bucle? Să se oprească o singură dată și să rulă toate elementele din listă.
 
 ===== TEST 2: Primesc o eroare când rulez funcția.
@@ -27,14 +27,14 @@ def suma_pozitive(numere):
             total += x
     return total
 
---- MODEL ORIGINAL ---
+--- BASE MODEL ---
 Este foarte important să analizezi codul înainte de a încerca rezolvarea problemei. Îmi pare rău, dar nu pot furniza informațiile specifice despre numerele din lista deoarece nu le-am avut la dispoziție. 
 
 Pentru a începe, vă sugerez să verificați dacă este folosit `total` și dacă este initializat cu valoare inițială (de exemplu, 0). Acest lucru ar putea fi responsabil pentru eroarea.
 
 În plus, doriți să verificăm dacă numărul este pozitiv? Dacă
 
---- MODEL ANTRENAT ---
+--- TRAINED MODEL ---
 Uită-te la `x` din buclă. Ce valoare are acea variabilă? Sunt o valoare pozitivă sau negativă?
 
 ===== TEST 3: Funcția nu afișează ultimul element al listei.
@@ -42,7 +42,7 @@ def afiseaza(lista):
     for i in range(len(lista) - 1):
         print(lista[i])
 
---- MODEL ORIGINAL ---
+--- BASE MODEL ---
 Este o întâlnire frecventă în Python, dar este important să te explicăm motivul pentru care acest lucru se întâmplune și cum pot rezolvați problema.
 
 Pentru a face asta, trebuie să vă explicăm mai mult despre structura unei liste în Python:
@@ -53,7 +53,7 @@ Pentru a face asta, trebuie să vă explicăm mai mult despre structura unei lis
 
 Cu toate acestea, în funcție-ul "afiseaza" ce facem? Am iterat
 
---- MODEL ANTRENAT ---
+--- TRAINED MODEL ---
 Uită-te la `range` din buclă. Ce valoare are cea mai mică poziție? Ce poziție are cel mai mare?
 
 ===== TEST 4: Funcția mea numără greșit numerele pare.
@@ -64,7 +64,7 @@ def numara_pare(lista):
             contor += 1
     return contor
 
---- MODEL ORIGINAL ---
+--- BASE MODEL ---
 Este o metodă corectă pentru a verifica dacă unele numere sunt pare sau impare, dar nu este cel mai eficient. Pentru a face acest lucru într-un mod mai eficient, putem folosi metoda `filter` din Python. Acesta va permite să analizeți elementele unei liste și să le afișați doar cele pare.
 
 Pentru exemplul dumneavoastră:
@@ -75,7 +75,7 @@ lista = [1, 2, 3, 4, 5, 6]
 # Folosim filter-ul pentru a extrage numerele pare
 numere_pare = list(filter(lambda x: x % 2 == 
 
---- MODEL ANTRENAT ---
+--- TRAINED MODEL ---
 Sunt săt! Poziția cei mai târziu din buclă unde se face o operare aruncării este importantă. Ce valoare are `x` la acelei poziții?
 
 ===== TEST 5: Programul meu nu se oprește niciodată.
@@ -84,17 +84,17 @@ def numara_invers(n):
         print(n)
     print("Gata")
 
---- MODEL ORIGINAL ---
+--- BASE MODEL ---
 Este o problema comun în Python, dar este posibil să te ajut cu ceva mai bun. Îmi pare rău dacă nu te-am ajutat în mod corect. Vrei să îți explic cum să rezolvă această problemă?
 
---- MODEL ANTRENAT ---
+--- TRAINED MODEL ---
 Uită-te la `while`-ul din buclă. Ce valoare are `n` când se face prima trecere prin buclă? Sunt o valoare pozitivă sau o valoare negativă?
 
 ===== TEST 6: Primesc IndexError când apelez funcția.
 def ultimul(lista):
     return lista[len(lista)]
 
---- MODEL ORIGINAL ---
+--- BASE MODEL ---
 Îmi pare rău, dar nu pot să te ajut cu acest lucru. Îți recomand să consultați documentația Python pentru a înțelege mai bine comportamentul funcțiilor și variabilelor din codul tău. Acest lucru poate fi fără încercarea de a aplicați soluții automatice. Poti să începiți cu o versiune simplificată a funcției:
 
 ```python
@@ -107,7 +107,7 @@ def ultimul(lista):
 
 Acest cod verifica dacă lista este neplină (daca
 
---- MODEL ANTRENAT ---
+--- TRAINED MODEL ---
 Uită-te la `len()` - ce valoare are acelei funcției? Sunt o listă sau un string?
 
 ===== TEST 7: Funcția produs returnează mereu 0.
@@ -117,12 +117,12 @@ def produs(lista):
         rezultat *= x
     return rezultat
 
---- MODEL ORIGINAL ---
+--- BASE MODEL ---
 Este o întrebare interesantă! Voi încerca să îți explic mai mult despre această funcție și dacă te-am ajutat înainte, nu am făcut nicio soluție. 
 
 Pentru a clarifica, funcția `produs` este definită pentru a calcula produsul elementelor dintr-o listă. În acest caz, funcția se bazează asupra unei operări de adunare (întregul cod este: `rezultat += x`). Acest lucru ar putea fi considerat ca "returnează" 0, dar este cel mai simplu mod de
 
---- MODEL ANTRENAT ---
+--- TRAINED MODEL ---
 Sunt sătul să se termine buclă? Ce valoare are `x` la trecerea ultimului element al listei?
 
 ===== TEST 8: Funcția suma returnează doar ultimul element.
@@ -132,7 +132,7 @@ def suma(lista):
         total += x
     return total
 
---- MODEL ORIGINAL ---
+--- BASE MODEL ---
 Este o întâlnire comună în Python, dar nu este adevărată. Funcțiile `sum()` și `reduce()` sunt mai bune pentru calcularea sumei unei liste. Înlocuitorii pot fi:
 
 1. Utilizarea funcției `sum()`: 
@@ -154,5 +154,5 @@ def suma(lista):
 def suma(lista):
     return sum(map
 
---- MODEL ANTRENAT ---
+--- TRAINED MODEL ---
 Sunt săt! Ce se aplica la `x` la fiecare trecere prin buclă? Sunt o variabilă locală sau globală?

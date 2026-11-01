@@ -1,3 +1,4 @@
+# Experiment: attach a LoRA adapter (r=16, 7 modules) and count trainable parameters.
 from unsloth import FastLanguageModel
 
 model, tokenizer = FastLanguageModel.from_pretrained(

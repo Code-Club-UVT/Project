@@ -1,3 +1,4 @@
+# Experiment: QLoRA training 2 on data v2 (train_v2.jsonl / val_v2.jsonl), 5 epochs.
 from unsloth import FastLanguageModel, is_bfloat16_supported
 from unsloth.chat_templates import train_on_responses_only
 from datasets import load_dataset
@@ -18,23 +19,23 @@ model = FastLanguageModel.get_peft_model(
     random_state=3407,
 )
 
-date = load_dataset("json", data_files={"train": "train.jsonl", "validation": "val.jsonl"})
+data = load_dataset("json", data_files={"train": "train_v2.jsonl", "validation": "val_v2.jsonl"})
 
-def formateaza(ex):
+def format_example(ex):
     return {"text": tokenizer.apply_chat_template(ex["messages"], tokenize=False)}
 
-date = date.map(formateaza, remove_columns=["messages"])
+data = data.map(format_example, remove_columns=["messages"])
 
 trainer = SFTTrainer(
     model=model,
     processing_class=tokenizer,
-    train_dataset=date["train"],
-    eval_dataset=date["validation"],
+    train_dataset=data["train"],
+    eval_dataset=data["validation"],
     args=SFTConfig(
         dataset_text_field="text",
         per_device_train_batch_size=2,
         gradient_accumulation_steps=4,
-        num_train_epochs=3,
+        num_train_epochs=5,
         learning_rate=2e-4,
         warmup_steps=2,
         lr_scheduler_type="linear",
@@ -57,26 +58,9 @@ trainer = train_on_responses_only(
     response_part="<|im_start|>assistant\n",
 )
 
-ex = trainer.train_dataset[0]
-vizibil = [t for t, e in zip(ex["input_ids"], ex["labels"]) if e != -100]
-print("\nTEXT PE CARE SE CALCULEAZĂ GREȘEALA:\n", tokenizer.decode(vizibil))
-
 trainer.train()
 
-print("\nVRAM maxim în antrenare:", round(torch.cuda.max_memory_allocated() / 1e9, 2), "GB")
+print("\nPeak VRAM during training:", round(torch.cuda.max_memory_allocated() / 1e9, 2), "GB")
 
-model.save_pretrained("adaptor_jucarie")
-tokenizer.save_pretrained("adaptor_jucarie")
-
-FastLanguageModel.for_inference(model)
-cod = ("def numara_pare(lista):\n    contor = 0\n    for x in lista:\n"
-       "        if x % 2 == 1:\n            contor += 1\n    return contor")
-mesaje = [
-    {"role": "system", "content": "Ești un tutore de programare. Nu da niciodată soluția. Pune întrebări care îl ghidează pe elev."},
-    {"role": "user", "content": "Funcția mea numără greșit numerele pare.\n\n" + cod},
-]
-intrare = tokenizer.apply_chat_template(
-    mesaje, add_generation_prompt=True, return_tensors="pt", return_dict=True
-).to("cuda")
-iesire = model.generate(**intrare, max_new_tokens=120)
-print("\nRĂSPUNS PE UN BUG NOU:\n", tokenizer.decode(iesire[0][intrare["input_ids"].shape[1]:], skip_special_tokens=True))
+model.save_pretrained("adapter_v2")
+tokenizer.save_pretrained("adapter_v2")
