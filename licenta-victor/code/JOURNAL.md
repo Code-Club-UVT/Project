@@ -163,3 +163,19 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - Decision / next: decide category balance, then the first QLoRA training on Qwen2.5-Coder-7B-Instruct with data/train_v2.jsonl, settings chosen on data/val_v2.jsonl.
 - AI tools: Claude Code (writing the filter, reading and marking the 66 val answers, checks). The manual marks were made by Claude Code, not by me; worth a human second look before training.
 - Commit: noted in the next entry.
+
+## 2026-11-01 · Extra mutants for the rare categories (step 1b)
+- Why: in data v2, return_in_loop was 43% of train, shortened_range had 6 train examples and deleted_update 2, and val had none of either, so these categories could neither be learned nor measured. Chosen option: generate more rare bugs (instead of capping return_in_loop or leaving it).
+- Commit of the previous entry: f66c361.
+- What I did:
+  - scripts/mutations.py: the mutation rules and helpers moved out of 1_mutants.py (shared). Check: 1_mutants.py re-run in a scratch folder gives data/mutants.jsonl byte-for-byte identical.
+  - Wider rules for the rare categories, same meaning: shortened_range also range(n) → range(n - 1), range(a, len(x)) → range(a, len(x) - 1), range(a, n) → range(a, n - 1), range(n + 1) → range(n) (for headers only, no step argument); deleted_update also deletes x += k, x //= k, x >>= k, x = x - k, x = x + 1 etc., only if x is in a while condition above; flipped_comparison also >= ↔ <=; wrong_remainder also % 2 != 0 → % 2 == 0 and % 2 == 1 → % 2 == 0. Each rule unit-checked on sample lines.
+  - scripts/1b_extra_mutants.py: for each of the 359 programs, all rare-category candidates (old + wide rules) whose tests fail and whose code is not already in data/mutants.jsonl; rarest categories first; max 3 extra per program; ids continue from 662. Writes data/mutants_extra.jsonl (data/mutants.jsonl unchanged).
+  - scripts/2_responses.py: now generation only, with --mutants / --raw options (default files unchanged). Its old filter and split were removed (3_filter.py does both; old version in git history).
+  - scripts/3_filter.py: also reads the extra files; base programs keep their v2 split, programs only in the extra file get their own fixed split (seed 1); output now *_v3.jsonl; the shortened_range "gives the solution" check now covers any original range(...). Check: on the base files alone it reproduces train/val/test_v2 exactly.
+- Result (output: results/2026-11-01_1406_1b_extra_mutants.txt): available failing rare mutants: shortened_range 112, flipped_comparison 69, deleted_update 35, wrong_remainder 8. Kept 215 extra mutants from 150 programs (4 programs had no earlier mutant): shortened_range 111, flipped_comparison 61, deleted_update 35, wrong_remainder 8. Split of the extras: train 181 / val 19 / test 15. Val extras: shortened_range 9, deleted_update 2, flipped_comparison 8.
+- Checks: read 4 samples per category (all match the category description); no duplicate buggy code with data/mutants.jsonl. gemma3 + filter tried on 6 val extras: 5 kept, 1 correctly rejected as giving the fix ("...end it at n instead of n + 1?").
+- wrong_remainder stays small (+8): MBPP has few remainder tests in short loop programs.
+- Next: step 2 on the extras (~20 min), then 3_filter.py → data v3.
+- AI tools: Claude Code (rules, scripts, checks).
+- Commit: noted in the next entry.

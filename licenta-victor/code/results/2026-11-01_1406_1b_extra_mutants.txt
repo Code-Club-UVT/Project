@@ -1,0 +1,7 @@
+MBPP programs checked: 359
+New failing rare-category mutants available: {'shortened_range': 112, 'flipped_comparison': 69, 'deleted_update': 35, 'wrong_remainder': 8}
+Extra mutants kept: 215 | from programs: 150 | of which programs with no earlier mutant: 4
+   shortened_range 111
+   flipped_comparison 61
+   deleted_update 35
+   wrong_remainder 8

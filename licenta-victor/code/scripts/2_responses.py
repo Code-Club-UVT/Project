@@ -1,19 +1,18 @@
 # Step 2: the teacher model (gemma3:12b via Ollama) writes one Socratic tutor question
-# per mutant, in English. A rule-based filter drops bad answers, then the kept examples
-# are split into train/val/test by MBPP task_id, so no program appears in two splits.
+# per mutant, in English. Generation only: filtering and the train/val/test split are done
+# by 3_filter.py. Resumable: answers already in the output file are skipped.
+#
+#   python scripts/2_responses.py                         # data/mutants.jsonl -> data/raw_responses.jsonl
+#   python scripts/2_responses.py --mutants data/mutants_extra.jsonl --raw data/raw_responses_extra.jsonl
+import argparse
 import json
 import os
 import random
-import re
 import sys
-from collections import Counter
 import requests
-from tutor_text import SYSTEM_TUTOR, COMPLAINTS
 
 MODEL = "gemma3:12b"
 URL = "http://localhost:11434/api/chat"
-RAW = "data/raw_responses.jsonl"
-random.seed(0)
 
 DESCRIPTION = {
     "flipped_comparison": "a comparison was flipped",
@@ -70,60 +69,28 @@ def ask_varied(text):
             return r
     return r
 
-def condition(line):
-    c = re.match(r"\s*(?:if|elif|while) (.*):", line)
-    return c.group(1) if c else None
-
-def rejection_reason(m, r):
-    if len(r) > 350:
-        return "too long"
-    if "?" not in r:
-        return "no question"
-    if "```" in r:
-        return "contains code"
-    orig = m["original_line"].strip()
-    cat = m["category"]
-    if cat != "return_in_loop" and orig in r:
-        return "gives the solution"
-    c_orig = condition(m["original_line"])
-    if cat in ("flipped_comparison", "wrong_remainder") and c_orig and c_orig in r:
-        return "gives the solution"
-    # The answer must point at the bug: the line number or a keyword of the category.
-    anchors = [rf"line {m['bug_line']}\b"]
-    v = re.match(r"(\w+) ", orig)
-    if cat in ("wrong_initial_value", "deleted_initialization", "deleted_update") and v:
-        anchors.append(rf"\b{re.escape(v.group(1))}\b")
-    elif cat == "return_in_loop":
-        anchors.append("return")
-    elif cat == "shortened_range":
-        anchors += ["range", r"\blast\b"]
-    elif cat == "flipped_comparison":
-        c = condition(m["modified_line"])
-        if c:
-            anchors.append(re.escape(c))
-        anchors += ["condition", "compar"]
-    elif cat == "wrong_remainder":
-        anchors += ["%", "remainder", r"\beven\b", r"\bodd\b"]
-    if not any(re.search(a, r, re.IGNORECASE) for a in anchors):
-        return "does not point at the bug"
-    return None
+parser = argparse.ArgumentParser()
+parser.add_argument("--mutants", default="data/mutants.jsonl")
+parser.add_argument("--raw", default="data/raw_responses.jsonl")
+args = parser.parse_args()
 
 try:
     requests.get("http://localhost:11434", timeout=5)
 except requests.exceptions.ConnectionError:
     sys.exit("Ollama is not running. Open another Ubuntu window, run `ollama serve` and try again.")
 
-with open("data/mutants.jsonl", encoding="utf-8") as f:
+with open(args.mutants, encoding="utf-8") as f:
     mutants = [json.loads(l) for l in f]
 
 done = {}
-if os.path.exists(RAW):
-    with open(RAW, encoding="utf-8") as f:
+if os.path.exists(args.raw):
+    with open(args.raw, encoding="utf-8") as f:
         for l in f:
             x = json.loads(l)
             done[x["id"]] = x["response"]
+print(f"{len(mutants)} mutants in {args.mutants}, {sum(m['id'] in done for m in mutants)} already answered in {args.raw}", flush=True)
 
-with open(RAW, "a", encoding="utf-8") as f:
+with open(args.raw, "a", encoding="utf-8") as f:
     for n, m in enumerate(mutants, 1):
         if m["id"] in done:
             continue
@@ -134,45 +101,9 @@ with open(RAW, "a", encoding="utf-8") as f:
         if n % 25 == 0:
             print(f"{n}/{len(mutants)} done", flush=True)
 
-kept, reasons = [], Counter()
-for m in mutants:
-    r = done[m["id"]]
-    reason = rejection_reason(m, r)
-    if reason:
-        reasons[reason] += 1
-        continue
-    kept.append((m, r))
-
-programs = sorted({m["task_id"] for m, _ in kept})
-random.shuffle(programs)
-n = len(programs)
-test_ids = set(programs[: n // 10])
-val_ids = set(programs[n // 10: n // 5])
-
-splits = {"train": [], "val": [], "test": []}
-for m, r in kept:
-    s = "test" if m["task_id"] in test_ids else "val" if m["task_id"] in val_ids else "train"
-    splits[s].append({
-        "messages": [
-            {"role": "system", "content": SYSTEM_TUTOR},
-            {"role": "user", "content": random.choice(COMPLAINTS) + "\n\n" + m["buggy_code"]},
-            {"role": "assistant", "content": r},
-        ],
-        **{k: m[k] for k in ("id", "task_id", "category", "bug_line", "original_line", "modified_line")},
-    })
-
-for s, rows in splits.items():
-    random.shuffle(rows)
-    with open(f"data/{s}.jsonl", "w", encoding="utf-8") as f:
-        for e in rows:
-            f.write(json.dumps(e, ensure_ascii=False) + "\n")
-
-print("\nGenerated:", len(mutants), "| kept:", len(kept), "| rejected:", sum(reasons.values()))
-for reason, c in reasons.most_common():
-    print("   rejected,", reason + ":", c)
-print("Kept per category:", dict(Counter(m["category"] for m, _ in kept)))
-print("Train:", len(splits["train"]), "| val:", len(splits["val"]), "| test:", len(splits["test"]))
-print("\n--- 6 random examples ---")
-for e in random.sample(splits["train"], min(6, len(splits["train"]))):
-    print(f"\n[{e['category']}] line {e['bug_line']}: {e['modified_line'].strip()}")
-    print("TUTOR:", e["messages"][2]["content"])
+print(f"\nDone: {sum(m['id'] in done for m in mutants)}/{len(mutants)} answered in {args.raw}")
+print("Next: python scripts/3_filter.py")
+print("\n--- 6 random answers ---")
+for m in random.Random(0).sample(mutants, min(6, len(mutants))):
+    print(f"\n[{m['category']}] line {m['bug_line']}: {m['modified_line'].strip()}")
+    print("TUTOR:", done[m["id"]])

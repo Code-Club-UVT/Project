@@ -1,6 +1,8 @@
 # Step 3: filter the teacher's answers again with stricter rules, and split into train/val/test.
-# Reads data/mutants.jsonl and data/raw_responses.jsonl (from step 2), writes
-# data/train_v2.jsonl, data/val_v2.jsonl, data/test_v2.jsonl. Needs no GPU and no Ollama.
+# Reads data/mutants.jsonl + data/raw_responses.jsonl (from steps 1 and 2) and, if present,
+# data/mutants_extra.jsonl + data/raw_responses_extra.jsonl (steps 1b and 2 on the extras).
+# Writes data/train_v3.jsonl, data/val_v3.jsonl, data/test_v3.jsonl. Needs no GPU and no Ollama.
+# (v2 = the same filter on the base files only; it is in git history.)
 #
 # Differences from the filter in 2_responses.py:
 # - The split is fixed BEFORE filtering, over all programs that have mutants, so changing the
@@ -11,10 +13,13 @@
 #   "on the first pass", "greater"), and predict-vs-actual questions.
 # The rules were tuned by reading the validation answers only; the test set was not looked at.
 import json
+import os
 import random
 import re
 from collections import Counter
 from tutor_text import SYSTEM_TUTOR, COMPLAINTS
+
+OUT = "v3"
 
 def fixed_split(mutants, seed=0):
     programs = sorted({m["task_id"] for m in mutants})
@@ -22,6 +27,18 @@ def fixed_split(mutants, seed=0):
     n = len(programs)
     test, val = set(programs[: n // 10]), set(programs[n // 10: n // 5])
     return {p: "test" if p in test else "val" if p in val else "train" for p in programs}
+
+def full_split(base_mutants, extra_mutants):
+    # Programs from the base file keep the split they had in v2; programs that appear only in
+    # the extra file get their own fixed split (seed 1), so adding data never moves a program.
+    split_of = fixed_split(base_mutants)
+    new = [m for m in extra_mutants if m["task_id"] not in split_of]
+    split_of.update(fixed_split(new, seed=1) if new else {})
+    return split_of
+
+def load_jsonl(path):
+    with open(path, encoding="utf-8") as f:
+        return [json.loads(l) for l in f]
 
 def condition(line):
     c = re.match(r"\s*(?:if|elif|while) (.*):", line)
@@ -71,7 +88,8 @@ def rejection_reason(m, r):
     if cat in ("flipped_comparison", "wrong_remainder") and c_orig and c_orig in r:
         return "gives the solution"
     if cat == "shortened_range":
-        rng = re.search(r"range\(len\(\w+\)\)", orig)
+        # Quoting the original range(...) gives the fix, e.g. range(len(s)) or range(n + 1).
+        rng = re.search(r"range\([^()]*(\([^()]*\))?[^()]*\)", orig)
         if rng and rng.group(0) in r:
             return "gives the solution"
     # States the bug.
@@ -103,11 +121,17 @@ def example(m, r):
     }
 
 if __name__ == "__main__":
-    with open("data/mutants.jsonl", encoding="utf-8") as f:
-        mutants = [json.loads(l) for l in f]
-    with open("data/raw_responses.jsonl", encoding="utf-8") as f:
-        raw = {x["id"]: x["response"] for x in map(json.loads, f)}
-    split_of = fixed_split(mutants)
+    base = load_jsonl("data/mutants.jsonl")
+    raw = {x["id"]: x["response"] for x in load_jsonl("data/raw_responses.jsonl")}
+    extra = []
+    if os.path.exists("data/mutants_extra.jsonl"):
+        extra = load_jsonl("data/mutants_extra.jsonl")
+        raw.update({x["id"]: x["response"] for x in load_jsonl("data/raw_responses_extra.jsonl")})
+        missing = [m["id"] for m in extra if m["id"] not in raw]
+        if missing:
+            raise SystemExit(f"{len(missing)} extra mutants have no answer yet: run step 2 on data/mutants_extra.jsonl first.")
+    mutants = base + extra
+    split_of = full_split(base, extra)
 
     splits = {"train": [], "val": [], "test": []}
     reasons = Counter()
@@ -123,12 +147,12 @@ if __name__ == "__main__":
 
     for s, rows in splits.items():
         random.Random(1).shuffle(rows)
-        with open(f"data/{s}_v2.jsonl", "w", encoding="utf-8") as f:
+        with open(f"data/{s}_{OUT}.jsonl", "w", encoding="utf-8") as f:
             for e in rows:
                 f.write(json.dumps(e, ensure_ascii=False) + "\n")
 
     kept = sum(kept_per_cat.values())
-    print("Answers:", len(mutants), "| kept:", kept, "| rejected:", sum(reasons.values()))
+    print("Answers:", len(mutants), f"({len(base)} base + {len(extra)} extra)", "| kept:", kept, "| rejected:", sum(reasons.values()))
     for reason, c in reasons.most_common():
         print("   rejected,", reason + ":", c)
     print("Kept per category:", dict(kept_per_cat.most_common()))
