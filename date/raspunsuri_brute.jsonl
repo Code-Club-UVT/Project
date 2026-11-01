@@ -1,0 +1,661 @@
+{"id": 14, "raspuns": "Verifică ce numere sunt adăugate în `ev_li` atunci când `i` este par și ce numere sunt adăugate când `i` este impar, comparând cu ce te aștepți să se întâmple. Ce se întâmplă cu numerele pare?"}
+{"id": 55, "raspuns": "Verifică ce se întâmplă cu ultimul caracter din șir când execuți bucla `for` de pe linia 3; este inclus în numărare sau nu?"}
+{"id": 58, "raspuns": "Observând că suma calculată pornește de la 1, te-ai gândit dacă inițializarea variabilei `sum` cu această valoare influențează corectitudinea rezultatului final? Verifică dacă valorile inițiale ale variabilelor afectează corectitudinea codului pentru cazuri mici."}
+{"id": 66, "raspuns": "Observând valoarea inițială a variabilei `fac` pe linia 4, ce rezultat ar trebui să producă factorialul lui 1 și de ce valoarea curentă duce la un rezultat incorect?"}
+{"id": 69, "raspuns": "Ce se întâmplă cu variabila `count` dacă primele două caractere din `str1` și `str2` sunt identice? Ar trebui să fie posibil ca `count` să aibă o valoare diferită de 1 la începutul execuției programului?"}
+{"id": 72, "raspuns": "Ce se întâmplă cu valoarea variabilei `ctr` înainte ca aceasta să înceapă să numere elementele din listă, și cum ar putea influența rezultatul final?"}
+{"id": 79, "raspuns": "Observând că algoritmul returnează uneori un rezultat incorect, verifică logica comparării valorii `x` cu elementul `A[mid]` pe linia 9: ce se întâmplă dacă `x` este mai mic decât `A[mid]`?"}
+{"id": 92, "raspuns": "Verifică ce se întâmplă cu ultimul caracter din șir când bucla `for` iterează până la `len(str) - 1` și asigură-te că toate caracterele sunt luate în considerare. Este posibil ca o cifră să fie omisă?"}
+{"id": 111, "raspuns": "Verifică ce condiție este folosită în `if (n % i == 1)` pe linia 5 și gândește-te dacă aceasta identifică corect divizorii numărului `n`. Ce fel de numere ar putea fi identificate ca divizori dacă folosești această condiție?"}
+{"id": 121, "raspuns": "Ce valoare primește variabila `sum` la începutul funcției și cum ar putea această valoare inițială să influențeze rezultatul final al sumei?"}
+{"id": 125, "raspuns": "Ce condiție verifici în linia 4 pentru a determina dacă `n` este un pătrat perfect și cum ar putea această condiție să împiedice funcția să funcționeze corect?"}
+{"id": 127, "raspuns": "Când `i` este zero, ce se întâmplă la linia 3 și cum afectează asta rezultatul funcției?"}
+{"id": 135, "raspuns": "Ce se întâmplă cu valoarea variabilei `count` înainte de a începe bucla `for` și cum influențează asta rezultatul final al funcției?"}
+{"id": 139, "raspuns": "Verifică ce numere sunt eliminate din listă și vezi dacă condiția de pe linia 3 face ceea ce te aștepți să facă. Ar trebui să elimini numerele pare sau impare?"}
+{"id": 146, "raspuns": "Ce se întâmplă cu valoarea variabilei `sum` înainte de a fi folosită în cadrul buclei `for`? Ar trebui să aibă o valoare inițială?"}
+{"id": 152, "raspuns": "Verifică dacă ordinea elementelor se schimbă corect în bucla interioară, mai exact, modul în care compari valorile de pe prima poziție din fiecare tuplu pe linia 5. Ar trebui să obții o sortare crescătoare sau descrescătoare?"}
+{"id": 153, "raspuns": "Verifică ce se întâmplă dacă elementul de pe poziția `i` este mai mare decât elementul de pe poziția `j` în interiorul buclei de pe linia 5; ar trebui să conteze sau nu ceva în acest caz?"}
+{"id": 154, "raspuns": "Ce se întâmplă dacă primul element din array este mai mic decât toate celelalte elemente, având în vedere valoarea inițială a variabilei `inv_count` de pe linia 2? Ar trebui să aibă o valoare diferită de 1 în acest caz?"}
+{"id": 172, "raspuns": "Ce se întâmplă cu variabila `odd` înainte de a fi folosită în interiorul buclei `for` și cum ar putea influența rezultatul funcției?"}
+{"id": 173, "raspuns": "Ce se întâmplă dacă tabloul `arr` nu conține niciun număr impar? Verifică valoarea inițială a variabilei `odd` și gândește-te dacă este potrivită pentru toate cazurile posibile."}
+{"id": 174, "raspuns": "Verifică ce se întâmplă când bucla `for` se oprește la `len(x) - 1` și cum afectează asta rezultatul pentru ultimul cuvânt din șir. Mai exact, ce caracter nu este luat în considerare și de ce?"}
+{"id": 176, "raspuns": "Ce se întâmplă cu valoarea lui `l` când întâlnește primul spațiu din șirul de caractere? Ar trebui să reflecte corect lungimea cuvântului?"}
+{"id": 178, "raspuns": "Ce se întâmplă când aduni 1 la numerele din listă, comparativ cu a începe suma de la 0? Observă ce valoare are `total` inițial și cum influențează rezultatul final."}
+{"id": 181, "raspuns": "Ce se întâmplă cu valorile lui `A` și `B` în bucla `while` de pe linia 2 când una dintre ele este pozitivă și cealaltă negativă?"}
+{"id": 196, "raspuns": "Ce se întâmplă cu valoarea variabilei `tot` la începutul funcției și cum influențează asta rezultatul înmulțirii elementelor din listă?"}
+{"id": 198, "raspuns": "Ce se întâmplă dacă funcția primește un array cu mai mult de două elemente și cum influențează asta rezultatul returnat de funcție, având în vedere condiția de pe linia 3?"}
+{"id": 199, "raspuns": "Observând codul, ce se întâmplă dacă produsul `arr[i] * arr[j]` este mai mare decât produsul curent `x * y` în linia 8? Ar trebui să schimbi valorile lui `x` și `y` în acest caz?"}
+{"id": 218, "raspuns": "Verifică ce se întâmplă cu ultimul caracter din șir atunci când bucla `for` se oprește la `len(s) - 1` și asigură-te că este procesat corect. Este posibil să ratezi un caracter important?"}
+{"id": 224, "raspuns": "Analizează atent condiția din bucla `while` de la linia 8; ce fel de numere ar trebui să genereze aceasta pentru a continua iterațiile?"}
+{"id": 238, "raspuns": "Verifică ce se întâmplă cu valoarea lui `n` după ce parcurgi bucla `for` și cum afectează asta rezultatul final returnat de funcție, în special în condiția de pe linia 11. Ar putea fi o condiție greșită care face ca funcția să nu returneze corect cel mai mare factor prim pentru anumite valori de intrare?"}
+{"id": 240, "raspuns": "Verifică ce se întâmplă cu variabila `maxPrime` în interiorul buclei `while n%2 == 1:`; se actualizează mereu, chiar dacă nu ar trebui?"}
+{"id": 256, "raspuns": "Observând modul în care este utilizată variabila `i` în bucla interioară (linii 12-14), ce problemă ar putea apărea în momentul în care `i` ajunge la o valoare mai mare decât lungimea listei `my_list`?"}
+{"id": 273, "raspuns": "Ce se întâmplă cu variabila `flag` în funcția `find_equal_tuple` dacă condiția `len(tuple) != k` este adevărată? Este inițializată în mod corespunzător?"}
+{"id": 282, "raspuns": "Verifică ce se întâmplă cu ultimul caracter din șir când bucla `for` rulează doar până la `len(strr) - 1`; influențează acesta rezultatul final?"}
+{"id": 287, "raspuns": "Ce se întâmplă cu valoarea lui `total` la începutul funcției și cum ar putea afecta rezultatul final al înmulțirii numerelor?"}
+{"id": 292, "raspuns": "Ce se întâmplă cu rezultatul când `strt_val` devine mai mare decât `stop_val` în timpul iterației, și cum ar putea influența asta funcționarea generală a codului pe linia 7?"}
+{"id": 298, "raspuns": "Ce se întâmplă dacă, în loc de 1, variabila `XOR` ar fi inițializată cu 0 la începutul funcției? Cum ar afecta asta rezultatul căutării?"}
+{"id": 309, "raspuns": "Verifică ce condiții sunt îndeplinite în interiorul buclei `for` pe linia 4, și asigură-te că acestea reflectă exact ce vrei să găsești. Ce înseamnă că `a % i == 1` în contextul scopului funcției?"}
+{"id": 311, "raspuns": "Ce valoare ar trebui să aibă variabila `sum` la începutul funcției, ținând cont de ce vrei să calculezi?"}
+{"id": 313, "raspuns": "Verifică ce cuvinte sunt adăugate în lista `word_len` în funcție de condiția de pe linia 5; se întâmplă exact ceea ce dorești să se întâmple?"}
+{"id": 319, "raspuns": "Verifică ce se întâmplă cu linia 6 când suma elementelor din array este un număr par sau impar, și observă dacă rezultatul returnat corespunde cu așteptările. Ce ar trebui să returneze funcția dacă suma elementelor este pară?"}
+{"id": 328, "raspuns": "Observând că bucla `while` începe cu `arr_len < 1`, ce se întâmplă cu valoarea lui `arr_len` la fiecare iterație și cum ar putea afecta comportamentul sortării?"}
+{"id": 351, "raspuns": "Verifică ce condiție este îndeplinită pe linia 4 pentru a găsi soluția și gândește-te dacă acea condiție are sens în contextul problemei. Ar trebui ca restul împărțirii să fie zero sau altceva?"}
+{"id": 355, "raspuns": "Ce se întâmplă cu numărul `evenPair` dacă `A[i]` și `A[j]` au aceeași paritate, conform condiției din linia 5? Ar trebui să crească sau să nu se schimbe?"}
+{"id": 359, "raspuns": "Ce se întâmplă cu variabila `count` înainte de a fi folosită în bucla `for`? Ar trebui să aibă vreo valoare inițială?"}
+{"id": 381, "raspuns": "Ce se întâmplă cu valorile lui `x` în bucla `while` când `x` este pozitiv? Ar trebui să se schimbe condiția buclei `while` pentru a funcționa corect?"}
+{"id": 383, "raspuns": "Ce se întâmplă cu valoarea variabilei `res` la începutul funcției, și cum ar putea influența rezultatul final dacă nu este inițializată corect?"}
+{"id": 388, "raspuns": "Ce valoare are variabila `sum` la începutul funcției și cum ar influența acest lucru rezultatul final dacă `n` ar fi, de exemplu, 1?"}
+{"id": 395, "raspuns": "Ce se întâmplă cu variabila `count` înainte ca aceasta să fie incrementată în interiorul buclei `while`? Ar trebui să reflecte corect numărul de biți setați găsiți până în acel moment?"}
+{"id": 399, "raspuns": "Ce se întâmplă dacă bucla `while` de pe linia 2 continuă să se execute când `low` devine mai mare decât `high`? Cum ar putea acest lucru să afecteze modul în care funcția găsește valoarea minimă?"}
+{"id": 400, "raspuns": "Verifică ce caractere sunt incluse în șirul rezultat când te uiți la linia 4 și vezi dacă corespund cu ceea ce te aștepți. Ce se întâmplă dacă schimbi condiția din linia 4?"}
+{"id": 413, "raspuns": "Verifică logica comparației de pe linia 10; are sens ca `arr[-i]` să fie întotdeauna mai mare decât `arr[-j]` în acel context?"}
+{"id": 416, "raspuns": "Ce se întâmplă cu valoarea variabilei `count` înainte de a începe bucla `for` și cum influențează acest lucru rezultatul final al funcției?"}
+{"id": 420, "raspuns": "Verifică ce valoare primește variabila `ctr` inițial și gândește-te dacă aceasta este potrivită pentru a număra corect numărul de elemente întregi din listă. Ar trebui să înceapă numărătoarea de la zero sau de la un alt punct?"}
+{"id": 429, "raspuns": "Observând linia 7, ce se întâmplă cu `result` dacă `maxx` este deja mai mic decât `a[i]`? Ar trebui să se schimbe valoarea lui `result` în această situație?"}
+{"id": 433, "raspuns": "Ce se întâmplă cu valoarea lui `pos` în bucla `while` și cum se compară aceasta cu lungimea listei `dlist`?"}
+{"id": 438, "raspuns": "Observând modul în care actualizezi `max_ending_here` pe linia 8, ce se întâmplă dacă valoarea sa devine negativă în timpul iterațiilor și cum ar afecta asta rezultatul final?"}
+{"id": 440, "raspuns": "Ce se întâmplă cu valoarea lui `current_element` în fiecare iterație a buclei, și cum afectează asta rezultatul final când `arr[i] * arr[i] % P` nu este egal cu 1?"}
+{"id": 453, "raspuns": "Observând bucla `while` de la linia 6, ce se întâmplă cu valoarea lui `n` în fiecare iterație și cum afectează acest lucru rezultatul final al funcției?"}
+{"id": 474, "raspuns": "Observând linia 7, ce se întâmplă dacă valoarea lui `temp` este mai mare decât `n` și ce implicații are asta asupra rezultatului funcției?"}
+{"id": 480, "raspuns": "Ce se întâmplă cu valoarea variabilei `val` în bucla `for` din funcția `bin_coff`, având în vedere valoarea inițială pe care o are? Ar putea această valoare inițială să afecteze rezultatul calculului?"}
+{"id": 497, "raspuns": "Ce se întâmplă cu valoarea variabilei `count` când funcția este apelată cu numărul 0? Ar trebui să aibă o valoare inițială diferită?"}
+{"id": 505, "raspuns": "Ce se întâmplă cu valoarea variabilei `freq` când întâlnești un element mai mic decât `mn`? Ar trebui să se reseteze sau să crească?"}
+{"id": 517, "raspuns": "Verifică condiția de pe linia 3: ce se întâmplă dacă lungimea array-ului este mai mică sau egală cu doi?"}
+{"id": 529, "raspuns": "Ce se întâmplă cu valoarea lui `ctr` înainte de a începe bucla `for` și cum influențează acest lucru rezultatul final al funcției?"}
+{"id": 530, "raspuns": "Verifică ce se întâmplă cu ultimul element din listă când bucla `for` rulează, ținând cont de intervalul specificat în `range(len(list1) - 1)`. Este posibil ca acesta să fie omis în procesare?"}
+{"id": 536, "raspuns": "Ce se întâmplă cu caracterele din `str1` atunci când `i` este par în cadrul buclei `for` și te uiți la linia 4? Ar trebui să le incluzi sau să le excluzi din `str2`?"}
+{"id": 560, "raspuns": "Observând linia 7, ce se întâmplă dacă `arr[i]` este mai mare decât `arr[j]`? Ar trebui să afecteze valoarea lui `mpis[i]`?"}
+{"id": 563, "raspuns": "Observând modul în care inițializați `max_so_far` pe linia 9, ce impact are acest lucru asupra calculului profitului maxim atunci când `i` este mic și nu există tranzacții anterioare realizate? Ar putea afecta corectitudinea rezultatelor obținute?"}
+{"id": 565, "raspuns": "Ce s-ar întâmpla dacă `mul` ar începe cu valoarea 1 în loc de 0, și cum ar afecta acest lucru rezultatul calculului pe linia 2?"}
+{"id": 570, "raspuns": "Ce condiție ar trebui să îndeplinească restul împărțirii lui `fact` la `x` pentru ca numărul factorial să fie divizibil cu `x`?"}
+{"id": 595, "raspuns": "Observând funcția, ce se întâmplă dacă găsești un element în listă mai mare decât valoarea curentă a lui `max` pe linia 4? Ar trebui să actualizezi `max`?"}
+{"id": 596, "raspuns": "Ce se întâmplă cu variabila `max` înainte de a fi folosită în bucla `for` și cum ar putea afecta rezultatul funcției?"}
+{"id": 620, "raspuns": "Observând linia 6, cum ar trebui să se compare elementele `arr[i]` și `arr[j]` pentru a asigura că construiești o secvență *strict* crescătoare? Poți verifica dacă condiția actuală garantează că `longest_increasing_subsequence[i]` este actualizat corect pentru fiecare `j`?"}
+{"id": 639, "raspuns": "Ce se întâmplă cu valoarea variabilei `p` la fiecare iterație a buclei `for` și cum afectează asta rezultatul final al funcției?"}
+{"id": 644, "raspuns": "Ce se întâmplă cu valoarea variabilei `count` înainte de prima iterație a buclei `for` și cum ar putea afecta rezultatul final al funcției?"}
+{"id": 648, "raspuns": "Ce numere ar trebui să returneze funcția `extract_even` conform cerințelor, și ce numere returnează de fapt cu funcția `even_fnc` definită pe linia 10?"}
+{"id": 656, "raspuns": "Verifică ce se întâmplă cu ultimul caracter din `str1` în bucla `for` de pe linia 3; este inclus sau exclus din comparații?"}
+{"id": 657, "raspuns": "Verifică valoarea inițială a variabilei `total` pe linia 2; ar trebui să fie zero pentru a asigura calculul corect al sumei?"}
+{"id": 1, "raspuns": "Cum se schimbă valoarea expresiei `str1[:index+1].count(c)` pe măsură ce parcurgi șirul și ce semnifică rezultatul acesteia în contextul liniei 3?"}
+{"id": 2, "raspuns": "Dacă funcția ta ar trebui să returneze primul caracter repetat din șirul \"abracadabra\", ce rezultat te-ai aștepta să primească și de ce?"}
+{"id": 3, "raspuns": "Cum se modifică valoarea variabilei `index` în timpul buclei `while` și ce impact are asupra operațiilor efectuate pe lista `ludics`?"}
+{"id": 4, "raspuns": "Cum evoluează valoarea variabilei `ludics` de la începutul programului și ce se întâmplă în momentul în care începi bucla `while(index != len(ludics))`?"}
+{"id": 5, "raspuns": "Dacă ai pune un print la valoarea variabilei `index` înainte de bucla `while` de pe linia 11, ce valoare ai vedea și cum ar afecta asta funcționarea codului?"}
+{"id": 6, "raspuns": "Dacă ai pune un `print(num % i)` în interiorul buclei `for`, ce valoare ar afișa pentru numărul 7?"}
+{"id": 7, "raspuns": "La ultima trecere prin bucla `for i in range(1, n+1)`, ce valoare returnează funcția și de ce crezi că asta ar putea fi o problemă?"}
+{"id": 8, "raspuns": "Cum se modifică valoarea variabilei `res` pe parcursul execuției funcției, mai ales în momentul în care întâlnește un caracter care nu este cifră?"}
+{"id": 9, "raspuns": "Ce crezi că se întâmplă cu variabila `dig` înainte de a fi folosită în interiorul buclei `for`?"}
+{"id": 10, "raspuns": "Dacă ai pune un print în interiorul buclei `for j` (linia 7) și afișezi valoarea `a[j] % a[i]`, ce ar vedea în cazul în care `a[i]` și `a[j]` sunt numere consecutive?"}
+{"id": 11, "raspuns": "Ce crezi că face instrucțiunea `return max(dp)` de pe linia 10 și când ar trebui să fie executată în raport cu restul codului?"}
+{"id": 12, "raspuns": "Ce crezi că se întâmplă cu variabila `ev_li` înainte de a fi folosită în interiorul funcției `Split`?"}
+{"id": 13, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă cu execuția funcției și de ce funcția nu parcurge întreaga listă?"}
+{"id": 15, "raspuns": "Cum se modifică valoarea variabilei `ans` în timpul execuției codului, și ce valoare are aceasta după ce se execută toate buclele?"}
+{"id": 16, "raspuns": "La prima iterație a buclei exterioare, ce se întâmplă cu valoarea returnată de funcție și ce efect are asupra rezultatului final?"}
+{"id": 17, "raspuns": "Dacă ai pune un `print(ans)` la începutul funcției, ce valoare crezi că ar afișa programul?"}
+{"id": 18, "raspuns": "Cum se modifică valoarea variabilei `sum` în fiecare iterație a buclei `for` și ce se întâmplă cu funcția după prima iterație?"}
+{"id": 19, "raspuns": "De ce folosești `len(h) - 1` în linia 6 când extragi elementele din heap?"}
+{"id": 20, "raspuns": "De ce folosești variabila `h` în buclă fără a o inițializa înainte?"}
+{"id": 21, "raspuns": "Cum se modifică valoarea lui `h` în timpul buclei `for` și ce se întâmplă cu execuția funcției după fiecare iterație?"}
+{"id": 22, "raspuns": "Cum se modifică valoarea variabilei `res` în funcția `get_product` la prima iterație a buclei `for`?"}
+{"id": 23, "raspuns": "La prima iterație a buclei `for` în funcția `get_product`, ce valoare are variabila `res` și cum influențează aceasta rezultatul final?"}
+{"id": 24, "raspuns": "De ce funcția `get_product` se oprește după prima iterație a buclei `for`?"}
+{"id": 25, "raspuns": "Ce crezi că se întâmplă cu execuția programului imediat după linia 5?"}
+{"id": 26, "raspuns": "De ce ai inițializat variabila `sum_range` cu valoarea 1 în loc de 0?"}
+{"id": 27, "raspuns": "De ce folosești variabila `sum_range` în buclă fără a-i atribui o valoare inițială înainte de a o folosi?"}
+{"id": 28, "raspuns": "Dacă funcția ar primi `[('a', 1), ('a', 2), ('b', 3)]`, ce dicționar ar trebui să returneze și ce se întâmplă de fapt cu codul tău în prezent, ținând cont de linia 6?"}
+{"id": 29, "raspuns": "Dacă ai pune un `print(sm)` în interiorul buclei `for`, ce valoare ar afișa la fiecare iterație și ce ar însemna asta despre cum se comportă funcția ta?"}
+{"id": 30, "raspuns": "Dacă ai pune un print în interiorul buclei `for` pentru a afișa valoarea lui `sm` la fiecare iterație, ce ai observa despre modul în care se modifică?"}
+{"id": 31, "raspuns": "Dacă `n` ar fi 1, ce valoare ar trebui să returneze funcția, ținând cont de ce reprezintă variabila `sm` în buclă?"}
+{"id": 32, "raspuns": "Dacă `a = [1, 2, 3]` și `b = [3, 2, 1]`, ce valoare ar trebui să returneze funcția `find_Min_Sum` și ce se întâmplă cu variabila `sum` înainte de a fi folosită în buclă?"}
+{"id": 33, "raspuns": "Dacă ai pune un print înainte de linia 4, ce valoare ai vedea atribuită variabilei `sum`?"}
+{"id": 34, "raspuns": "Dacă ai pune un `print(sum)` în interiorul buclei, ce valoare ai vedea afișată și după câte iterații s-ar opri execuția funcției?"}
+{"id": 35, "raspuns": "Dacă ai pune un `print(fact)` la începutul funcției, ce valoare ai observa și cum ar putea influența rezultatul calculului?"}
+{"id": 36, "raspuns": "La ultima trecere prin bucla `while (fact >= 10)`, ce se întâmplă cu execuția codului și de ce funcția se termină prematur?"}
+{"id": 37, "raspuns": "De ce ai inițializat variabila `fact` cu 0 pe linia 3?"}
+{"id": 38, "raspuns": "De ce crezi că linia `max_val = occu` funcționează corect fără a fi inițializată valoarea lui `max_val` înainte de a fi utilizată în buclă?"}
+{"id": 39, "raspuns": "Cum se modifică valoarea variabilei `repeated` pe parcursul funcției și ce se întâmplă dacă o urmărești la prima iterație a buclei exterioare?"}
+{"id": 40, "raspuns": "Ce crezi că se întâmplă cu funcția ta după ce execuția ajunge la linia `return repeated` în interiorul primei bucle?"}
+{"id": 41, "raspuns": "Ce crezi că se întâmplă cu valoarea returnată de funcție când bucla `for` ajunge la iterația `i = 3`?"}
+{"id": 42, "raspuns": "De ce folosești instrucțiunea `return` în interiorul buclei `for` de pe linia 7?"}
+{"id": 43, "raspuns": "Dacă funcția ta primește numărul 4 ca intrare, ce ar trebui să fie media numerelor pare de la 4 în jos, și ce valoare returnează funcția ta în acest caz?"}
+{"id": 44, "raspuns": "Ce crezi că se întâmplă cu variabila `count` înainte de a fi folosită în linia 7?"}
+{"id": 45, "raspuns": "La prima trecere prin buclă, ce valoare returnează funcția și cum se compară aceasta cu media aritmetică a numerelor pare până la valoarea inițială `n`?"}
+{"id": 46, "raspuns": "Dacă apelezi funcția `count_char(\"banana\", \"a\")`, ce rezultat te-ai aștepta să primești, ținând cont de valoarea inițială a variabilei `count` de pe linia 2?"}
+{"id": 47, "raspuns": "La prima iterație a buclei `for`, ce valoare are variabila `count` și cum influențează asta rezultatul final?"}
+{"id": 48, "raspuns": "Dacă ai pune un print în interiorul buclei, pe linia 6, ce valoare ai vedea afișată după fiecare iterație?"}
+{"id": 49, "raspuns": "Dacă funcția ta ar trebui să returneze cel mai mic divizor al numărului `n`, ce rezultat te-ai aștepta să returneze funcția pentru `n = 9`?"}
+{"id": 50, "raspuns": "Ce crezi că se întâmplă cu valoarea returnată de funcție la fiecare iterație a buclei `while`?"}
+{"id": 51, "raspuns": "Cum se modifică valoarea lui `i` în buclă și ce impact are asupra rezultatului când `n` este un număr par, având în vedere condiția de pe linia 2?"}
+{"id": 52, "raspuns": "La prima iterație a buclei `while i*i <= n`, ce valoare are variabila `i` și cum afectează comportamentul programului?"}
+{"id": 53, "raspuns": "Dacă ai pune un print în interiorul celei de-a doua bucle, pe linia 10, ce valoare ai vedea afișată și cum ar afecta asta comportamentul funcției?"}
+{"id": 54, "raspuns": "Cum se modifică valoarea variabilei `j` în interiorul buclei `while (j*j <= n)` și ce impact are acest lucru asupra execuției codului?"}
+{"id": 56, "raspuns": "Dacă ai pune un print al valorii lui `count` înainte de bucla `for` de pe linia 6, ce valoare ai vedea și cum ar afecta asta rezultatul final al funcției?"}
+{"id": 57, "raspuns": "Dacă funcția ta ar trebui să numere aparițiile caracterului 'a' în șirul \"banana\", ce rezultat te-ai aștepta să returneze?"}
+{"id": 59, "raspuns": "Cum se modifică valoarea variabilei `p` în cadrul buclei `while p * p <= n` și ce impact are acest lucru asupra execuției algoritmului?"}
+{"id": 60, "raspuns": "La prima iterație a buclei `for` (linia 15), ce valoare returnează funcția și de ce nu este cea așteptată?"}
+{"id": 61, "raspuns": "Ce crezi că se întâmplă cu funcția după ce bucla `for` a parcurs primul element din `test_tup` și execuția ajunge la linia 6?"}
+{"id": 62, "raspuns": "Dacă ai pune un print în interiorul buclei `for i in range(1, n)`, imediat înainte de `return jumps[n-1]`, ce valoare ai vedea afișată și cum ar putea influența asta rezultatul final al funcției?"}
+{"id": 63, "raspuns": "Ce crezi că se întâmplă cu funcția după ce se execută linia 6?"}
+{"id": 64, "raspuns": "Ce crezi că se întâmplă cu variabila `fac` înainte de a fi folosită în linia 5, și ce valoare ar trebui să aibă inițial pentru a calcula factorialul corect?"}
+{"id": 65, "raspuns": "Ce crezi că face instrucțiunea `return (fac)` de pe linia 7 și cum afectează asta execuția întregii funcții?"}
+{"id": 67, "raspuns": "Dacă execuți funcția cu `str1 = \"abc\"` și `str2 = \"bac\"`, ce valoare ar trebui să returneze, și ce returnează funcția în prezent?"}
+{"id": 68, "raspuns": "De ce folosești `if count % 2 == 1 :` pe linia 6 pentru a determina dacă este posibilă rezolvarea problemei?"}
+{"id": 70, "raspuns": "Dacă funcția ta ar fi apelată cu `li = [1, 2, 3, 4, 5]`, `min = 2` și `max = 4`, ce rezultat te-ai aștepta să returneze variabila `ctr` la finalul buclei `for`?"}
+{"id": 71, "raspuns": "La prima iterație a buclei, ce valoare returnează funcția și de ce nu continuă să verifice restul elementelor din listă?"}
+{"id": 73, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și de ce crezi că ar putea fi o problemă?"}
+{"id": 74, "raspuns": "Dacă ai pune un `print` în interiorul buclei `for i in range(0, n):` și ai analiza ce se afișează, ce ai observa despre momentul în care funcția returnează `True`?"}
+{"id": 75, "raspuns": "Ce rol are instrucțiunea `return cnt;` de pe linia 13 în funcție și cum influențează comportamentul general al acesteia?"}
+{"id": 76, "raspuns": "La prima iterație a buclei `for key in res`, ce se întâmplă și de ce funcția se oprește acolo?"}
+{"id": 77, "raspuns": "La prima iterație a buclei, ce se întâmplă cu funcția și de ce nu procesează toate elementele din listă?"}
+{"id": 78, "raspuns": "Cum se modifică valoarea lui `dp[N-1][N-1]` în timpul buclei de pe linia 13 și ce înseamnă asta pentru execuția programului?"}
+{"id": 80, "raspuns": "La prima trecere prin buclă, ce valoare returnează funcția și cum afectează acest lucru continuarea căutării?"}
+{"id": 81, "raspuns": "Dacă ai pune un `print(ans)` în interiorul buclei `while`, ce valoare ai vedea afișată și cum se schimbă aceasta la fiecare iterație?"}
+{"id": 82, "raspuns": "Cum evoluează valoarea variabilei `res` pe parcursul execuției funcției și ce impact are aceasta asupra rezultatului final?"}
+{"id": 83, "raspuns": "Ce crezi că se întâmplă cu variabila `ans` înainte de a fi folosită în linia `ans += incr`?"}
+{"id": 84, "raspuns": "De ce funcția returnează valoarea lui `dp[n]` în interiorul buclei `for` de pe linia 7?"}
+{"id": 85, "raspuns": "Cum se modifică valoarea listei `result` la fiecare iterație a buclei `for` și ce se întâmplă cu execuția funcției după prima iterație?"}
+{"id": 86, "raspuns": "Dacă funcția ar primi `l1 = [1, 2, 3]`, `l2 = [1, 2, 3]` și `l3 = [1, 2, 3]`, ce ar trebui să conțină variabila `result` după ce funcția se termină?"}
+{"id": 87, "raspuns": "Cum se modifică valoarea variabilei `uniq_items` pe parcursul execuției funcției și ce se întâmplă dacă nu este inițializată?"}
+{"id": 88, "raspuns": "Ce crezi că se întâmplă cu funcția atunci când ajunge la linia `return result` din cod?"}
+{"id": 89, "raspuns": "Dacă `arr = [1, 5, 3, 8]` și `n = 4`, ce valoare ar trebui să returneze funcția `find_Min_Diff` și ce se întâmplă în realitate cu valoarea lui `diff` pe parcursul execuției?"}
+{"id": 90, "raspuns": "Cum se modifică valoarea variabilei `diff` în timpul buclei `for` și de ce funcția se oprește după prima iterație?"}
+{"id": 91, "raspuns": "Dacă funcția ta ar trebui să numere toate cifrele dintr-un șir, ce rezultat te-ai aștepta să obții dacă i-ai da șirul \"abc123def\"?"}
+{"id": 93, "raspuns": "Ce crezi că se întâmplă cu variabila `temp` înainte de a adăuga elemente în ea în cadrul buclei `for`?"}
+{"id": 94, "raspuns": "Dacă ai pune un print în interiorul buclei, imediat după `temp.append(x)`, ce valoare ai vedea afișată și cum se schimbă la fiecare iterație?"}
+{"id": 95, "raspuns": "Dacă ai pune un `print(count)` în interiorul buclei `for i in range(0,n)`, ce valoare ai vedea afișată și cum se schimbă aceasta de-a lungul execuției codului?"}
+{"id": 96, "raspuns": "La prima iterație a buclei `for i in range(0,n)`, ce valoare are `count` și cum influențează asta rezultatul final al funcției?"}
+{"id": 97, "raspuns": "Cum se modifică valoarea variabilei `count` în timpul execuției funcției și ce valoare are aceasta înainte de a fi folosită în prima iterație a buclei interioare?"}
+{"id": 98, "raspuns": "La prima iterație a buclei `while`, ce valoare are variabila `parity` și cum influențează asta rezultatul final al funcției?"}
+{"id": 99, "raspuns": "Ce crezi că se întâmplă cu variabila `parity` în momentul în care începe execuția funcției `check_Odd_Parity`?"}
+{"id": 100, "raspuns": "Cum se modifică valoarea variabilei `sm` la fiecare iterație a buclei `for` și ce valoare are aceasta după ce funcția se oprește?"}
+{"id": 101, "raspuns": "Dacă ai pune un print în interiorul buclei, imediat după linia `j = (2*i-1)`, ce valoare ai vedea afișată pentru `sm` la prima iterație?"}
+{"id": 102, "raspuns": "Cum se modifică valoarea variabilei `sm` în fiecare iterație a buclei `for` și ce valoare are aceasta la final?"}
+{"id": 103, "raspuns": "De ce execuția funcției se oprește după procesarea primului caracter din expresie, conform liniei 15?"}
+{"id": 104, "raspuns": "Dacă funcția ar trebui să numere vocalele, ce rezultat te-ai aștepta să returneze `count_vowels(\"banana\")` și cum ar influența valoarea inițială a variabilei `res` rezultatul final?"}
+{"id": 105, "raspuns": "Dacă ai pune un `print(res)` chiar înainte de `return (res)`, ce valoare ai vedea afișată și cum ar putea afecta asta rezultatul final al funcției?"}
+{"id": 106, "raspuns": "De ce funcția se oprește după ce parcurge doar o parte din elementele array-ului, având în vedere că instrucțiunea `return sum` se află în interiorul buclei `for`?"}
+{"id": 107, "raspuns": "Cum se modifică valoarea variabilei `sum` în timpul buclei `for` și ce valoare are aceasta înainte de prima iterație?"}
+{"id": 108, "raspuns": "Cum se modifică valoarea variabilei `result` în timpul buclei `for a, b in result.items():` și de ce funcția se oprește după ce procesează doar o singură pereche cheie-valoare?"}
+{"id": 109, "raspuns": "La prima iterație a buclei `for`, ce valoare are variabila `count` și cum se modifică în funcție de dacă `n // i` este egal cu `i` sau nu?"}
+{"id": 110, "raspuns": "Ce crezi că se întâmplă cu valoarea variabilei `count` înainte de a fi folosită în interiorul buclei `for`?"}
+{"id": 112, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `Sum` și când funcția se oprește din executare, având în vedere poziția instrucțiunii `return` pe linia 6?"}
+{"id": 113, "raspuns": "Dacă funcția ar primi `arr = [1, 2, 3]`, ce valoare ar trebui să returneze și ce valoare returnează de fapt, ținând cont de modul în care este inițializată variabila `Sum` pe linia 2?"}
+{"id": 114, "raspuns": "Cum se modifică valoarea variabilei `Sum` în timpul buclei `for`, și ce valoare are aceasta înainte de prima iterație?"}
+{"id": 115, "raspuns": "La prima iterație a buclei, ce valoare returnează funcția și cum afectează asta execuția ulterioară?"}
+{"id": 116, "raspuns": "De ce, în funcție de condiția de pe linia 7, crezi că `high` ar trebui actualizat la `mid - 1` dacă `arr[mid]` este mai mic decât `x`?"}
+{"id": 117, "raspuns": "Cum se modifică valoarea variabilei `low` în fiecare iterație a buclei `while`, și cum influențează asta execuția funcției, în special în relație cu linia 14?"}
+{"id": 118, "raspuns": "De ce folosești variabila `low` în bucla `while` fără a-i defini valoarea inițială?"}
+{"id": 119, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și de ce nu mai continuă execuția?"}
+{"id": 120, "raspuns": "Dacă ai pune un print în interiorul buclei, imediat după linia `sum = sum + i`, ce valoare ai vedea afișată la fiecare iterație?"}
+{"id": 122, "raspuns": "Dacă ai pune un print în interiorul buclei, chiar înainte de linia 5, ce valoare ai vedea afișată pentru `sum` după prima iterație?"}
+{"id": 123, "raspuns": "Dacă funcția ar trebui să determine numărul de rotații dintr-un șir sortat circular, ce rezultat te-ai aștepta să returneze funcția pentru șirul `[5, 6, 7, 8, 1, 2, 3]`?"}
+{"id": 124, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă dacă condiția `arr[i] < arr[i - 1]` este falsă?"}
+{"id": 126, "raspuns": "Dacă ai pune un print în interiorul buclei, pe linia 7, ce valoare ai vedea afișată la fiecare iterație și cum ar afecta acest lucru comportamentul funcției?"}
+{"id": 128, "raspuns": "Cum se modifică valoarea lui `i` în fiecare iterație a buclei `for` și ce se întâmplă cu execuția funcției după linia 5?"}
+{"id": 129, "raspuns": "Dacă ai pune un print în interiorul buclei `for`, imediat după linia `cnt += 1`, ce ar vedea pentru valorile lui `cnt` pe măsură ce iterezi prin șir?"}
+{"id": 130, "raspuns": "Dacă ai pune un `print(cnt)` înainte de linia `if test_str[idx].isupper():`, ce valoare ai vedea afișată la prima iterație a buclei `for`?"}
+{"id": 131, "raspuns": "La prima iterație a buclei, ce valoare are variabila `cnt` și cum afectează aceasta rezultatul final?"}
+{"id": 132, "raspuns": "Ce crezi că se întâmplă cu execuția funcției după ce linia 7 este întâlnită în prima iterație a buclei `for`?"}
+{"id": 133, "raspuns": "Ce crezi că se întâmplă cu funcția după ce linia 5 este executată prima dată?"}
+{"id": 134, "raspuns": "Ce crezi că se întâmplă cu variabila `count` înainte ca aceasta să fie folosită în interiorul buclei `for`?"}
+{"id": 136, "raspuns": "Dacă ai pune un `print(arr)` în interiorul buclei `while`, ce informații te-ar ajuta să înțelegi de ce funcția se oprește prea devreme?"}
+{"id": 137, "raspuns": "Dacă funcția ar fi aplicată șirului \"Hello World\", ce valoare ar trebui să returneze și ce se întâmplă de fapt, având în vedere poziția instrucțiunii `return` pe linia 5?"}
+{"id": 138, "raspuns": "Cum se modifică variabila `i` în bucla `for` și ce impact are acest lucru asupra ultimului caracter al șirului de caractere?"}
+{"id": 140, "raspuns": "Dacă funcția ar primi lista `[1, 2, 3, 4, 5]`, ce ar trebui să returneze și ce returnează de fapt?"}
+{"id": 141, "raspuns": "Dacă ai pune un print în interiorul buclei `for`, imediat după verificarea `if(string[i].isalpha())`, ce valoare ai vedea pentru `i` în ultima iterație?"}
+{"id": 142, "raspuns": "Dacă ai pune un `print(alphabets)` în interiorul buclei, ce valori ai observa și cum ar afecta asta rezultatul final al funcției?"}
+{"id": 143, "raspuns": "Cum se modifică valoarea lui `cnt` pe parcursul execuției funcției și ce se întâmplă cu execuția după ce bucla interioară se termină pentru prima dată?"}
+{"id": 144, "raspuns": "Ce crezi că se întâmplă cu lista `list` de fiecare dată când funcția ajunge la linia 5?"}
+{"id": 145, "raspuns": "Ce crezi că se întâmplă cu variabila `list` înainte de a o folosi în linia `list.append(key)`?"}
+{"id": 147, "raspuns": "Dacă ai pune un print în interiorul buclei, imediat după linia 5, ce valoare ar afișa pentru `sum` în prima iterație?"}
+{"id": 148, "raspuns": "Ce crezi că reprezintă valoarea inițială a variabilei `sum` pe linia 2 și cum ar putea afecta aceasta rezultatul final al funcției?"}
+{"id": 149, "raspuns": "Dacă `s1 = \"0101\"` și `s2 = \"1010\"`, ce valoare ar trebui să returneze funcția ta conform intenției, și ce valoare returnează de fapt cu codul actual?"}
+{"id": 150, "raspuns": "La prima iterație a buclei `for`, ce valori iau `c0` și `c1` dacă `s1[0] == '0'` și `s2[0] == '1'`?"}
+{"id": 151, "raspuns": "De ce ai plasat instrucțiunea `return` în interiorul buclei `for i in range(n)`?"}
+{"id": 155, "raspuns": "Dacă ai pune un `print(inv_count)` în interiorul primei bucle, pe linia 7, ce valoare ai vedea afișată și cum s-ar modifica aceasta la fiecare iterație?"}
+{"id": 156, "raspuns": "Ce rol are variabila `count` la începutul buclei interioare și cum influențează aceasta rezultatul funcției?"}
+{"id": 157, "raspuns": "Dacă ai pune un `print(count)` în interiorul celei de-a doua bucle (linia 7), ce valoare ai vedea și cum ar influența execuția programului?"}
+{"id": 158, "raspuns": "De ce crezi că variabila `count` poate avea o valoare corectă în cadrul buclei `for` dacă nu i se atribuie o valoare înainte de a fi folosită?"}
+{"id": 159, "raspuns": "Ce crezi că face instrucțiunea `return uglies[-1]` de pe linia 12 și cum afectează aceasta execuția buclei `while`?"}
+{"id": 160, "raspuns": "Dacă `n` ar fi 5 și `primes` ar fi `[2, 7]`, ce rezultat ar trebui să returneze funcția `nth_super_ugly_number` și ce returnează de fapt cu codul tău actual?"}
+{"id": 161, "raspuns": "Dacă ai pune un `print(SumOfPrimeDivisors)` în interiorul buclei `for i in range(2,N + 1)`, ce ai observa despre evoluția valorilor din listă și cum se leagă de ceea ce vrei să calculezi?"}
+{"id": 162, "raspuns": "Dacă funcția ta ar primi lista `[-2, 1, -3, 4]`, ce listă te-ai aștepta să returneze?"}
+{"id": 163, "raspuns": "Dacă ai pune un print în interiorul buclei, pe linia 3, înainte de `num_list.remove(item)`, ce valorile `item` ar afișa și cum s-ar modifica lista după fiecare iterație?"}
+{"id": 164, "raspuns": "Dacă execuți funcția cu `x = 5`, ce valoare ar trebui să returneze și ce se întâmplă cu variabila `parity` în timpul execuției?"}
+{"id": 165, "raspuns": "Dacă ai da funcției tale numărul 6, ce valoare ar trebui să returneze și ce valoare returnează în realitate?"}
+{"id": 166, "raspuns": "Cum se modifică valoarea variabilei `parity` în timpul buclei `while`, și ce valoare are aceasta la final, în funcție de valoarea lui `x`?"}
+{"id": 167, "raspuns": "Cum se modifică valoarea variabilei `count` în cadrul buclei `for i in range(0,n)` și ce valoare are aceasta înainte de a fi folosită în linia `count = count + noOfZeroes[i]`?"}
+{"id": 168, "raspuns": "De ce valoarea lui `count` este calculată și returnată în interiorul buclei `for i in range(0,n)`?"}
+{"id": 169, "raspuns": "La prima iterație a primei bucle, ce valoare primește variabila `count` și de ce ar putea fi problematică?"}
+{"id": 170, "raspuns": "La prima trecere prin buclă, ce se întâmplă cu valoarea returnată de funcție și de ce crezi că nu este comportamentul dorit?"}
+{"id": 171, "raspuns": "Dacă ai pune un print al variabilei `subs` la începutul funcției, ce valoare ar avea înainte de a începe bucla `for`?"}
+{"id": 175, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `l` când întâlnește primul spațiu în șirul de caractere?"}
+{"id": 177, "raspuns": "Cum se modifică valoarea variabilei `total` în timpul executării buclei `for` și ce se întâmplă cu funcția după ce o iterație a fost executată?"}
+{"id": 179, "raspuns": "Cum se modifică valoarea variabilei `total` în prima iterație a buclei `for`?"}
+{"id": 180, "raspuns": "Cum se modifică valoarea variabilei `lists` după ce funcția ajunge la linia 4? Urmărește pas cu pas execuția codului și gândește-te ce se întâmplă cu toate listele din `lists`."}
+{"id": 182, "raspuns": "Ce crezi că se întâmplă cu valorile din `look_up` și când ar trebui să se termine bucla `for`?"}
+{"id": 183, "raspuns": "Dacă `arr` este `[1, 2, 3]` și `n` este 3, ce valoare va avea variabila `g` la finalul execuției funcției `check` și de ce?"}
+{"id": 184, "raspuns": "La prima iterație a buclei `for`, ce valoare are variabila `g` și cum influențează rezultatul funcției?"}
+{"id": 185, "raspuns": "Dacă `n` este 5, ce valoare ar trebui să returneze funcția `smallest_multiple` și ce se întâmplă de fapt cu valoarea lui `i` în interiorul buclei `while` când verifici condiția de pe linia 11?"}
+{"id": 186, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și de ce crezi că nu este cea așteptată?"}
+{"id": 187, "raspuns": "La prima iterație a buclei `for`, ce valoare are `cnt` și de ce funcția se termină imediat?"}
+{"id": 188, "raspuns": "De ce nu inițializezi variabila `res` înainte de a o folosi în bucla `for` din funcția `factorial`?"}
+{"id": 189, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `res` în funcția `factorial` de fiecare dată când bucla `for` execută o iterație?"}
+{"id": 190, "raspuns": "Dacă apelezi funcția `factorial` cu `start = 2` și `end = 4`, ce valoare ar trebui să returneze, și ce valoare returnează în schimb cu codul actual?"}
+{"id": 191, "raspuns": "Dacă ai pune un `print(i)` în interiorul buclei `for`, ce valori ale lui `i` ai vedea și cum se leagă ele de comportamentul funcției?"}
+{"id": 192, "raspuns": "La prima trecere prin bucla interioară, ce valoare returnează funcția `binomial_coeff` și ce înseamnă asta pentru execuția programului?"}
+{"id": 193, "raspuns": "Dacă ai pune un print în interiorul primei bucle, pe linia 8, ce ar afișa și cum ar afecta asta rezultatul funcției?"}
+{"id": 194, "raspuns": "Dacă ai pune un print în interiorul buclei `for j in range(m)` și ai afișa valoarea lui `table[i][j]` după fiecare iterație, ce ai observa despre felul în care se modifică valorile din tabel?"}
+{"id": 195, "raspuns": "Dacă ai pune un `print(tot)` la începutul funcției, ce valoare ai vedea afișată?"}
+{"id": 197, "raspuns": "Dacă ai pune un print în interiorul buclei, imediat după `tot *= x`, ce valoare ai vedea afișată și cum ar afecta asta rezultatul final al funcției?"}
+{"id": 200, "raspuns": "Dacă funcția ar trebui să returneze produsul maxim dintre două numere din array, ce rezultat te-ai aștepta să obții dacă `arr` ar fi `[1, 2, 3]`?"}
+{"id": 201, "raspuns": "Dacă funcția ar primi `(2, 3, 4)`, ce valoare crezi că ar trebui să returneze variabila `product` după ce parcurge toate elementele din tuplu?"}
+{"id": 202, "raspuns": "Ce crezi că ar trebui să conțină variabila `product` înainte de a începe să înmulțești numerele din tuplu?"}
+{"id": 203, "raspuns": "Dacă funcția ar fi apelată cu `mutiple_tuple((2, 3, 4))`, ce rezultat te-ai aștepta să primești și de ce crezi că nu este cel corect?"}
+{"id": 204, "raspuns": "Ce crezi că se întâmplă cu variabila `temp` înainte de prima iterație a buclei `for`?"}
+{"id": 205, "raspuns": "Ce crezi că se întâmplă cu funcția după ce execuția ajunge la linia `return temp` în interiorul buclei `for`?"}
+{"id": 206, "raspuns": "Dacă funcția ta ar primi lista `[1, 2, 3, (4, 5)]`, ce valoare crezi că ar returna variabila `count_elim` la final?"}
+{"id": 207, "raspuns": "Dacă ai pune un print în interiorul buclei, pe linia 7, ce valoare ai vedea afișată și cum se schimbă aceasta în funcție de numărul de elemente din lista `num`?"}
+{"id": 208, "raspuns": "La prima iterație a buclei `for`, ce valoare are `count_elim` și ce se întâmplă în acel moment?"}
+{"id": 209, "raspuns": "Dacă ai pune un `print(res)` în interiorul buclei `for`, ce valoare ai vedea afișată și cum s-ar schimba comportamentul funcției?"}
+{"id": 210, "raspuns": "Ce crezi că ar trebui să facă bucla `for i in range(1, n + 1)` și de ce returnezi valoarea `C[r]` în interiorul ei?"}
+{"id": 211, "raspuns": "Dacă ai pune un `print(count)` în interiorul buclei exterioare, ce valoare ai vedea afișată și cum se schimbă aceasta de-a lungul execuției programului?"}
+{"id": 212, "raspuns": "Ce crezi că se întâmplă cu variabila `res` înainte de a fi folosită în linia `res = max(res, count)`?"}
+{"id": 213, "raspuns": "Cum se modifică valoarea variabilei `count` în interiorul buclei `for i in range(0, n)` și ce înseamnă aceasta în contextul determinării secvenței cele mai lungi de elemente consecutive identice?"}
+{"id": 214, "raspuns": "Dacă ai pune un print al valorii lui `i` la începutul buclei `while`, ce ai vedea afișat?"}
+{"id": 215, "raspuns": "Dacă apelezi funcția cu `int_to_roman(4)`, ce rezultat te-ai aștepta să primești și cum se comportă bucla `while` și instrucțiunea `return` în raport cu acesta?"}
+{"id": 216, "raspuns": "Cum se modifică valoarea variabilei `num` în cadrul buclei `while` de pe linia 6, și ce înseamnă asta pentru funcționarea codului când valoarea inițială a lui `num` este pozitivă?"}
+{"id": 217, "raspuns": "La prima iterație a buclei, ce valoare are `int_val` și cum influențează aceasta rezultatul final?"}
+{"id": 219, "raspuns": "De ce este instrucțiunea `return int_val` plasată în interiorul buclei `for`?"}
+{"id": 220, "raspuns": "De ce începi bucla `for` folosind variabila `res` fără a o inițializa înainte?"}
+{"id": 221, "raspuns": "Cum se modifică valoarea lui `dp[n]` în timpul buclei `for` și la ce moment se oprește funcția?"}
+{"id": 222, "raspuns": "Dacă `A` ar fi `[[1, 2, 3], [4, 5, 6], [7, 8, 9]]`, ce valoare crezi că ar trebui să returneze funcția și la ce moment se oprește execuția, având în vedere linia 10?"}
+{"id": 223, "raspuns": "La ultima iterație a celei de-a doua bucle, ce se întâmplă cu funcția și de ce nu face ceea ce te-ai aștepta?"}
+{"id": 225, "raspuns": "De ce verifici dacă `x` este impar la linia 2, când numerele Woodall sunt întotdeauna pare?"}
+{"id": 226, "raspuns": "Ce crezi că reprezintă variabila `p` și cum ar trebui să fie inițializată înainte de a fi folosită în ciclul `while`?"}
+{"id": 227, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `no_duplicate` și când ar trebui să fie returnată?"}
+{"id": 228, "raspuns": "De ce ai inițializat `maxi` cu -100000 și nu cu o valoare neutră, precum 0, înainte de a începe bucla?"}
+{"id": 229, "raspuns": "Dacă ai pune un print în interiorul buclei `for y in x`, imediat după `sum = 1`, ce valoare ar afișa în mod repetat?"}
+{"id": 230, "raspuns": "De ce returnezi `maxi` în interiorul primei bucle `for`?"}
+{"id": 231, "raspuns": "Dacă funcția ta ar trebui să calculeze produsul tuturor elementelor distincte din array, ce rezultat te-ai aștepta să obții dacă `arr` ar fi `[2, 3, 2, 4]`?"}
+{"id": 232, "raspuns": "La prima iterație a buclei `for`, ce valoare are variabila `prod` și ce efect are asta asupra rezultatului final?"}
+{"id": 233, "raspuns": "De ce ai inițializat variabila `prod` cu valoarea 0 pe linia 3?"}
+{"id": 234, "raspuns": "La prima iterație a buclei `for i in range(0, arr_size)`, ce valoare are `count` și cum influențează rezultatul funcției?"}
+{"id": 235, "raspuns": "La prima iterație a buclei exterioare, ce valoare are variabila `count` și cum influențează asta rezultatul?"}
+{"id": 236, "raspuns": "De ce instrucțiunea `return -1` de pe linia 9 este plasată în interiorul buclei `for`?"}
+{"id": 237, "raspuns": "Dacă ai pune un `print(result)` în interiorul buclei `for i in range(n)`, ce valoare ar afișa și cum se schimbă aceasta la fiecare iterație?"}
+{"id": 239, "raspuns": "Dacă funcția ar fi aplicată numărului 12, ce valoare ar trebui să returneze și ce valoare returnează de fapt, ținând cont de condiția din linia 8?"}
+{"id": 241, "raspuns": "De ce folosești variabila `cnt` fără a-i atribui o valoare înainte de a o folosi în linia `c = pow(10,cnt)`?"}
+{"id": 242, "raspuns": "La prima iterație a buclei `while`, ce valoare are variabila `cnt` și cum influențează aceasta rezultatul calculat?"}
+{"id": 243, "raspuns": "Dacă ai pune un print în interiorul buclei, imediat după linia 10, ce valoare ai vedea afișată pentru `B_Number` și cum se schimbă în fiecare iterație?"}
+{"id": 244, "raspuns": "De ce folosești variabila `l` în bucla `while` fără a-i atribui o valoare inițială?"}
+{"id": 245, "raspuns": "Cum se modifică valoarea lui `l` sau `r` în fiecare iterație a buclei `while` și ce impact are asupra execuției codului după linia 13?"}
+{"id": 246, "raspuns": "Dacă apelezi funcția cu `p = 10`, `q = 3` și `N = 1`, ce rezultat te aștepți să returneze, și cum se comportă bucla `while` în raport cu valoarea lui `N` în acest caz?"}
+{"id": 247, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `N` și a lui `p` în fiecare iterație a buclei `while` și cum influențează asta rezultatul final returnat de funcție?"}
+{"id": 248, "raspuns": "Ce crezi că face variabila `num1` în funcția `get_gcd` și de ce nu i se atribuie o valoare înainte de a fi folosită?"}
+{"id": 249, "raspuns": "La prima iterație a buclei `for`, ce valoare are variabila `variable` și cum o influențează înmulțirea cu `i % 10`?"}
+{"id": 250, "raspuns": "Ce crezi că se întâmplă cu valoarea variabilei `variable` înainte de a fi folosită în prima iterație a buclei `for`?"}
+{"id": 251, "raspuns": "Ce crezi că se întâmplă cu valoarea variabilei `variable` și când se oprește execuția buclei `for`?"}
+{"id": 252, "raspuns": "Dacă ai pune un print în interiorul buclei `while`, imediat după incrementarea variabilei `count`, ce valoare ar afișa pentru `count` când `n` este, de exemplu, 5?"}
+{"id": 253, "raspuns": "Dacă ai pune un `print(res)` în interiorul buclei `while`, ce valoare ar avea `res` după fiecare iterație și cum ar afecta asta rezultatul final al funcției?"}
+{"id": 254, "raspuns": "La prima iterație a buclei `while`, ce valoare are `temp` și cum influențează asta continuarea buclei?"}
+{"id": 255, "raspuns": "Dacă funcția ar primi `[1, 4, 1, 2, 7, 5, 2]`, ce ar trebui să afișeze și ce valoare are `max_value` înainte de a crea lista `buckets`?"}
+{"id": 257, "raspuns": "La prima trecere prin bucla `for j in range(max_value + 1)`, ce se întâmplă cu valoarea returnată de funcție și cum influențează asta rezultatul final?"}
+{"id": 258, "raspuns": "De ce crezi că `rev_num` funcționează corect în funcția `rev` fără a i se atribui o valoare inițială?"}
+{"id": 259, "raspuns": "Dacă apelezi `rev(123)`, ce valoare te aștepți să returneze funcția și ce valoare returnează de fapt?"}
+{"id": 260, "raspuns": "Cum se modifică valoarea variabilei `rev_num` în funcția `rev` în fiecare iterație a buclei `while`, mai ales la prima iterație?"}
+{"id": 261, "raspuns": "Ce crezi că se întâmplă cu variabila `num` înainte de a fi folosită în linia `num = num * 10 + arr[i]`?"}
+{"id": 262, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și cum afectează acest lucru rezultatul final?"}
+{"id": 263, "raspuns": "De ce crezi că variabila `max` poate conține corect valoarea maximă găsită în `mls` fără a i se atribui o valoare inițială?"}
+{"id": 264, "raspuns": "Dacă ai pune un print în interiorul celei de-a doua bucle, imediat după actualizarea `mls[i] = mls[j] + 1`, ce valoare ai vedea afișată pentru `max` în funcție de `mls[i]`?"}
+{"id": 265, "raspuns": "Ce crezi că se întâmplă cu valoarea `max` și când se termină execuția funcției, având în vedere poziția instrucțiunii `return max` în cod?"}
+{"id": 266, "raspuns": "Dacă `s = \"123\"` și `n = 3`, ce ar trebui să returneze funcția ta și ce returnează de fapt?"}
+{"id": 267, "raspuns": "Cum se schimbă valoarea variabilei `total` în prima iterație a buclei `for`, și ce implică asta pentru rezultatul final al funcției?"}
+{"id": 268, "raspuns": "Dacă ai pune un print al valorii variabilei `total` înainte de bucla `for`, ce valoare ai vedea și cum ar putea afecta asta rezultatul final al sumei?"}
+{"id": 269, "raspuns": "Dacă funcția ar primi `[1, 2, [3, 4]]`, ce valoare ar trebui să returneze și ce se întâmplă de fapt cu codul tău la linia 8?"}
+{"id": 270, "raspuns": "Cum se modifică valoarea variabilei `pos_count` în fiecare iterație a buclei `for` și ce se întâmplă după prima iterație?"}
+{"id": 271, "raspuns": "Ce crezi că se întâmplă cu valorile din matricea `bell` și când funcția se oprește din executare, ținând cont de instrucțiunea `return` de pe linia 8?"}
+{"id": 272, "raspuns": "Ce crezi că ar trebui să reprezinte variabila `flag` în funcția `find_equal_tuple` și cum influențează valoarea inițială a acesteia rezultatul funcției?"}
+{"id": 274, "raspuns": "Cum se modifică valoarea variabilei `flag` în funcția `find_equal_tuple` pe măsură ce iterează prin fiecare tuplu din `Input`?"}
+{"id": 275, "raspuns": "Dacă aplici funcția `comb_sort` pe lista `[5, 1, 4, 2, 8]`, ce ar trebui să fie ordinea finală a elementelor și ce impact are inițializarea variabilei `i` cu 0 în loc de 1?"}
+{"id": 276, "raspuns": "La prima trecere prin buclă, ce se întâmplă dacă elementele din listă sunt deja sortate în ordine descrescătoare?"}
+{"id": 277, "raspuns": "Dacă aplici algoritmul pe lista `[5, 1, 4, 2, 8]`, ce ar trebui să fie lista sortată rezultată și ce se întâmplă cu valoarea lui `i` în cadrul celei de-a doua bucle `while`?"}
+{"id": 278, "raspuns": "La prima iterație a buclei `for`, ce valoare are variabila `res` și ce efect are asta asupra codului?"}
+{"id": 279, "raspuns": "Ce crezi că se întâmplă cu funcția după ce execuția ajunge la linia `return (res)`?"}
+{"id": 280, "raspuns": "La prima iterație a buclei `for`, cum influențează valoarea inițială a lui `summ` rezultatul final al funcției?"}
+{"id": 281, "raspuns": "Dacă funcția ar primi șirul \"abc\", ce valoare te-ai aștepta să returneze și de ce?"}
+{"id": 283, "raspuns": "De ce crezi că `return max` este în interiorul buclei `for` și ce efect are asta asupra valorii finale returnate de funcție?"}
+{"id": 284, "raspuns": "Dacă funcția ar primi `[[1, 2, 3], [1, 2, 4]]` ca intrare, ce dicționar ar trebui să returneze și la ce linie crezi că funcția se oprește prematur, înainte de a procesa toate elementele?"}
+{"id": 285, "raspuns": "Dacă ai pune un print la valoarea variabilei `value` chiar înainte de a o folosi în linia 9, ce ai vedea afișat?"}
+{"id": 286, "raspuns": "Ce crezi că ar trebui să facă variabila `value` înainte de a fi atribuită lui `dic_data[key]`?"}
+{"id": 288, "raspuns": "La prima iterație a buclei, ce valoare are variabila `total` și cum afectează acest lucru rezultatul final?"}
+{"id": 289, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și de ce nu este rezultatul așteptat?"}
+{"id": 290, "raspuns": "Dacă ai pune un print în interiorul buclei `for`, pe linia 12, ce valoare ai vedea afișată după prima iterație și ce implicații ar putea avea acest lucru asupra rezultatului final?"}
+{"id": 291, "raspuns": "De ce returnezi valoarea lui `count` în interiorul buclei `for` de pe linia 6?"}
+{"id": 293, "raspuns": "Ce crezi că ar trebui să facă linia 4 în contextul întregului program?"}
+{"id": 294, "raspuns": "Cum se modifică valoarea variabilei `res` pe parcursul execuției funcției și ce se întâmplă dacă nu este inițializată?"}
+{"id": 295, "raspuns": "La prima trecere prin buclă, ce se întâmplă cu variabila `temp` și de ce crezi că ar putea cauza o problemă?"}
+{"id": 296, "raspuns": "Dacă funcția ta primește ca intrare `[('1', 'a'), ('2', 'b')]`, ce rezultat te-ai aștepta să primești și de ce `res` ar putea fi problema?"}
+{"id": 297, "raspuns": "Dacă ai pune un print în interiorul buclei `for tup in test_list` și ai afișa valoarea lui `res`, ce ai vedea după ce funcția rulează o singură dată?"}
+{"id": 299, "raspuns": "La prima iterație a buclei, ce valoare returnează funcția și de ce nu este cea așteptată?"}
+{"id": 300, "raspuns": "Dacă ai pune un print înainte de linia `XOR = XOR ^ arr[i]`, ce valoare ai vedea stocată în variabila `XOR` la prima iterație a buclei `for`?"}
+{"id": 301, "raspuns": "Ce crezi că se întâmplă cu variabila `j` în bucla `while` de pe linia 9 și cum ar trebui să afecteze aceasta valorile din lista `primes`?"}
+{"id": 302, "raspuns": "Dacă ai pune un `print(result)` la sfârșitul funcției `smartNumber`, ce ar afișa și de ce crezi că ar putea fi o problemă?"}
+{"id": 303, "raspuns": "Dacă execuți funcția cu `limit = 200`, ce rezultat te-ai aștepta să primească și ce rezultat obții de fapt?"}
+{"id": 304, "raspuns": "Cum se modifică valoarea variabilei `sum_fact2` atunci când verifici dacă `sum_fact` este divizibilă cu `fact` pe linia 11? Urmărește pas cu pas cum se calculează această variabilă pentru un număr mic, cum ar fi 6."}
+{"id": 305, "raspuns": "Cum se modifică valoarea variabilei `sum_fact` atunci când `num` este 6, și ce factori ar trebui să includă în sumă pentru a calcula corect suma factorilor proprii ai lui 6?"}
+{"id": 306, "raspuns": "Ce crezi că se întâmplă cu `current_sum` înainte de a fi folosită în linia `current_sum += (1 if string[i] == '0' else -1)`?"}
+{"id": 307, "raspuns": "De ce crezi că funcția se oprește după prima iterație a buclei `for`?"}
+{"id": 308, "raspuns": "Cum se modifică valoarea variabilei `current_sum` pe parcursul buclei `for` și ce efect are inițializarea ei cu 1 în loc de 0?"}
+{"id": 310, "raspuns": "Dacă ai pune un `print(sum)` în interiorul buclei `for`, ce valoare ai vedea afișată și în ce moment al execuției funcției?"}
+{"id": 312, "raspuns": "De ce crezi că variabila `word_len` funcționează corect în bucla `for` fără a fi inițializată anterior?"}
+{"id": 314, "raspuns": "Cum se modifică valoarea listei `word_len` în fiecare iterație a buclei `for` și ce înseamnă asta pentru rezultatul final al funcției?"}
+{"id": 315, "raspuns": "Ce crezi că se întâmplă cu funcția ta când ajunge la linia 13 și de ce `return result_string` se execută doar o dată?"}
+{"id": 316, "raspuns": "Dacă funcția ta ar fi apelată cu `reverse_vowels(\"hello\")`, ce ar trebui să returneze și ce se întâmplă de fapt cu variabila `vowels` în timpul execuției?"}
+{"id": 317, "raspuns": "Ce crezi că se întâmplă cu variabila `result_string` în al doilea ciclu `for` și de ce nu primește o valoare inițială?"}
+{"id": 318, "raspuns": "De ce folosești variabila `_sum` înainte de a-i atribui o valoare inițială în cod?"}
+{"id": 320, "raspuns": "Ce crezi că reprezintă variabila `_sum` înainte de a începe bucla `for` și ce valoare ar trebui să aibă pentru a calcula corect suma elementelor din `arr`?"}
+{"id": 321, "raspuns": "La prima iterație a buclei `for`, ce valoare are variabila `n1` și cum influențează acest lucru rezultatul final?"}
+{"id": 322, "raspuns": "De ce ai inițializat variabila `n1` cu valoarea 1 în loc de 0?"}
+{"id": 323, "raspuns": "De ce ai plasat instrucțiunea `return` în interiorul buclei `for`?"}
+{"id": 324, "raspuns": "Dacă ai pune un print în interiorul buclei `for inner in test_list` pentru a afișa valoarea lui `res` după fiecare iterație, ce ai vedea și cum s-ar schimba valoarea lui `res`?"}
+{"id": 325, "raspuns": "Dacă ai pune un print înainte de bucla `for inner in test_list`, ce valoare ai vedea atribuită variabilei `res`?"}
+{"id": 326, "raspuns": "Dacă execuți funcția `pancake_sort` pe lista `[3, 2, 1]`, ce listă te aștepți să returneze?"}
+{"id": 327, "raspuns": "Dacă execuți funcția cu `nums = [3, 2, 1]`, ce listă te aștepți să returneze după ce bucla `while` ar trebui să se termine?"}
+{"id": 329, "raspuns": "Ce crezi că se întâmplă cu valoarea variabilei `sum` înainte de a fi folosită în linia `sum += i*arr[i] - (n-1-i) * arr[i]`?"}
+{"id": 330, "raspuns": "Dacă ai pune un print în interiorul buclei `for` pentru valoarea variabilei `sum` după fiecare iterație, ce ai vedea și cum s-ar schimba valoarea ei?"}
+{"id": 331, "raspuns": "De ce instrucțiunea `return sum` se află în interiorul buclei `for` și ce efect are acest lucru asupra execuției întregii funcții?"}
+{"id": 332, "raspuns": "Cum se modifică valoarea variabilei `minEle` în timpul buclei `for` și ce valoare are aceasta înainte de a fi utilizată în compararea cu `arr[i]`?"}
+{"id": 333, "raspuns": "Dacă ai pune un print în interiorul buclei, imediat după linia 7, ce valoare ai vedea afișată pentru `maxEle` și `minEle` după prima iterație?"}
+{"id": 334, "raspuns": "Cum se modifică valoarea variabilei `maxEle` pe parcursul buclei `for` și ce valoare are aceasta la final?"}
+{"id": 335, "raspuns": "Cum se modifică valoarea lui `tri[0][0]` în timpul execuției programului și ce se întâmplă cu celelalte elemente din triunghi înainte de a fi returnată această valoare?"}
+{"id": 336, "raspuns": "Dacă `tri` ar fi `[[1],[2,3],[4,5,6]]`, ce valoare ar trebui să returneze funcția `max_path_sum` și ce valoare returnează funcția cu codul actual?"}
+{"id": 337, "raspuns": "Cum se modifică valoarea variabilei `ans` în funcția `sum_digits_single` la prima iterație a buclei `while`?"}
+{"id": 338, "raspuns": "Dacă execuți funcția `closest` cu `N = 123`, ce valoare se va returna și de ce crezi că bucla se termină atât de repede?"}
+{"id": 339, "raspuns": "Cum se modifică valoarea variabilei `ans` în funcția `sum_digits_single` pe parcursul buclei `while` și ce se întâmplă cu execuția funcției după linia 6?"}
+{"id": 340, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `result` și când se execută instrucțiunea `return result` în cadrul buclei `for i in range(n)`?"}
+{"id": 341, "raspuns": "Dacă ai pune un print în interiorul buclei `for` de pe linia 11, imediat după actualizarea valorii `dp[i]`, ce valoare ar afișa pentru `result` în prima iterație când `arr` conține elemente ordonate crescător?"}
+{"id": 342, "raspuns": "Dacă `arr` ar fi `[1, 3, 2, 4, 5]`, ce valoare ar trebui să returneze funcția `longest_subseq_with_diff_one` și ce se întâmplă cu variabila `result` înainte de a fi folosită în linia 13?"}
+{"id": 343, "raspuns": "Cum se schimbă valoarea lui `p` în interiorul buclei `while` din funcția `gcd` și ce se întâmplă după prima iterație?"}
+{"id": 344, "raspuns": "Ce crezi că se întâmplă cu valoarea returnată de funcție la fiecare iterație a buclei `while` și cum afectează acest lucru rezultatul final?"}
+{"id": 345, "raspuns": "La prima iterație a buclei `while`, ce valoare are variabila `temp` și cum influențează acest lucru execuția programului?"}
+{"id": 346, "raspuns": "Dacă ai pune un print în interiorul buclei, imediat după linia 9, ce valoare ai vedea afișată pentru `res` la prima iterație și cum se compară cu rezultatul pe care te-ai aștepta să-l aibă funcția?"}
+{"id": 347, "raspuns": "La prima iterație a buclei, ce valoare are `res` și cum influențează aceasta rezultatul final al sumei?"}
+{"id": 348, "raspuns": "La prima iterație a buclei `for`, ce valoare are variabila `res` și cum influențează asta rezultatul final?"}
+{"id": 349, "raspuns": "Ce crezi că se întâmplă cu variabila `i` înainte de a fi folosită în bucla `while`?"}
+{"id": 350, "raspuns": "La prima iterație a buclei `while`, ce se întâmplă cu execuția programului după ce se evaluează condiția `(n - (i * a)) % b == 0`?"}
+{"id": 352, "raspuns": "La prima iterație a buclei, ce valoare are variabila `count_chars` și de ce?"}
+{"id": 353, "raspuns": "Dacă funcția ar trebui să numere câte caractere dintr-un șir se află la poziția corespunzătoare în alfabet, ce rezultat te-ai aștepta să primești dacă i-ai da șirul \"abc\"?"}
+{"id": 354, "raspuns": "Cum se modifică valoarea variabilei `count_chars` pe parcursul execuției funcției și ce înseamnă asta în contextul numărării caracterelor?"}
+{"id": 356, "raspuns": "De ce `evenPair` este folosită în calculul numărului de perechi fără a fi inițializată înainte de a fi utilizată în buclă?"}
+{"id": 357, "raspuns": "Cum se modifică valoarea variabilei `evenPair` la fiecare iterație a buclei interioare și ce înseamnă acest lucru în legătură cu linia 7?"}
+{"id": 358, "raspuns": "Cum se modifică valoarea variabilei `count` pe parcursul funcției, în funcție de elementele din lista `a`?"}
+{"id": 360, "raspuns": "Cum se modifică valoarea variabilei `count` în timpul buclei `for` și ce se întâmplă imediat după ce se execută prima iterație a acesteia?"}
+{"id": 361, "raspuns": "Dacă ai pune un print în interiorul buclei, chiar înainte de linia 10, ce valoare ai vedea afișată pentru `b` la fiecare iterație?"}
+{"id": 362, "raspuns": "Dacă ai pune un `print(a)` la începutul buclei `for`, ce valoare ai vedea afișată pentru `a` în prima iterație?"}
+{"id": 363, "raspuns": "Cum se modifică valoarea variabilei `a` în interiorul buclei `for` și ce valoare are aceasta înainte de a fi folosită în calculul lui `c`?"}
+{"id": 364, "raspuns": "Dacă `list1` ar fi `[1, 2, 3, 4, 5]` și `m` și `n` ar fi ambele 1, ce valoare ar trebui să returneze funcția, și ce valoare returnează de fapt?"}
+{"id": 365, "raspuns": "De ce crezi că valoarea variabilei `sum_range` este corectă înainte de a adăuga elementele din listă?"}
+{"id": 366, "raspuns": "Dacă funcția ar primi `list1 = [1, 2, 3, 4, 5]`, `m = 1` și `n = 3`, ce valoare te-ai aștepta să returneze?"}
+{"id": 367, "raspuns": "Dacă funcția ta ar trebui să numere de câte ori apare secvența \"std\" în șirul \"studentstd\", ce rezultat te-ai aștepta să returneze?"}
+{"id": 368, "raspuns": "Ce crezi că se întâmplă cu funcția după ce se execută linia `return result` în interiorul buclei `for`?"}
+{"id": 369, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă cu execuția funcției și de ce ar putea fi o problemă?"}
+{"id": 370, "raspuns": "Dacă funcția ar trebui să numere toate perechile care satisfac condiția, ce rezultat te-ai aștepta să obții dacă `arr` ar fi `[1, 5, 3, 4]` și `k` ar fi `2`?"}
+{"id": 371, "raspuns": "La prima iterație a buclei `for i`, ce valoare are `i` și cum se compară `i*i` cu `n+1` în contextul condiției de pe linia 3?"}
+{"id": 372, "raspuns": "Dacă funcția primește șirul \"abc1\", ce rezultat te-ai aștepta să returneze și de ce crezi că este așa?"}
+{"id": 373, "raspuns": "Dacă funcția ar trebui să transforme octalul 12 în zecimal, ce rezultat ar trebui să returneze și la ce moment din cod se oprește execuția, având în vedere linia 11?"}
+{"id": 374, "raspuns": "La prima iterație a buclei `while`, ce se întâmplă cu valoarea returnată de funcție și cum afectează acest lucru rezultatul căutării?"}
+{"id": 375, "raspuns": "Cum se modifică valoarea variabilei `high` în bucla `while` când `arr[mid]` este mai mic decât `x`?"}
+{"id": 376, "raspuns": "De ce ai inițializat variabila `low` cu valoarea 1 în loc de 0?"}
+{"id": 377, "raspuns": "Cum se modifică valoarea variabilei `res` în timpul buclei `for` și ce efect are poziționarea instrucțiunii `return` pe linia 7 asupra execuției funcției?"}
+{"id": 378, "raspuns": "Dacă funcția ar primi șirul \"abcdef\", ce conținut ar trebui să aibă variabila `str2` la finalul execuției?"}
+{"id": 379, "raspuns": "Dacă funcția ar primi șirul \"abcdef\", ce ar trebui să returneze și ce returnează de fapt, ținând cont de linia 6?"}
+{"id": 380, "raspuns": "Cum se modifică valoarea variabilei `setBits` în timpul execuției funcției și ce valoare are aceasta înainte de a fi folosită prima dată?"}
+{"id": 382, "raspuns": "Dacă apelezi funcția `hamming_Distance(5, 7)`, ce rezultat te aștepți să returneze și cum se comportă bucla `while` în raport cu acest rezultat?"}
+{"id": 384, "raspuns": "De ce funcția ta returnează valoarea lui `res` după fiecare iterație a buclei `for`?"}
+{"id": 385, "raspuns": "Dacă funcția `count` ar trebui să numere de câte ori apare litera 'a' în șirul \"banana\", ce rezultat te-ai aștepta să returneze?"}
+{"id": 386, "raspuns": "Dacă ai pune un `print(dp[n][n])` în interiorul buclei, ce valoare ai vedea afișată și cum se schimbă la fiecare iterație?"}
+{"id": 387, "raspuns": "Ce crezi că se întâmplă cu funcția ta după ce execuți `return sum` în interiorul buclei `for`?"}
+{"id": 389, "raspuns": "De ce folosești variabila `sum` în interiorul buclei `for` fără a-i atribui o valoare inițială?"}
+{"id": 390, "raspuns": "Dacă ai pune un print în interiorul buclei, chiar înainte de linia 8, ce valoare ar afișa pentru `ch` în prima iterație și cum s-ar comporta funcția după aceea?"}
+{"id": 391, "raspuns": "Ce crezi că se întâmplă în program cu variabila `res` înainte de a fi folosită în bucla `for`?"}
+{"id": 392, "raspuns": "Dacă ai pune un print în interiorul buclei `for` pe linia 6, imediat după `if idx > K or idx >= len(temp) - K:`, ce ar vedea pentru valorile `idx` care ar trebui să fie incluse în rezultat, dar nu sunt?"}
+{"id": 393, "raspuns": "La prima iterație a buclei, ce valoare are `res` și ce se întâmplă imediat după aceea?"}
+{"id": 394, "raspuns": "Cum se modifică valoarea variabilei `count` în fiecare iterație a buclei `while` și ce valoare are aceasta înainte de a începe bucla?"}
+{"id": 396, "raspuns": "Dacă apelezi funcția cu `n = 8`, ce rezultat te-ai aștepta să primești și ce primești de fapt?"}
+{"id": 397, "raspuns": "Dacă ai rula funcția cu `arr = [4, 5, 6, 7, 0, 1, 2]`, ce valoare crezi că ar trebui să returneze și la ce moment se oprește execuția programului după linia 10?"}
+{"id": 398, "raspuns": "Ce crezi că se întâmplă cu variabila `low` atunci când `arr[mid] < arr[high]`?"}
+{"id": 401, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `result` și când se termină execuția funcției, având în vedere poziția instrucțiunii `return` pe linia 6?"}
+{"id": 402, "raspuns": "Ce crezi că se întâmplă cu variabila `result` înainte de a fi folosită în linia `result = result + str[i]`?"}
+{"id": 403, "raspuns": "Cum se modifică valoarea lui `j` în timpul iterațiilor buclei și cum influențează acest lucru pozițiile elementelor din `arr`?"}
+{"id": 404, "raspuns": "Dacă funcția ta ar trebui să rearanjeze întregul array, ce rezultat te-ai aștepta să obții dacă `arr` ar fi `[1, -2, 3, -4, 5]`?"}
+{"id": 405, "raspuns": "Dacă ai rula funcția `max_sum` cu `tri = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]` și `n = 3`, ce valoare te-ai aștepta să returneze și de ce?"}
+{"id": 406, "raspuns": "Ce crezi că face bucla interioară și ce se întâmplă cu funcția înainte să termine de calculat toate valorile din matricea `T`?"}
+{"id": 407, "raspuns": "De ce crezi că variabila `total` funcționează corect în funcție fără a avea o valoare inițială înainte de a fi folosită în prima iterație?"}
+{"id": 408, "raspuns": "De ce ai inițializat variabila `total` cu valoarea 1, și nu cu o altă valoare?"}
+{"id": 409, "raspuns": "Dacă ai pune un `print(total)` în interiorul buclei `for`, ce valoare ai observa la fiecare iterație și ce înseamnă asta despre cum funcționează funcția ta?"}
+{"id": 410, "raspuns": "Cum se modifică valoarea lui `dct` pe parcursul execuției codului, mai ales în legătură cu linia 5 și cu faptul că funcția se oprește după prima iterație?"}
+{"id": 411, "raspuns": "Cum se modifică valoarea variabilei `max_sum` în timpul buclei `for` de pe linia 15 și ce înseamnă asta pentru rezultatul final al funcției?"}
+{"id": 412, "raspuns": "La prima iterație a buclei `for i in range(n)` din secțiunea care calculează `MSIBS`, ce efect are condiția `if arr[i] < arr[j] and MSIBS[i] < MSIBS[j] + arr[i]:` asupra valorii lui `MSIBS[i]`?"}
+{"id": 414, "raspuns": "Ce crezi că face bucla `for cl in range(2, n+1)` și cum influențează aceasta execuția funcției, având în vedere poziția instrucțiunii `return` pe linia 15?"}
+{"id": 415, "raspuns": "La prima iterație a buclei, ce valoare returnează funcția și de ce nu continuă să parcurgă restul elementelor din tuplu?"}
+{"id": 417, "raspuns": "Dacă ai pune un `print(count)` înainte de bucla `for`, ce valoare ai vedea afișată?"}
+{"id": 418, "raspuns": "La prima iterație a buclei, ce valoare returnează funcția și de ce nu continuă să verifice restul elementelor din listă?"}
+{"id": 419, "raspuns": "Dacă ai pune un `print(ctr)` înainte de bucla `for`, ce valoare ar afișa?"}
+{"id": 421, "raspuns": "De ce funcția se oprește după ce verifici doar primul număr din interval?"}
+{"id": 422, "raspuns": "Ce rol are variabila `ctr` și de ce crezi că valoarea inițială ar putea influența rezultatul final al programului?"}
+{"id": 423, "raspuns": "La prima iterație a buclei interioare, când `num` este 2, ce valoare are `i` și ce înseamnă rezultatul expresiei `(num % i) == 1` în contextul determinării numerelor prime?"}
+{"id": 424, "raspuns": "Dacă ai pune un print în interiorul buclei `for`, imediat după verificarea condiției din linia 5, ce valoare ai vedea afișată pentru `arr[i] % 2` când `arr[i]` este un număr par?"}
+{"id": 425, "raspuns": "Ce crezi că se întâmplă cu valoarea variabilei `sum` și când se oprește execuția funcției, având în vedere poziția instrucțiunii `return sum` pe linia 7?"}
+{"id": 426, "raspuns": "Cum se modifică valoarea variabilei `sum` în timpul execuției codului, mai exact în prima iterație a buclei `for`?"}
+{"id": 427, "raspuns": "Cum se modifică valoarea variabilei `sum` la fiecare iterație a buclei `for` și ce se întâmplă cu execuția funcției în acest proces?"}
+{"id": 428, "raspuns": "La ultima iterație a buclei `for i in range(n - 1,-1,-1)`, ce se întâmplă cu valoarea returnată de funcție?"}
+{"id": 430, "raspuns": "La prima iterație a buclei, ce se întâmplă cu execuția funcției după linia 5?"}
+{"id": 431, "raspuns": "La prima iterație a buclei `while`, ce se întâmplă cu valorile `found` și `pos` și de ce ar putea fi problematic?"}
+{"id": 432, "raspuns": "Dacă ai pune un print în interiorul buclei `while` pentru valoarea lui `pos`, ce ai vedea la prima iterație și de ce ar putea fi o problemă?"}
+{"id": 434, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă cu valoarea returnată de funcție, ținând cont de relația dintre `count` și `i`?"}
+{"id": 435, "raspuns": "Cum se modifică valoarea variabilei `temp` în interiorul buclei `while` de pe linia 10 și cum afectează asta execuția funcției după ce bucla `for` a terminat?"}
+{"id": 436, "raspuns": "Ce crezi că se întâmplă cu valoarea variabilei `max_ending_here` înainte de a fi folosită în linia `max_ending_here = max_ending_here + a[i%n]`?"}
+{"id": 437, "raspuns": "Dacă ai pune un print al valorii `max_ending_here` la sfârșitul buclei `for`, ce valoare ai observa în primele iterații și cum se compară cu ce te-ai aștepta să vezi?"}
+{"id": 439, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `current_element` și când funcția se oprește din executare, având în vedere poziția instrucțiunii `return` în cod?"}
+{"id": 441, "raspuns": "Cum se modifică valoarea variabilei `current_element` pe parcursul execuției funcției și ce valoare are aceasta înainte de a fi folosită în prima linie din interiorul buclei `for`?"}
+{"id": 442, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și cum se comportă programul în continuare?"}
+{"id": 443, "raspuns": "Cum se modifică valoarea listei `divisors` în fiecare iterație a buclei `for` și ce se întâmplă cu funcția după prima iterație?"}
+{"id": 444, "raspuns": "La prima iterație a buclei `for i in range(n)`, ce valoare returnează funcția și de ce nu e cea așteptată?"}
+{"id": 445, "raspuns": "Dacă ai pune un print în interiorul buclei imbricate, imediat după linia `inv_count += 1`, ce valoare ai vedea afișată pentru `inv_count` în primele iterații?"}
+{"id": 446, "raspuns": "Ce crezi că se întâmplă cu variabila `inv_count` în momentul în care programul începe să execute bucla `for` din linia 3?"}
+{"id": 447, "raspuns": "Ce crezi că se întâmplă cu `result_list` înainte de a fi folosită în linia 4?"}
+{"id": 448, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă cu funcția și de ce nu procesează toate datele din `stdata`?"}
+{"id": 449, "raspuns": "Cum se modifică valoarea variabilei `res` în fiecare iterație a buclei `for` și ce se întâmplă cu execuția funcției după ce aceasta se termină?"}
+{"id": 450, "raspuns": "Dacă `n` ar fi 1, ce valoare ar trebui să returneze funcția, și ce valoare returnează ea în realitate, având în vedere valoarea inițială a variabilei `nCr`?"}
+{"id": 451, "raspuns": "Dacă `n` ar fi 1, ce valoare ar trebui să returneze funcția, ținând cont de cum este calculată variabila `res`?"}
+{"id": 452, "raspuns": "La prima trecere prin buclă `while`, ce valoare are `msb` și ce se întâmplă cu funcția după acea valoare este calculată?"}
+{"id": 454, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și cum afectează asta execuția următoarelor iterații?"}
+{"id": 455, "raspuns": "De ce setezi `mx` la valoarea maximă dintre `mx` și `a[j-1]` în cadrul buclei, și ce implică asta pentru condiția din linia 5?"}
+{"id": 456, "raspuns": "De ce instrucțiunea `return` de pe linia 10 este în interiorul buclei `for`?"}
+{"id": 457, "raspuns": "Cum se modifică valoarea variabilei `count` în timpul buclei `while` și cum influențează asta momentul în care funcția se oprește și returnează un rezultat?"}
+{"id": 458, "raspuns": "Dacă `grid` ar fi `[[1, 2], [3, 4]]` și `n` ar fi 2, ce rezultat te-ai aștepta să returneze funcția și ce valoare are `excl` după prima iterație a buclei `for`?"}
+{"id": 459, "raspuns": "De ce execuția funcției se oprește după ce parcurge doar prima iterație a buclei `for` de la linia 3?"}
+{"id": 460, "raspuns": "La prima iterație a buclei `while`, ce valoare returnează funcția și cum afectează asta execuția ulterioară?"}
+{"id": 461, "raspuns": "De ce, atunci când elementul căutat `x` este mai mic decât elementul din mijloc `A[mid]`, ajustezi `left` la `mid + 1`?"}
+{"id": 462, "raspuns": "Dacă ai pune un `print(maxvalue)` înainte de bucla `for i in range(s - 1)`, ce valoare ai vedea afișată?"}
+{"id": 463, "raspuns": "Cum se modifică valoarea lui `maxvalue` în timpul executării buclei `for i in range(s - 1)` și ce se întâmplă cu funcția după ce aceasta se termină?"}
+{"id": 464, "raspuns": "La prima iterație a buclei `for i in range(s - 1)`, ce valoare are `maxvalue` și cum se compară cu valoarea calculată pentru `i * j * k`?"}
+{"id": 465, "raspuns": "Cum se modifică valoarea variabilei `squareofsum` în timpul buclei `for` și ce valoare are aceasta la final, comparativ cu ce ar trebui să fie?"}
+{"id": 466, "raspuns": "Dacă `n` ar fi 1, ce rezultat te-ai aștepta să returneze funcția, și cum se calculează acesta folosind valorile curente ale variabilelor `sumofsquares` și `squareofsum`?"}
+{"id": 467, "raspuns": "La prima iterație a buclei `for`, ce valoare are `sumofsquares` și cum influențează asta rezultatul final?"}
+{"id": 468, "raspuns": "Cum se modifică valoarea variabilei `res` în timpul primei bucle `for` și ce valoare are aceasta înainte de a intra în a doua buclă `for`?"}
+{"id": 469, "raspuns": "La prima iterație a celei de-a doua bucle, ce valoare are `res` și ce se întâmplă după ce funcția se termină?"}
+{"id": 470, "raspuns": "Dacă funcția ta ar fi rulată cu `test_tuple = (1, 2, 3, 4)`, ce ar trebui să fie valorile lui `sum1` și `sum2` la final?"}
+{"id": 471, "raspuns": "De ce `sum1` este utilizată în linia 5 fără a fi inițializată înainte?"}
+{"id": 472, "raspuns": "Cum se modifică valorile lui `sum1` și `sum2` pe parcursul execuției buclei `for` și ce se întâmplă cu funcția după ce o singură iterație a buclei a fost executată?"}
+{"id": 473, "raspuns": "La prima iterație a buclei `for`, ce valoare are `res` și cum afectează instrucțiunea `return` comportamentul funcției?"}
+{"id": 475, "raspuns": "Dacă funcția ar primi lista `[1, -2, 3, -4, 5]`, ce ar trebui să returneze și ce returnează de fapt?"}
+{"id": 476, "raspuns": "Ce crezi că face instrucțiunea `return dict` în interiorul buclei `for` și cum afectează acest lucru rezultatul final al funcției?"}
+{"id": 477, "raspuns": "Dacă ai pune un `print(result)` în interiorul buclei `for i in range(n)`, ce valoare ai vedea afișată și ce ar însemna asta pentru rezultatul final al funcției?"}
+{"id": 478, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și ce se întâmplă cu restul caracterelor din șir?"}
+{"id": 479, "raspuns": "Ce crezi că se întâmplă în funcția `bin_coff` înainte de a începe bucla `for` și cum influențează asta valoarea returnată?"}
+{"id": 481, "raspuns": "De ce instrucțiunea `return val` se află în interiorul buclei `for` din funcția `bin_coff`?"}
+{"id": 482, "raspuns": "Dacă ai pune un `print(maxOcc)` înainte de bucla `for i in range(26)`, ce valoare ai vedea afișată și cum ar putea asta să afecteze rezultatul final al funcției?"}
+{"id": 483, "raspuns": "Dacă ai pune un print în interiorul buclei de la linia 8, după ce calculezi `maxOcc`, ce valoare ai vedea afișată pentru `maxOcc` în cazul unui șir de caractere cu o singură literă repetată de mai multe ori?"}
+{"id": 484, "raspuns": "Dacă ai pune un print în interiorul buclei `for i in range(26)`, imediat înainte de `return n - maxOcc`, ce valoare ai vedea afișată și cum se schimbă de-a lungul execuției programului?"}
+{"id": 485, "raspuns": "Cum se modifică `list1` după prima iterație a buclei `for` și ce efect are acest lucru asupra execuției ulterioare a codului?"}
+{"id": 486, "raspuns": "Cum se modifică valoarea variabilei `rectangles` în timpul execuției programului și ce se întâmplă dacă nu i se atribuie o valoare inițială?"}
+{"id": 487, "raspuns": "Dacă ai pune un print înainte de bucla `for a`, ce valoare are variabila `rectangles`?"}
+{"id": 488, "raspuns": "Dacă `radius` ar fi 2, ce ar trebui să returneze funcția ta și ce returnează de fapt?"}
+{"id": 489, "raspuns": "Cum se modifică valoarea variabilei `result` pe parcursul buclei `for` și la ce moment funcția se oprește din executare?"}
+{"id": 490, "raspuns": "De ce crezi că variabila `max_val` funcționează corect în bucla `for` fără a avea o valoare inițială?"}
+{"id": 491, "raspuns": "Ce crezi că ar trebui să reprezinte `max_val` pe parcursul iterației prin lista `nums` și cum influențează acest lucru valoarea lui `result`?"}
+{"id": 492, "raspuns": "Dacă ai pune un `print(flip_count)` la începutul funcției `get_flip_with_starting_charcter`, ce valoare ar afișa și de ce ar putea fi o problemă?"}
+{"id": 493, "raspuns": "La prima iterație a buclei `for` în funcția `get_flip_with_starting_charcter`, ce valoare returnează funcția și ce efect are asta asupra execuției ulterioare?"}
+{"id": 494, "raspuns": "De ce ai inițializat `flip_count` cu 1 în loc de 0 la linia 4?"}
+{"id": 495, "raspuns": "De ce crezi că `count` are o valoare validă înainte de a fi folosită în bucla `while`?"}
+{"id": 496, "raspuns": "De ce funcția ta returnează `count` după prima iterație a buclei `while` pe linia 6?"}
+{"id": 498, "raspuns": "Ce crezi că se întâmplă cu `next_list` și când ar trebui să se oprească bucla `for j in range(0,len(str))`?"}
+{"id": 499, "raspuns": "Dacă apelezi funcția `permute_string(\"abc\")`, ce listă de permutări te aștepți să primești, și cum ar afecta inițializarea `next_list` rezultatul final?"}
+{"id": 500, "raspuns": "Ce crezi că se întâmplă cu valoarea variabilei `counts` în interiorul buclei `while` și de ce bucla continuă la infinit?"}
+{"id": 501, "raspuns": "De ce crezi că funcția se oprește după ce a procesat doar prima linie din `multi_list`?"}
+{"id": 502, "raspuns": "Dacă ai pune un print în interiorul buclei `while` pentru valoarea returnată de `return -1` de pe linia 15, ce valoare crezi că ai vedea și cum ar afecta asta comportamentul funcției?"}
+{"id": 503, "raspuns": "Cum se modifică valoarea variabilei `freq` pe parcursul buclei `for` și ce se întâmplă în momentul în care funcția se oprește?"}
+{"id": 504, "raspuns": "Ce crezi că se întâmplă cu variabila `mn` înainte de a fi folosită în comparații?"}
+{"id": 506, "raspuns": "Ce crezi că se întâmplă cu funcția înainte ca bucla `for` să se termine, având în vedere linia 7?"}
+{"id": 507, "raspuns": "Ce crezi că se întâmplă cu programul tău când linia 12 este executată în interiorul buclei `while`?"}
+{"id": 508, "raspuns": "Dacă ai pune un print în interiorul buclei, chiar înainte de `return (res)`, ce valoare ar afișa pentru `res` și cum se modifică aceasta în timpul execuției?"}
+{"id": 509, "raspuns": "De ce returnezi `None` în interiorul buclei `for c in char_order` și nu după ce ai verificat toate caracterele din `char_order`?"}
+{"id": 510, "raspuns": "De ce adaugi caracterele în `char_order` în bucla `for` fără a le inițializa mai întâi?"}
+{"id": 511, "raspuns": "Dacă execuți funcția cu `n = 5`, `r = 2` și `p = 10`, ce valoare ar trebui să returneze și ce valoare primești de fapt?"}
+{"id": 512, "raspuns": "Dacă funcția ar trebui să rearrangeze numărul `321`, ce rezultat te-ai aștepta să obții?"}
+{"id": 513, "raspuns": "Dacă `nums1 = [1, 2]` și `nums2 = [1, 2]` și `k = 2`, ce ar trebui să returneze funcția și ce valoare are `queue` înainte de prima iterație a buclei `while`?"}
+{"id": 514, "raspuns": "La prima iterație a buclei `while`, ce se întâmplă cu valoarea returnată de funcție și cum afectează acest lucru rezultatul final?"}
+{"id": 515, "raspuns": "Cum se modifică valoarea variabilei `pairs` în timpul execuției codului și ce se întâmplă dacă nu a fost inițializată?"}
+{"id": 516, "raspuns": "De ce funcția se oprește după ce verifici doar primul element din listă, chiar dacă lista are mai mulți elemente?"}
+{"id": 518, "raspuns": "La prima iterație a buclelor imbricate, ce valori vor avea `x` și `y` și cum se compară produsul lor cu produsul elementelor curente `arr[i]` și `arr[j]`?"}
+{"id": 519, "raspuns": "Dacă ai pune un print în interiorul buclei `for i`, ce valoare ar avea `x` și `y` după prima iterație și cum se schimbă acestea în iterațiile următoare?"}
+{"id": 520, "raspuns": "Dacă funcția ta ar trebui să calculeze suma divizorilor pentru numărul 6, ce valoare crezi că ar trebui să returneze `dp[6]`?"}
+{"id": 521, "raspuns": "Dacă funcția ar primi ca intrare `[('a', 1, 2), ('a', 3), ('b', 4)],` ce listă de tupluri te-ai aștepta să returneze?"}
+{"id": 522, "raspuns": "Dacă `n` ar fi 1, ce valoare ar trebui să returneze funcția, ținând cont de modul în care este inițializată variabila `sum` pe linia 2?"}
+{"id": 523, "raspuns": "De ce crezi că valoarea variabilei `sum` este corectă la începutul buclei `for`?"}
+{"id": 524, "raspuns": "Cum se modifică valoarea variabilei `sum` în fiecare iterație a buclei `for` și ce se întâmplă cu funcția după prima iterație?"}
+{"id": 525, "raspuns": "Dacă ai pune un print în interiorul buclei `for` pentru a afișa valoarea lui `sum` la fiecare iterație, ce ai observa despre modul în care se schimbă aceasta, mai ales la primele iterații?"}
+{"id": 526, "raspuns": "Cum se modifică valoarea variabilei `sum` în fiecare iterație a buclei `for` și ce se întâmplă cu funcția după prima iterație?"}
+{"id": 527, "raspuns": "Ce crezi că se întâmplă cu valoarea variabilei `sum` înainte de a începe bucla `for`?"}
+{"id": 528, "raspuns": "Dacă funcția ar trebui să numere de câte ori elementul `x` apare în lista `list1`, ce rezultat te-ai aștepta să obții dacă apelezi funcția cu `list1 = [[1, 2], [1, 3], [1, 4]]` și `x = 1`?"}
+{"id": 531, "raspuns": "De ce ai plasat instrucțiunea `return my_list` în interiorul buclei `while gap > 0`?"}
+{"id": 532, "raspuns": "Cum se modifică valoarea lui `j` în interiorul buclei `while` de pe linia 7, și cum influențează această modificare ordinea elementelor din `my_list`?"}
+{"id": 533, "raspuns": "Ce crezi că ar trebui să determine condiția din linia 3 pentru a asigura că algoritmul Shell sort se termină corect?"}
+{"id": 534, "raspuns": "Ce crezi că se întâmplă dacă un număr negativ apare în lista `list1` și linia 3 este executată?"}
+{"id": 535, "raspuns": "Cum se modifică valoarea variabilei `str2` pe parcursul execuției funcției, și ce se întâmplă dacă nu are o valoare inițială?"}
+{"id": 537, "raspuns": "De ce funcția ta se oprește după ce procesează doar primul caracter din șir?"}
+{"id": 538, "raspuns": "La prima iterație a buclei `for idx`, ce valoare returnează funcția și de ce nu continuă să execute restul codului?"}
+{"id": 539, "raspuns": "La prima iterație a buclei `for idx in range(0, len(test_list))`, ce valoare are `res` și de ce ar putea fi problematic?"}
+{"id": 540, "raspuns": "Dacă ai pune un print în interiorul buclelor pentru variabila `res` înainte de a o incrementa, ce valoare ar afișa și cum s-ar schimba aceasta în timpul execuției codului?"}
+{"id": 541, "raspuns": "La prima iterație a buclei `for`, ce valoare va avea `n1` dacă `nums` conține numere pozitive și negative?"}
+{"id": 542, "raspuns": "Ce crezi că reprezintă inițial variabila `n1` și cum ar trebui să reflecte numărul de numere pozitive din listă?"}
+{"id": 543, "raspuns": "De ce `return`-ul este poziționat în interiorul buclei `for` și ce efect are acest lucru asupra valorii returnate de funcție?"}
+{"id": 544, "raspuns": "De ce crezi că valoarea variabilei `max` este corectă la începutul funcției?"}
+{"id": 545, "raspuns": "Cum se modifică valoarea variabilei `max` pe parcursul buclei `for` și ce se întâmplă după prima iterație?"}
+{"id": 546, "raspuns": "Dacă funcția ta ar primi lista `[-5, -2, -8, -1]`, ce valoare ar returna și este aceasta cea mai mare valoare negativă din listă?"}
+{"id": 547, "raspuns": "Dacă `test_list` ar fi `[('a', 'b', 'c'), ('d', 'e', 'f')]` și `K` ar fi 1, ce ar trebui să returneze funcția și ce valoare are `res` după ce bucla `for` s-a executat complet?"}
+{"id": 548, "raspuns": "Dacă `test_list` ar fi `[('a', 'b', 'c'), ('d', 'e', 'f')]` și `K` ar fi 1, ce ar trebui să returneze funcția și ce returnează de fapt?"}
+{"id": 549, "raspuns": "De ce nu inițializezi variabila `count` înainte de a o folosi în buclă?"}
+{"id": 550, "raspuns": "Ce crezi că se întâmplă cu funcția după ce bucla a parcurs un singur element, ținând cont de poziția instrucțiunii `return count` pe linia 7?"}
+{"id": 551, "raspuns": "Dacă ai pune un `print(count)` înainte de bucla `for`, ce valoare te-ai aștepta să vezi afișată și se potrivește cu ceea ce se întâmplă în realitate?"}
+{"id": 552, "raspuns": "Dacă execuți funcția cu stringul \"abcABC\", ce valoare te aștepți să returneze variabila `upper_ctr` la final?"}
+{"id": 553, "raspuns": "Ce crezi că reprezintă valoarea inițială a variabilei `upper_ctr` și cum ar trebui să influențeze aceasta numărarea literelor mari din șir?"}
+{"id": 554, "raspuns": "Dacă ai pune un `print(result)` în interiorul buclei `for` de la linia 7, ce ai vedea și cum ar influența execuția funcției?"}
+{"id": 555, "raspuns": "Cum se modifică valoarea variabilei `result` în cadrul funcției, mai ales în prima iterație a buclei `for`?"}
+{"id": 556, "raspuns": "De ce folosești variabila `octalNum` în linia `octalNum += remainder * countval` fără să-i atribui o valoare inițială?"}
+{"id": 557, "raspuns": "Dacă funcția ta primește numărul zecimal 10, ce rezultat octal te-ai aștepta să returneze și ce returnează de fapt?"}
+{"id": 558, "raspuns": "Ce crezi că ar trebui să fie valoarea inițială a variabilei `octalNum` și de ce?"}
+{"id": 559, "raspuns": "Dacă execuți funcția cu `arr = [2, 3, -2, 4]` și `n = 4`, ce rezultat ar trebui să returneze, și ce returnează funcția ta în prezent?"}
+{"id": 561, "raspuns": "Dacă ai pune un print în interiorul buclei `for j in range(n)` pentru `final_profit[i][j]`, ce ai vedea și cum se schimbă această valoare în timpul execuției programului?"}
+{"id": 562, "raspuns": "De ce folosești `max_so_far` fără să îi atribui o valoare inițială înainte de a o compara cu `curr_price`?"}
+{"id": 564, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și cum afectează asta rezultatul final?"}
+{"id": 566, "raspuns": "Ce crezi că se întâmplă cu variabila `mul` înainte de a fi folosită în prima iterație a buclei `for`?"}
+{"id": 567, "raspuns": "Cum se modifică valoarea lui `n` în fiecare iterație a buclei `while` și ce se întâmplă după ce funcția execută linia 4?"}
+{"id": 568, "raspuns": "Dacă funcția ta ar trebui să returneze cel mai frecvent caracter dintr-un șir, ce rezultat te-ai aștepta să primești dacă ai apela funcția cu șirul \"abracadabra\"?"}
+{"id": 569, "raspuns": "Dacă ai pune un print în interiorul celei de-a doua bucle (`for i in str1:`), pe linia 9, ce valoare ai vedea afișată pentru `max` în primul iterat al buclei și cum se compară cu `ctr[ord(i)]`?"}
+{"id": 571, "raspuns": "Cum se modifică valoarea variabilei `i` în fiecare iterație a buclei `for` și ce efect are aceasta asupra momentului în care funcția se oprește?"}
+{"id": 572, "raspuns": "Cum se modifică valoarea variabilei `answer` în cadrul buclei `for` din funcția `nCr` și ce valoare are aceasta la final, dacă inițial este setată la 0?"}
+{"id": 573, "raspuns": "De ce începi să calculezi `nCr` cu `answer` fără a-i atribui o valoare inițială?"}
+{"id": 574, "raspuns": "La prima iterație a buclei `for` din funcția `nCr`, ce valoare are `answer` și cum afectează acest lucru rezultatul final al funcției?"}
+{"id": 575, "raspuns": "La prima iterație a buclei `for i in range(0, lst)`, ce se întâmplă cu funcția și de ce nu sortăm întregul tuplu?"}
+{"id": 576, "raspuns": "De ce crezi că sortarea se face corect dacă elementul din stânga este mai mic decât elementul din dreapta în linia 5?"}
+{"id": 577, "raspuns": "Ce crezi că reprezintă inițial variabila `freq` și cum ar trebui să se schimbe valoarea ei în funcție de modul în care elementele din `arr` sunt comparate?"}
+{"id": 578, "raspuns": "La prima iterație a buclei, ce valoare are variabila `mn` și cum influențează acest lucru comportamentul codului?"}
+{"id": 579, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă cu valoarea returnată de funcție?"}
+{"id": 580, "raspuns": "Dacă ai pune un `print(gcd)` în interiorul buclei `for`, ce valoare ai vedea afișată și cum se schimbă aceasta în funcție de valorile lui `x` și `y`?"}
+{"id": 581, "raspuns": "De ce ai ales să verifici dacă `x % k == 1` în linia 6, când ești interesat de divizibilitate?"}
+{"id": 582, "raspuns": "Cum se modifică valoarea variabilei `ans` la fiecare iterație a buclei `for` și ce se întâmplă cu execuția funcției după ce se execută linia 5?"}
+{"id": 583, "raspuns": "Dacă ai pune un `print(sum)` la finalul buclei `for`, ce valoare te-ar aștepta să vezi și corespunde aceasta cu suma pe care o calculezi?"}
+{"id": 584, "raspuns": "Dacă ai pune un print în interiorul buclei, după linia 5, ce valoare ai vedea afișată și cum s-ar schimba aceasta la fiecare iterație?"}
+{"id": 585, "raspuns": "Dacă funcția ta ar trebui să calculeze suma primelor trei cuburi, ce rezultat te-ai aștepta să returneze când `n` este 3?"}
+{"id": 586, "raspuns": "De ce folosești variabila `k` fără a-i atribui o valoare inițială înainte de a o utiliza în linia 3?"}
+{"id": 587, "raspuns": "De ce ai inițializat variabila `k` cu valoarea 1 și nu cu 0?"}
+{"id": 588, "raspuns": "De ce funcția se oprește după ce a procesat doar o parte din elementele listei `A` și returnează rezultatul pe linia 9?"}
+{"id": 589, "raspuns": "Dacă apelezi funcția cu `n = 5` și `k = 2`, ce rezultat te-ai aștepta să primești și ce primești în realitate, ținând cont de linia 13?"}
+{"id": 590, "raspuns": "Dacă funcția ar primi `list1 = [\"mere\", \"pere\", \"mere\"]` și `removewords = [\"mere\"]`, ce listă te-ai aștepta să returneze funcția?"}
+{"id": 591, "raspuns": "Dacă ai pune un print în interiorul buclei `while`, imediat după linia `n = n-2`, ce valoare ai vedea afișată pentru `n` în prima iterație și ce ar implica asta pentru execuția funcției?"}
+{"id": 592, "raspuns": "Dacă execuți funcția cu `arr = [1, 2, 3]` și `k = 2`, ce valoare ar trebui să returneze și ce se întâmplă de fapt când ajungi la linia 10?"}
+{"id": 593, "raspuns": "La prima trecere prin buclă, ce se întâmplă cu valoarea `dp[i][j]` atunci când `arr[j - 1]` este un număr pozitiv?"}
+{"id": 594, "raspuns": "Cum se modifică valoarea lui `res` la fiecare iterație a buclei `for ele in flatten(test_tuple)` și de ce funcția se oprește după prima iterație?"}
+{"id": 597, "raspuns": "Dacă funcția ar trebui să găsească cel mai mare număr dintr-o listă, ce rezultat te-ai aștepta să primești dacă îi dai lista `[1, 5, 2, 8, 3]`?"}
+{"id": 598, "raspuns": "Dacă dai funcției un array `arr = [1, 101, 2, 3, 100, 4, 5]`, ce valoare ar trebui să returneze, și ce valoare returnează funcția ta în loc?"}
+{"id": 599, "raspuns": "De ce folosești variabila `max` fără a-i atribui o valoare inițială înainte de a o compara cu elementele din `msis`?"}
+{"id": 600, "raspuns": "La ultima iterație a buclei `for i in range(n)`, ce se întâmplă cu valoarea lui `max` și cum influențează aceasta rezultatul funcției?"}
+{"id": 601, "raspuns": "Cum se modifică valoarea variabilei `count` în timpul execuției codului, și ce valoare are aceasta înainte de a intra în prima buclă?"}
+{"id": 602, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `count` și când se oprește funcția, având în vedere poziția instrucțiunii `return` pe linia 7?"}
+{"id": 603, "raspuns": "Cum se modifică valoarea variabilei `count` în timpul execuției funcției, și ce valoare are aceasta la final dacă te uiți pas cu pas la fiecare iterație a buclelor?"}
+{"id": 604, "raspuns": "Dacă apelezi funcția cu `n = 5`, ce valoare te aștepți să returneze, și ce returnează de fapt codul tău?"}
+{"id": 605, "raspuns": "Cum se modifică valoarea variabilei `n1` pe parcursul execuției codului, în funcție de valorile elementelor din lista `nums`?"}
+{"id": 606, "raspuns": "De ce funcția se oprește după ce analizează doar primul element din listă, având în vedere că instrucțiunea `return` se află în interiorul buclei `for`?"}
+{"id": 607, "raspuns": "De ce valorile variabilei `n1` sunt incrementate în funcție de numerele negative, dar aceasta nu are o valoare inițială definită înainte de buclă?"}
+{"id": 608, "raspuns": "Cum se modifică valoarea variabilei `res` în funcție de rezultatul apelului recursiv pe linia 9, și ce implică asta pentru găsirea numărului minim de monede?"}
+{"id": 609, "raspuns": "De ce consideri că funcția ta ar trebui să se oprească după ce examinează doar prima monedă posibilă, pe linia 11?"}
+{"id": 610, "raspuns": "Ce crezi că se întâmplă cu funcția după ce execuția ajunge la linia 13 și de ce ar putea fi o problemă?"}
+{"id": 611, "raspuns": "Dacă ai pune un `print(res)` în interiorul buclei, ce ai vedea afișat și cum se schimbă valoarea lui `res` la fiecare iterație?"}
+{"id": 612, "raspuns": "Cum se modifică valoarea variabilei `res` în timpul execuției funcției și ce se întâmplă înainte de prima iterație a buclei `for`?"}
+{"id": 613, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și de ce nu continuă să proceseze restul cuvintelor din șir?"}
+{"id": 614, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă cu execuția funcției și de ce crezi că nu ajunge să parcurgă întregul array?"}
+{"id": 615, "raspuns": "Cum se modifică valoarea variabilei `count` pe parcursul funcției și ce se întâmplă când elementele din array nu sunt consecutive?"}
+{"id": 616, "raspuns": "Dacă funcția ar trebui să calculeze distanța Hamming totală pentru n = 10, ce valoare te-ai aștepta să returneze?"}
+{"id": 617, "raspuns": "De ce folosești variabila `sum` înainte de a-i atribui o valoare inițială?"}
+{"id": 618, "raspuns": "Ce crezi că ar trebui să facă variabila `i` în cadrul buclei `while` și cum ar putea influența valoarea inițială a acesteia rezultatul funcției?"}
+{"id": 619, "raspuns": "Dacă ai pune un `print(maximum)` înainte de bucla `for i in range(n)`, ce valoare ar avea `maximum` și de ce crezi că ar fi așa?"}
+{"id": 621, "raspuns": "La ultima trecere prin bucla `for i in range(n)`, ce valoare returnează funcția și de ce crezi că aceasta nu este cea corectă?"}
+{"id": 622, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și de ce nu continuă să calculeze suma pentru restul numerelor?"}
+{"id": 623, "raspuns": "Dacă `n` ar fi 1, ce valoare ar trebui să returneze funcția ta, ținând cont de suma cuburilor numerelor impare de la 1 până la `n`?"}
+{"id": 624, "raspuns": "Cum se modifică valoarea variabilei `sm` în timpul buclei și ce valoare are aceasta înainte de a fi adăugată în ea?"}
+{"id": 625, "raspuns": "Ce crezi că se întâmplă cu variabila `od_li` înainte de a fi folosită în bucla `for`?"}
+{"id": 626, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă și de ce funcția se oprește după aceea?"}
+{"id": 627, "raspuns": "La prima trecere prin bucla `for i in range(0,N)`, ce se întâmplă cu valoarea returnată de funcție?"}
+{"id": 628, "raspuns": "Ce crezi că reprezintă valoarea inițială a variabilei `oddPair` și cum ar putea afecta rezultatul final al funcției?"}
+{"id": 629, "raspuns": "Dacă funcția ta ar trebui să numere perechile cu XOR impar, ce valoare ar avea `oddPair` la final dacă `A` ar fi `[1, 2, 3]` și `N` ar fi 3?"}
+{"id": 630, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `max_so_far` în timpul execuției programului și cum ar putea influența rezultatul final?"}
+{"id": 631, "raspuns": "La prima iterație a buclei, ce se întâmplă cu valoarea lui `max_ending_here` și cum afectează acest lucru rezultatul final?"}
+{"id": 632, "raspuns": "La prima iterație a buclei `for`, ce valoare are `max_so_far` și ce se întâmplă cu execuția programului?"}
+{"id": 633, "raspuns": "Dacă funcția ar procesa lista `[('a', 1), ('b', 2), ('a', 3)]`, ce dicționar crezi că ar trebui să returneze și ce se întâmplă de fapt, având în vedere linia 6?"}
+{"id": 634, "raspuns": "Cum se modifică valoarea variabilei `cnt` în fiecare iterație a buclei `for i in range(n)` și de ce crezi că funcția se oprește mai devreme decât ar trebui?"}
+{"id": 635, "raspuns": "La prima iterație a buclei `for`, ce se întâmplă cu funcția ta și de ce nu procesează toate liniile din `list1`?"}
+{"id": 636, "raspuns": "Cum se modifică valoarea variabilei `new_list` în timpul execuției funcției și ce se întâmplă dacă nu i se atribuie o valoare inițială?"}
+{"id": 637, "raspuns": "Ce rol are instrucțiunea `return dp[N - 1]` din interiorul buclei `for` și ce efect are asupra execuției programului?"}
+{"id": 638, "raspuns": "De ce consideri că, în linia 7, o diferență mai mare decât `K` ar trebui să ducă la actualizarea valorii din `dp[i]`?"}
+{"id": 640, "raspuns": "Dacă funcția ar primi lista `[1, 2, 3]`, ce valoare ar trebui să returneze și ce se întâmplă cu variabila `p` înainte de a fi folosită în buclă?"}
+{"id": 641, "raspuns": "Ce crezi că se întâmplă cu valoarea lui `p` și când se oprește funcția din a executa bucla `for`?"}
+{"id": 642, "raspuns": "De ce crezi că instrucțiunea `return (i)` de pe linia 8 este executată în timpul fiecărei iterații a buclei `for`?"}
+{"id": 643, "raspuns": "Dacă ai pune un `print(count)` la începutul funcției, ce valoare ar afișa și cum ar afecta asta rezultatul calculului?"}
+{"id": 645, "raspuns": "Cum se modifică valoarea lui `j` în fiecare iterație a buclei `while` și ce efect are acest lucru asupra execuției programului, mai ales când `A[i]` și `B[j]` nu sunt egale?"}
+{"id": 646, "raspuns": "Dacă ai pune un print al valorii lui `i` la începutul buclei `while` de la linia 3, ce ar vedea și cum ar afecta asta comportamentul programului?"}
+{"id": 647, "raspuns": "De ce funcția ta se oprește după ce procesează primul element din `test_tuple` și nu continuă să itereze prin toate elementele?"}
+{"id": 649, "raspuns": "La prima iterație a buclei `for`, ce valoare returnează funcția și cum afectează acest lucru rezultatul final?"}
+{"id": 650, "raspuns": "La prima iterație a buclei `for`, ce valoare are `res_num` și cum influențează rezultatul final?"}
+{"id": 651, "raspuns": "Dacă apelezi funcția `catalan_number` cu argumentul `3`, ce valoare te-ai aștepta să returneze și ce se întâmplă cu variabila `res_num` înainte de a fi folosită în calcul?"}
+{"id": 652, "raspuns": "Cum se modifică valoarea lui `i` în fiecare iterație a buclei `for` și cum influențează acest lucru momentul în care funcția se oprește?"}
+{"id": 653, "raspuns": "De ce returnezi valoarea lui `C[k]` în interiorul primei bucle `for` de pe linia 7?"}
+{"id": 654, "raspuns": "De ce crezi că linia 6 ar trebui să returneze `(count // 2)` dacă numărul de diferențe este impar?"}
+{"id": 655, "raspuns": "Dacă funcția ta ar trebui să calculeze numărul minim de permutări necesare pentru a transforma `str1` în `str2`, ce rezultat te-ai aștepta să returneze pentru `min_Swaps(\"abc\", \"cba\")`?"}
+{"id": 658, "raspuns": "Cum se schimbă valoarea variabilei `total` în prima iterație a buclei `for` și ce implică asta pentru rezultatul final?"}
+{"id": 659, "raspuns": "De ce ai plasat instrucțiunea `return` în interiorul buclei `for i in range(1, m+1)`?"}
+{"id": 660, "raspuns": "Dacă funcția ta ar trebui să verifice dacă numărul 10 este prim sau nu, ce rezultat te-ai aștepta să returneze și de ce?"}
+{"id": 661, "raspuns": "Cum se modifică valoarea lui `A[n]` pe parcursul buclei `for` și ce se întâmplă cu execuția funcției după ce ajungi la `return A[n]`?"}
