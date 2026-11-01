@@ -1,7 +1,8 @@
 # Bachelor thesis project: Socratic code tutor
 
 UVT bachelor thesis, Computer Science. QLoRA fine-tuning of a small model to act as a programming
-tutor for beginners (CoderDojo): it asks guiding questions in Romanian and does not give the solution.
+tutor for beginners (CoderDojo): it asks guiding questions in English and does not give the solution.
+(Until 2026-11-01 the tutor was Romanian; it is English-only for now.)
 
 ## Environment
 - WSL2 Ubuntu on Windows, RTX 4070 (12 GB VRAM), 32 GB RAM
@@ -17,8 +18,8 @@ tutor for beginners (CoderDojo): it asks guiding questions in Romanian and does 
 - results/: saved output of every run
 
 ## Language
-- Code, file names, comments, docs and the journal are in English.
-- Everything the tutor model reads or writes stays in Romanian: tutor answers, simulated student complaints, the filter keywords that match Romanian text, and the verbatim model inputs in experiments/.
+- Everything is in English: code, files, docs, the journal, and the tutor's inputs and answers.
+- Exception: experiments/ and data/archive/ are old records made with Romanian data; they are kept as they were.
 - Talk to me in English.
 
 ## What I have learned so far

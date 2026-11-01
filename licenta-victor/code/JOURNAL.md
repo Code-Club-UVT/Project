@@ -122,3 +122,18 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
   - experiments/: generate_bugs.py, build_data.py and make_toy_data.py re-run in a scratch folder reproduce their .jsonl files byte for byte; the other scripts need the GPU and adapters and were only syntax-checked.
 - AI tools: Claude Code (translation, renaming, conversion and checks). Prompts: the new gemma3 instructions are in scripts/2_responses.py (teacher_request, STYLES).
 - Commit: noted in the next entry.
+
+## 2026-11-01 · Tutor switched to English
+- Why: decision to make every input, answer and file English and leave Romanian aside for now (simpler scope; the repository must be English).
+- Commit of the previous entry (translation of the project): 7084743.
+- What I changed in scripts/2_responses.py:
+  - Tutor system prompt: "You are a programming tutor. Never give the solution. Ask questions that guide the student." (no "answer in Romanian").
+  - Student complaints, now English: "My function doesn't work and I don't understand why." / "Something is wrong in my code, can you help me?" / "The result is not what I expected." / "I don't know what I did wrong here."
+  - Teacher prompt to gemma3:12b: same structure as before, ending with "Write in clear, simple English for a beginner. Reply with the question only."
+  - Question styles (one per mutant, fixed by id), required openings: "If" (concrete input example), "How" (trace a variable), "On the first"/"On the last" (loop pass), "What do you think" (role of a line), "If you added a print", "Why". Forbidden openings: "Notice", "Look at", "Take a look" (the English equivalents of the Romanian „Observă/Uită-te" that dominated the first generation); up to 3 retries.
+  - Filter keywords in English: "line N", "last", "condition", "compar", "remainder", "even", "odd" (plus "return", "range", "%", variable names, as before).
+- Check on 12 val examples: all answers in English, varied openings; 9/12 pass the filter, 3 rejected as "does not point at the bug" (good indirect questions); 1 passing answer gives the solution ("Why did you initialize n1 to 1 instead of 0?"). Same weaknesses as the Romanian filter; the filter rework is still pending.
+- Not changed: experiments/ and data/archive/ (old Romanian records); scripts/1_mutants.py and data/mutants.jsonl (already language-neutral).
+- Next: run step 2 (~1 h) to generate data/raw_responses.jsonl and data/train/val/test.jsonl, then the filter rework.
+- AI tools: Claude Code (editing the script, testing the prompt on val, docs).
+- Commit: noted in the next entry.

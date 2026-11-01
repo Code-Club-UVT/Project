@@ -1,10 +1,6 @@
 # Step 2: the teacher model (gemma3:12b via Ollama) writes one Socratic tutor question
-# per mutant, in Romanian. A rule-based filter drops bad answers, then the kept examples
+# per mutant, in English. A rule-based filter drops bad answers, then the kept examples
 # are split into train/val/test by MBPP task_id, so no program appears in two splits.
-#
-# Instructions to gemma3 are in English; the tutor's output must be Romanian, because the
-# end users are Romanian beginners (CoderDojo). For the same reason the simulated student
-# complaints stay in Romanian, and the filter matches Romanian words in gemma3's answers.
 import json
 import os
 import random
@@ -19,13 +15,12 @@ RAW = "data/raw_responses.jsonl"
 random.seed(0)
 
 SYSTEM_TUTOR = ("You are a programming tutor. Never give the solution. "
-                "Ask questions that guide the student. Always answer in Romanian.")
-# Simulated student messages: Romanian on purpose (they are the model's input at use time).
+                "Ask questions that guide the student.")
 COMPLAINTS = [
-    "Funcția mea nu merge, nu înțeleg de ce.",
-    "Ceva e greșit în codul meu, mă poți ajuta?",
-    "Rezultatul nu e cel pe care îl așteptam.",
-    "Nu știu ce am greșit aici.",
+    "My function doesn't work and I don't understand why.",
+    "Something is wrong in my code, can you help me?",
+    "The result is not what I expected.",
+    "I don't know what I did wrong here.",
 ]
 DESCRIPTION = {
     "flipped_comparison": "a comparison was flipped",
@@ -36,17 +31,17 @@ DESCRIPTION = {
     "return_in_loop": "the return statement is inside the loop, so the function stops too early",
     "deleted_update": "the variable in the while condition never changes, so the loop never ends",
 }
-# One question style per mutant. The required opening words are Romanian because the
-# answer is Romanian; the English meaning is given in parentheses.
+# One question style per mutant, each with a required opening, so the questions do not
+# all follow the same template.
 STYLES = [
-    "Ask what result they expect for a concrete input example that you choose. Start with „Dacă” (If).",
-    "Ask them to trace step by step how the value of one variable changes. Start with „Cum” (How).",
-    "Ask what happens on the first or the last pass through the loop. Start with „La prima” or „La ultima” (On the first / On the last).",
-    "Ask what role a specific line or variable plays in the program. Start with „Ce crezi” (What do you think).",
-    "Ask what they would see if they printed a specific value. Start with „Dacă ai pune un print” (If you added a print).",
-    "Ask why they chose a specific value or line. Start with „De ce” (Why).",
+    "Ask what result they expect for a concrete input example that you choose. Start with \"If\".",
+    "Ask them to trace step by step how the value of one variable changes. Start with \"How\".",
+    "Ask what happens on the first or the last pass through the loop. Start with \"On the first\" or \"On the last\".",
+    "Ask what role a specific line or variable plays in the program. Start with \"What do you think\".",
+    "Ask what they would see if they printed a specific value. Start with \"If you added a print\".",
+    "Ask why they chose a specific value or line. Start with \"Why\".",
 ]
-FORBIDDEN_STARTS = ("observă", "observi", "uită-te")  # Romanian: "notice" (x2), "look at"
+FORBIDDEN_STARTS = ("notice", "look at", "take a look")
 
 def teacher_request(m):
     style = random.Random(m["id"]).choice(STYLES)
@@ -61,8 +56,8 @@ def teacher_request(m):
         "Write a single short question, at most two sentences, that you would ask the student "
         "so they discover the mistake on their own. Do not say what the mistake is, do not give the solution, "
         "do not write code and do not quote the correct version. You may name the variable or the line to look at. "
-        f"{style} Do not start with „Observă”, „Observi” or „Uită-te”. "
-        "Write the question in correct Romanian, with diacritics. Reply with the question only."
+        f"{style} Do not start with \"Notice\", \"Look at\" or \"Take a look\". "
+        "Write in clear, simple English for a beginner. Reply with the question only."
     )
 
 def ask(text):
@@ -72,7 +67,7 @@ def ask(text):
         "options": {"temperature": 0.7, "num_predict": 150},
     })
     r.raise_for_status()
-    return r.json()["message"]["content"].strip().strip('"„”').strip()
+    return r.json()["message"]["content"].strip().strip('"“”').strip()
 
 def ask_varied(text):
     # Retry up to 3 times if the answer starts with a forbidden opening.
@@ -100,24 +95,22 @@ def rejection_reason(m, r):
     c_orig = condition(m["original_line"])
     if cat in ("flipped_comparison", "wrong_remainder") and c_orig and c_orig in r:
         return "gives the solution"
-    # The answer must point at the bug. Anchors are matched against Romanian text:
-    # "linia N" = "line N", "ultim" = "last", "condiți" = "condition", "compar" = "compare",
-    # "rest" = "remainder", "par/pare/pari" = "even".
-    anchors = [rf"linia {m['bug_line']}\b"]
+    # The answer must point at the bug: the line number or a keyword of the category.
+    anchors = [rf"line {m['bug_line']}\b"]
     v = re.match(r"(\w+) ", orig)
     if cat in ("wrong_initial_value", "deleted_initialization", "deleted_update") and v:
         anchors.append(rf"\b{re.escape(v.group(1))}\b")
     elif cat == "return_in_loop":
         anchors.append("return")
     elif cat == "shortened_range":
-        anchors += ["range", "ultim"]
+        anchors += ["range", r"\blast\b"]
     elif cat == "flipped_comparison":
         c = condition(m["modified_line"])
         if c:
             anchors.append(re.escape(c))
-        anchors += ["condiți", "compar"]
+        anchors += ["condition", "compar"]
     elif cat == "wrong_remainder":
-        anchors += ["%", "rest", r"\bpar(e|i)?\b"]
+        anchors += ["%", "remainder", r"\beven\b", r"\bodd\b"]
     if not any(re.search(a, r, re.IGNORECASE) for a in anchors):
         return "does not point at the bug"
     return None
