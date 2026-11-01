@@ -8,20 +8,13 @@ import re
 import sys
 from collections import Counter
 import requests
+from tutor_text import SYSTEM_TUTOR, COMPLAINTS
 
 MODEL = "gemma3:12b"
 URL = "http://localhost:11434/api/chat"
 RAW = "data/raw_responses.jsonl"
 random.seed(0)
 
-SYSTEM_TUTOR = ("You are a programming tutor. Never give the solution. "
-                "Ask questions that guide the student.")
-COMPLAINTS = [
-    "My function doesn't work and I don't understand why.",
-    "Something is wrong in my code, can you help me?",
-    "The result is not what I expected.",
-    "I don't know what I did wrong here.",
-]
 DESCRIPTION = {
     "flipped_comparison": "a comparison was flipped",
     "shortened_range": "the loop stops one step too early",

@@ -147,3 +147,19 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - Decision / next: rework the filter (it still rejects good indirect questions and lets ~31 solution-giving answers through), results to new files; then decide on category balance (deleted_update 2, shortened_range 9).
 - AI tools: gemma3:12b (answers), Claude Code (run and checks).
 - Commit: noted in the next entry.
+
+## 2026-11-01 · Stricter filter and fixed split (step 3)
+- Why: the step 2 filter (keyword match) let through answers that state the bug or give the fix, and rejected good indirect questions. Also, its split was done over the programs that survive the filter, so any filter change moved programs between train/val/test.
+- Commit of the previous entry: f902e3f.
+- What I did: new script scripts/3_filter.py (reads data/mutants.jsonl + data/raw_responses.jsonl, writes data/train_v2.jsonl, val_v2.jsonl, test_v2.jsonl; old files untouched). Shared tutor text moved to scripts/tutor_text.py (2_responses.py imports it, behaviour unchanged).
+  - Split fixed before filtering: all 314 programs with mutants, shuffled with seed 0, 10% test / 10% val / 80% train → 31 / 31 / 252 programs.
+  - New rejections: any answer with "instead of" (gives the alternative = the fix); for shortened_range, the original range(len(x)); "states the bug" for return_in_loop ("put/placing/appear ... inside the loop", "only the first") and for deleted_initialization/deleted_update ("without a starting value", "before it's assigned", "never initialized").
+  - New accepted anchors: return_in_loop "stop", "first pass/iteration", "immediately after", "how many times"; flipped_comparison "greater/less/smaller/larger/bigger", "increasing/decreasing"; shortened_range "final", "every/each element", "all the elements"; deleted_update "stop", "never end", "infinite"; for any category, predict-vs-actual questions ("what do you expect ... does the current code produce ...").
+  - Complaint per example now chosen with random.Random(id), so it is reproducible.
+- How the rules were chosen: Claude Code read all 66 val answers and marked each one (11 kept answers state the bug or give the fix; 8 rejected answers are good questions). With the new rules, all 19 changed decisions on val match the manual marks (val kept 57 → 54 of 66). Generalisation check on train (not used for tuning): 101 decisions change (57 recovered, 34 states the bug, 10 gives the solution); a random sample of 14 was read and all 14 were correct. Test was not looked at.
+- Known miss on val: #648 (wrong_remainder) "Why did you choose to check if a number is odd ... when the function is intended to extract even numbers?" gives the bug but passes.
+- Result (output: results/2026-11-01_1342_3_filter.txt): 661 answers, 552 kept, 109 rejected (48 does not point at the bug, 46 states the bug, 15 gives the solution). Kept per category: return_in_loop 233, deleted_initialization 137, wrong_initial_value 93, flipped_comparison 53, wrong_remainder 27, shortened_range 7, deleted_update 2. Examples: train 439 / val 54 / test 59. No program overlap between splits.
+- Problem left: imbalance. In train return_in_loop is 189/439 (43%); shortened_range 6 and deleted_update 2; val has no example of these two categories.
+- Decision / next: decide category balance, then the first QLoRA training on Qwen2.5-Coder-7B-Instruct with data/train_v2.jsonl, settings chosen on data/val_v2.jsonl.
+- AI tools: Claude Code (writing the filter, reading and marking the 66 val answers, checks). The manual marks were made by Claude Code, not by me; worth a human second look before training.
+- Commit: noted in the next entry.

@@ -1,0 +1,7 @@
+Answers: 661 | kept: 552 | rejected: 109
+   rejected, does not point at the bug: 48
+   rejected, states the bug: 46
+   rejected, gives the solution: 15
+Kept per category: {'return_in_loop': 233, 'deleted_initialization': 137, 'wrong_initial_value': 93, 'flipped_comparison': 53, 'wrong_remainder': 27, 'shortened_range': 7, 'deleted_update': 2}
+Programs per split: {'test': 31, 'val': 31, 'train': 252}
+Examples: train 439 | val 54 | test 59
