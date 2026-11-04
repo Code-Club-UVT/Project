@@ -179,3 +179,16 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - Next: step 2 on the extras (~20 min), then 3_filter.py → data v3.
 - AI tools: Claude Code (rules, scripts, checks).
 - Commit: noted in the next entry.
+
+## 2026-11-04 · Answers for the extra mutants and data v3 (steps 2 + 3)
+- Why: the 215 extra mutants from step 1b had no tutor question yet; with them, the rare categories can be learned and measured on val.
+- Commit of the previous entry: 6d2b499.
+- Run step 2 (by me, ~20 min): python scripts/2_responses.py --mutants data/mutants_extra.jsonl --raw data/raw_responses_extra.jsonl, output in results/2026-11-04_2106_2_responses_extra.txt. 215/215 answered (215 lines in data/raw_responses_extra.jsonl).
+- Run step 3: python scripts/3_filter.py, output in results/2026-11-04_2111_3_filter.txt (writes data/train_v3.jsonl, val_v3.jsonl, test_v3.jsonl; v2 files untouched).
+- Result: 876 answers (661 base + 215 extra), 712 kept, 164 rejected (96 does not point at the bug, 46 states the bug, 22 gives the solution). The base part gives the same 552 as v2, so the extras added 160 kept / 55 rejected (48 does not point, 7 gives the solution). Kept per category: return_in_loop 233, deleted_initialization 137, flipped_comparison 101, wrong_initial_value 93, shortened_range 81, wrong_remainder 34, deleted_update 33.
+- Split: programs train 256 / val 31 / test 31; examples train 570 / val 70 / test 72. Checks: no program overlap between splits, no duplicate ids, every v2 train/val example is still in v3 train/val (131 new in train, 16 new in val).
+- Balance (train): return_in_loop 189 (33%, was 43%), deleted_initialization 107 (19%), flipped_comparison 76 (13%), wrong_initial_value 73 (13%), shortened_range 70 (12%, was 6 examples), deleted_update 28 (5%, was 2), wrong_remainder 27 (5%). Val: return_in_loop 21, deleted_initialization 15, flipped_comparison 12, wrong_initial_value 10, shortened_range 6, wrong_remainder 4, deleted_update 2: every category now present in val.
+- Check on val extras (19 answers, read by Claude Code): 16 kept, 3 rejected. Rejection of #662 is correct (gives the fix: "end it at n instead of n + 1"). #779 and #816 are good indirect questions that were rejected ("all the possible pairs", "every row" are not anchors): a small loss, not changed. #663 is kept but borderline ("Consider what happens to the last element of the array"). Filter not tuned further, to avoid fitting it to a few val examples.
+- Decision: data v3 is good enough for the first QLoRA training (Qwen2.5-Coder-7B-Instruct, train on data/train_v3.jsonl, settings on data/val_v3.jsonl). deleted_update and wrong_remainder stay small (5% each); val counts for them (2 and 4) are too few for per-category conclusions.
+- AI tools: gemma3:12b (answers), Claude Code (running the filter, checks, reading val extras, journal).
+- Commit: noted in the next entry.
