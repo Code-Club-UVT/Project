@@ -20,6 +20,7 @@ parser.add_argument("--run", default="outputs/v3_r16_lr2e-4")
 parser.add_argument("--base", default="unsloth/Qwen2.5-Coder-7B-Instruct-bnb-4bit")
 parser.add_argument("--checkpoints", default="72,144,216")
 parser.add_argument("--val", default="data/val_v3.jsonl")
+parser.add_argument("--skip-base", action="store_true", help="the base model was already measured")
 parser.add_argument("--limit", type=int, default=0, help="only for a quick test run")
 parser.add_argument("--out", default=time.strftime("results/%Y-%m-%d_%H%M_5_eval_val_answers.jsonl"))
 parser.add_argument("--one", nargs=2, metavar=("PATH", "ANSWERS_FILE"), help=argparse.SUPPRESS)
@@ -28,7 +29,7 @@ args = parser.parse_args()
 val = [json.loads(line) for line in open(args.val, encoding="utf-8")]
 if args.limit:
     val = val[: args.limit]
-models = [("base", args.base)] + [
+models = ([] if args.skip_base else [("base", args.base)]) + [
     (f"step{c}", f"{args.run}/checkpoint-{c}") for c in args.checkpoints.split(",")
 ]
 

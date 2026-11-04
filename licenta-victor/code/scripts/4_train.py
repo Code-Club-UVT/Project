@@ -21,6 +21,7 @@ parser.add_argument("--val", default="data/val_v3.jsonl")
 parser.add_argument("--epochs", type=int, default=3)
 parser.add_argument("--lr", type=float, default=2e-4)
 parser.add_argument("--r", type=int, default=16)
+parser.add_argument("--seed", type=int, default=3407)
 parser.add_argument("--max-steps", type=int, default=-1, help="only for a quick test run")
 args = parser.parse_args()
 
@@ -40,7 +41,7 @@ model = FastLanguageModel.get_peft_model(
                     "gate_proj", "up_proj", "down_proj"],
     lora_dropout=0, bias="none",
     use_gradient_checkpointing="unsloth",
-    random_state=3407,
+    random_state=args.seed,
 )
 
 data = load_dataset("json", data_files={"train": args.train, "validation": args.val})
@@ -75,7 +76,7 @@ trainer = SFTTrainer(
         save_strategy="epoch",
         report_to="none",
         output_dir=out_dir,
-        seed=3407,
+        seed=args.seed,
     ),
 )
 

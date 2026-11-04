@@ -227,3 +227,11 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - What I did: added section 11 "Plan for the next session" to reports/2026-11-04_session_report.md. Order: (1) human check of ~30 epoch-1 val answers against the automatic verdicts; (2) same training with another seed, to measure the noise; (3) learning rate 1e-4, 2 epochs; (4) data variety if needed; (5) test set once at the end.
 - AI tools: Claude Code (plan and writing).
 - Commit: noted in the next entry.
+
+## 2026-11-04 · Unattended experiments prepared (step 6)
+- Why: steps 2 and 3 of the plan (noise check with another seed; gentler training) can run without supervision.
+- Commit of the previous entry: 0ac7d26.
+- What I did: scripts/4_train.py got --seed (default 3407 = the first run, so nothing changes for it); scripts/5_eval_val.py got --skip-base (the base model was already measured, greedy decoding gives the same answers). New scripts/6_run_experiments.sh runs: A) lr 2e-4, 3 epochs, seed 1 → outputs/v3_r16_lr2e-4_seed1, eval of checkpoints 72/144/216; B) lr 1e-4, 2 epochs, seed 3407 → outputs/v3_r16_lr1e-4_ep2, eval of checkpoints 72/144. Each run writes its own log in results/. Both new options tested briefly (1.5B model, 2 updates; eval on 4 val examples).
+- To run (by me, ~30 min): bash scripts/6_run_experiments.sh. Results go in the next entry.
+- AI tools: Claude Code (script changes, tests).
+- Commit: noted in the next entry.
