@@ -213,3 +213,10 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - Next ideas (to decide): 1-2 epochs with a lower learning rate (1e-4), or more varied data; a human check of a sample of the step72 answers; test set still unused.
 - AI tools: Claude Code (writing 4_train.py and 5_eval_val.py, test runs, analysis of the answers, journal). Prompts: tutor system prompt from scripts/tutor_text.py ("You are a programming tutor. Never give the solution. Ask questions that guide the student.") + the student complaint and code, same as in training.
 - Commit: noted in the next entry.
+
+## 2026-11-04 · Session report
+- Why: a detailed written record of today's work (data v3, first training, val evaluation).
+- Commit of the previous entry: 293dcae.
+- What I did: wrote reports/2026-11-04_session_report.md (steps, commands, all numbers, decisions, open problems, next steps, glossary). No new runs.
+- AI tools: Claude Code (writing the report from the journal, logs and results files).
+- Commit: noted in the next entry.
