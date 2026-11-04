@@ -283,3 +283,55 @@ Recommended order:
 5. **At the very end:** one evaluation on the test set with the chosen model, and nothing changed after it.
 
 Housekeeping still open: add `__pycache__/` to `.gitignore`; update the "next step" line in `CLAUDE.md`.
+
+## 12. Late session: seed and learning-rate experiments (step 6)
+
+**Why:** (A) see how much the val results change just by chance; (B) try a gentler training.
+Both ran unattended with `bash scripts/6_run_experiments.sh` (prepared and committed in `620e318`):
+- **A:** same settings as the first run (lr 2e-4, 3 epochs), but random seed 1 instead of 3407. The seed changes
+  only the random choices (starting values of the adapter, order of the examples).
+- **B:** learning rate 1e-4 (half), 2 epochs, seed 3407.
+
+New options added for this: `--seed` in `4_train.py` and `--skip-base` in `5_eval_val.py`. The base model was
+already measured, and greedy decoding gives the same answers again.
+
+**Results:**
+
+| Run | Val loss ep 1 / 2 / 3 | ok of 70, ep 1 / 2 / 3 | Copied from train, ep 1 / 2 / 3 | Time |
+|---|---|---|---|---|
+| first run (lr 2e-4, seed 3407) | 0.527 / **0.470** / 0.509 | 63 / 58 / 62 | 0 / 0 / 2 | 6.4 min |
+| A (lr 2e-4, seed 1) | 0.542 / **0.480** / 0.506 | 55 / 58 / 59 | 0 / 1 / 1 | 6.5 min |
+| B (lr 1e-4, 2 epochs) | 0.579 / 0.519 / – | 45 / 62 / – | 0 / 0 / – | 4.3 min |
+
+ok per category (A epoch 1/2/3; B epoch 1/2): return_in_loop (21) 20/19/20; 15/21 · deleted_initialization (15)
+15/15/15; 15/15 · flipped_comparison (12) 9/7/7; 3/9 · wrong_initial_value (10) 8/9/7; 8/9 · shortened_range (6)
+1/5/6; 1/5 · wrong_remainder (4) 1/2/3; 2/2 · deleted_update (2) 1/1/1; 1/1.
+
+**What this shows:**
+1. **The noise is large.** Only the seed changed, and epoch 1 went from 63 to 55 ok. The differences between
+   epochs (55–63) are inside this noise, so the earlier conclusion "epoch 1 is best" is **not** supported.
+   Averaged over the two seeds: epoch 1 59, epoch 2 58, epoch 3 60.5.
+2. The first run's epoch 2 used "If you added a print statement" in 27 of 70 answers. With seed 1, epoch 2 did so
+   only twice, so that was chance, not a property of epoch 2.
+3. **Val loss is stable:** lowest at epoch 2 with both seeds. Epoch 3 starts copying training answers.
+4. **lr 1e-4** ends about the same as lr 2e-4 after 2 epochs (62 ok). After 1 epoch it is undertrained: all 70
+   answers start with "If you added a print statement" (one style for everything), and only 45 are ok.
+5. Same weak spots in every run: flipped_comparison (7–11 of 12) and answers that do not point at the bug (7–14 of 70).
+
+**Decision (replaces "keep epoch 1" from section 6):** the training settings are not what limits the tutor now.
+The standard recipe from here on is lr 2e-4 for 2 epochs (lowest val loss with both seeds, less copying than epoch 3).
+The current model is the first run's epoch 2, `outputs/v3_r16_lr2e-4/checkpoint-144`, which is as good as the
+others within the noise. The final choice comes after the human check.
+
+**Updated next steps:**
+1. Human check of the automatic judge (~30 epoch-2 answers). Now even more important: with the judge alone,
+   the models cannot be told apart.
+2. Then work on the data and the judge (more varied questions; questions that name the buggy line), not on
+   training settings.
+3. If models need to be compared again: train each with 2+ seeds and compare the averages, because one run
+   is not enough.
+4. Test set: still unused, only once at the end.
+
+New files: `results/2026-11-04_2153_4_train_seed1.txt`, `results/2026-11-04_2201_5_eval_val_seed1.txt` (+ `_answers.jsonl`),
+`results/2026-11-04_2204_4_train_lr1e-4_ep2.txt`, `results/2026-11-04_2208_5_eval_val_lr1e-4_ep2.txt` (+ `_answers.jsonl`),
+adapters in `outputs/v3_r16_lr2e-4_seed1/` and `outputs/v3_r16_lr1e-4_ep2/` (not in git).

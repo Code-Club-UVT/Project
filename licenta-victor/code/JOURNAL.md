@@ -235,3 +235,24 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - To run (by me, ~30 min): bash scripts/6_run_experiments.sh. Results go in the next entry.
 - AI tools: Claude Code (script changes, tests).
 - Commit: noted in the next entry.
+
+## 2026-11-04 · Seed and learning-rate experiments (step 6 results)
+- Why: (A) measure how much the val results change by chance (same settings, other seed); (B) try gentler training (lr 1e-4, 2 epochs).
+- Commit of the previous entry: 620e318.
+- Run (by me, unattended): bash scripts/6_run_experiments.sh. Logs: results/2026-11-04_2153_4_train_seed1.txt, results/2026-11-04_2201_5_eval_val_seed1.txt (+ _answers.jsonl), results/2026-11-04_2204_4_train_lr1e-4_ep2.txt, results/2026-11-04_2208_5_eval_val_lr1e-4_ep2.txt (+ _answers.jsonl).
+- Training: A 6.5 min, B 4.3 min, both 6.75 GB peak VRAM.
+- Val loss at the end of epoch 1 / 2 / 3: first run (seed 3407) 0.527 / 0.470 / 0.509; A (seed 1) 0.542 / 0.480 / 0.506; B (lr 1e-4) 0.579 / 0.519 / -.
+- Val ok answers (of 70) at epoch 1 / 2 / 3: first run 63 / 58 / 62; A 55 / 58 / 59; B 45 / 62 / -.
+- Other verdicts: A does not point at the bug 14 / 11 / 10, gives the solution 1 / 1 / 1; B does not point 25 / 7, gives the solution 0 / 1.
+- ok per category, A epoch 1/2/3: return_in_loop (21) 20/19/20, deleted_initialization (15) 15/15/15, flipped_comparison (12) 9/7/7, wrong_initial_value (10) 8/9/7, shortened_range (6) 1/5/6, wrong_remainder (4) 1/2/3, deleted_update (2) 1/1/1. B epoch 1/2: 15/21, 15/15, 3/9, 8/9, 1/5, 2/2, 1/1.
+- Extra checks (Claude Code): copied word for word from train, epoch 1/2/3: first run 0/0/2, A 0/1/1, B 0/0. Answers with "print": first run 11/27/7, A 0/2/8, B 70/16. B epoch 1: all 70 answers start with "If you added a print statement" (one style for everything = not trained enough). Same verdict ("ok") in both seeds: epoch 1 53 ok in both, 12 ok in only one; epoch 2 53 / 10; epoch 3 57 / 7.
+- Interpretation:
+  - Noise is large: with the same settings, only the seed changed, epoch 1 went from 63 to 55 ok. The differences between epochs (55-63) are within this noise, so the earlier choice "epoch 1 is best" (63 vs 58) is not supported. Average of the two seeds: epoch 1 59, epoch 2 58, epoch 3 60.5.
+  - The "If you added a print statement" collapse of the first run at epoch 2 (27 print answers) did not repeat with seed 1 (2): it was chance, not a property of epoch 2.
+  - Val loss is stable across seeds: lowest at epoch 2 both times (0.470, 0.480); epoch 3 copies a few train answers.
+  - lr 1e-4: after 2 epochs (62 ok) about the same as lr 2e-4; after 1 epoch not trained enough (45 ok, one style). Not better.
+  - The weak spots are the same in all runs: flipped_comparison (7-11 of 12) and answers that do not point at the bug (7-14).
+- Decision: the training settings are not the bottleneck; no setting is clearly better. Standard recipe from now on: lr 2e-4, 2 epochs (lowest val loss in both seeds, less copying than epoch 3). Current model: first run, epoch 2 (outputs/v3_r16_lr2e-4/checkpoint-144) is equivalent within noise to the others; final choice after the human check. This replaces the earlier "keep epoch 1" decision (entry "First QLoRA training").
+- Next: the human check of the automatic judge (now even more important, since the judge cannot separate the models), then work on the data/judge rather than on training settings.
+- AI tools: Claude Code (comparison tables, extra checks, journal).
+- Commit: noted in the next entry.
