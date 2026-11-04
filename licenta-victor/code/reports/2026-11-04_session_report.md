@@ -259,3 +259,27 @@ questions and no copying. Commit `293dcae`.
 - **Checkpoint:** a saved copy of the adapter at a given moment of training.
 - **Greedy decoding:** the model always picks the most likely next word, so the same input gives the same output.
 - **Token:** a piece of a word; the model reads and writes tokens.
+
+## 11. Plan for the next session (added at the end of the session)
+
+Commits of this session: `a53c2f3` (data v3), `293dcae` (training + evaluation), `b5c3283` (report),
+plus the commit that adds this section.
+
+Recommended order:
+
+1. **Human check of the automatic judge (first, ~30 min, no GPU).** Every decision so far (which answers stay
+   in the data, which epoch is best) relies on keyword rules in `3_filter.py`, and the manual readings were done
+   by Claude Code. Victor reads ~30 epoch-1 val answers from
+   `results/2026-11-04_2138_5_eval_val_answers.jsonl` and marks each one good or bad (good = a question that
+   leads toward the bug and does not give the fix). Compare with the automatic verdicts: if they agree on most
+   answers, the val numbers can be trusted; if not, the judge has to be improved before further comparisons.
+   This is also a result for the thesis (how reliable the automatic evaluation is).
+2. **Measure the noise (~15 min GPU).** Train the same settings again with another seed and evaluate. If the ok
+   count moves by ±5 just from the seed, then the gap between epoch 1 (63) and epoch 2 (58) is noise and must
+   not be over-interpreted.
+3. **Gentler training (~15 min GPU per run).** Learning rate 1e-4, 2 epochs, and compare with the current best on
+   val with `5_eval_val.py`. Goal: fewer generic questions and no repeated "If you added a print statement".
+4. **Data variety, if step 3 does not help.** Limit how many training answers use the same opening style.
+5. **At the very end:** one evaluation on the test set with the chosen model, and nothing changed after it.
+
+Housekeeping still open: add `__pycache__/` to `.gitignore`; update the "next step" line in `CLAUDE.md`.

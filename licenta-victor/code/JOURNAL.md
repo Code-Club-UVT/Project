@@ -220,3 +220,10 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - What I did: wrote reports/2026-11-04_session_report.md (steps, commands, all numbers, decisions, open problems, next steps, glossary). No new runs.
 - AI tools: Claude Code (writing the report from the journal, logs and results files).
 - Commit: noted in the next entry.
+
+## 2026-11-04 · Plan for the next session
+- Why: record what to do next, so the next session starts from a clear plan.
+- Commit of the previous entry: b5c3283.
+- What I did: added section 11 "Plan for the next session" to reports/2026-11-04_session_report.md. Order: (1) human check of ~30 epoch-1 val answers against the automatic verdicts; (2) same training with another seed, to measure the noise; (3) learning rate 1e-4, 2 epochs; (4) data variety if needed; (5) test set once at the end.
+- AI tools: Claude Code (plan and writing).
+- Commit: noted in the next entry.
