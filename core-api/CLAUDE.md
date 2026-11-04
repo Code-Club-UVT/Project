@@ -24,14 +24,14 @@ Run from `core-api/`:
 - PostgreSQL: relational entities in `Entities/`, one `IEntityTypeConfiguration` per entity in `Data/Postgres/Configurations/`, migrations in `Data/Postgres/Migrations/`. Never edit an applied migration; add a new one.
 - Never store raw passwords or tokens; only hashes. Never log them either (the Development-only `LoggingEmailSender` is the one exception).
 - Endpoints require authentication by default; anonymous ones must say `[AllowAnonymous]`. Check roles with `[Authorize(Roles = ...)]`.
-- Configuration lives in `appsettings*.json` and can be overridden by environment variables (`Section__Key`). Committed secrets must be clearly marked placeholders (`CHANGE-ME...`); real values come from the environment.
+- Configuration lives in `appsettings*.json` and can be overridden by environment variables (`Section__Key`). Committed secrets must be clearly marked placeholders (`CHANGE-ME...`); real values come from the environment. For local development the real values (SMTP password) go in the git-ignored `appsettings.Development.local.json`, which Program.cs loads in Development only.
 
 ## Architecture
 
 N-layer (Controller, Service, Repository) in this single project; details in [docs/architecture.md](docs/architecture.md). Rules:
 
 - Controllers are thin: call a service, return `ToActionResult(result)` from `ApiControllerBase`. No business logic, no try/catch (`GlobalExceptionHandler` handles unexpected errors), no entities.
-- Services live in a folder per feature under `Services/` (`Auth/`, `Users/`, `Tokens/`, `Email/`, `Seeding/`), with the interface next to its implementation and the feature's errors (`XxxErrors`) in the same folder. Put a new service in its feature's folder, or create a new feature folder with namespace `CoreApi.Services.<Feature>`.
+- Services live in a folder per feature under `Services/` (`Auth/`, `Users/`, `Tokens/`, `Email/`, `Seeding/`, `Projects/`, `ProjectRoles/`, `ProjectMembers/`), with the interface next to its implementation and the feature's errors (`XxxErrors`) in the same folder. Put a new service in its feature's folder, or create a new feature folder with namespace `CoreApi.Services.<Feature>`.
 - Services hold all business logic, validation of business rules and error handling, and map between models and entities. They return `Result` / `Result<T>` for expected failures and throw only for unexpected ones. Entities never leave the service layer.
 - Repositories use only entities, are behind interfaces, and never call `SaveChanges`; services commit through `IUnitOfWork`. Do not expose `IQueryable`. `GetAll` is always paged.
 - DTOs go in `Models/Requests` and `Models/Responses` (not `Dtos`); hand-written mapping in `Mappings/`.

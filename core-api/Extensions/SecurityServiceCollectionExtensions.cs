@@ -1,7 +1,8 @@
-using System.Text;
-using System.Threading.RateLimiting;
+using CoreApi.Common;
 using CoreApi.Entities;
 using CoreApi.Options;
+using CoreApi.Services.Tokens;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,17 +13,23 @@ namespace CoreApi.Extensions;
 
 public static class SecurityServiceCollectionExtensions
 {
-    public const string AuthRateLimitPolicy = "auth";
-
-    /// <summary>Options, password hashing, JWT bearer authentication and a "must be logged in" default for every endpoint.</summary>
+    /// <summary>Options, signing key, password hashing, JWT bearer authentication, the gateway's internal key scheme and a "must be logged in" default for every endpoint.</summary>
     public static IServiceCollection AddAuth(this IServiceCollection services, IHostEnvironment environment)
     {
         services.AddOptions<JwtOptions>()
             .BindConfiguration(JwtOptions.SectionName)
             .ValidateDataAnnotations()
             .Validate(
-                o => environment.IsDevelopment() || !o.SigningKey.StartsWith(JwtOptions.PlaceholderKeyPrefix, StringComparison.Ordinal),
-                "Jwt:SigningKey is still the placeholder. Set a real key outside Development (for example with the Jwt__SigningKey environment variable).")
+                o => environment.IsDevelopment() || !string.IsNullOrWhiteSpace(o.PrivateKeyPem),
+                "Jwt:PrivateKeyPem is not set. Provide an ECDSA P-256 private key in PEM outside Development (for example with the Jwt__PrivateKeyPem environment variable).")
+            .ValidateOnStart();
+
+        services.AddOptions<InternalOptions>()
+            .BindConfiguration(InternalOptions.SectionName)
+            .ValidateDataAnnotations()
+            .Validate(
+                o => environment.IsDevelopment() || !o.ApiKey.StartsWith(InternalOptions.PlaceholderKeyPrefix, StringComparison.Ordinal),
+                "Internal:ApiKey is still the placeholder. Set a real key outside Development (for example with the Internal__ApiKey environment variable).")
             .ValidateOnStart();
 
         services.AddOptions<RefreshTokenOptions>().BindConfiguration(RefreshTokenOptions.SectionName).ValidateDataAnnotations().ValidateOnStart();
@@ -31,10 +38,14 @@ public static class SecurityServiceCollectionExtensions
         services.AddOptions<SeedOptions>().BindConfiguration(SeedOptions.SectionName);
 
         services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+        services.AddSingleton<ISigningKeyProvider, SigningKeyProvider>();
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer()
+            .AddScheme<AuthenticationSchemeOptions, InternalKeyAuthenticationHandler>(InternalKeyAuthenticationHandler.SchemeName, null);
+
         services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
-            .Configure<IOptions<JwtOptions>>((bearer, jwtOptions) =>
+            .Configure<IOptions<JwtOptions>, ISigningKeyProvider>((bearer, jwtOptions, signingKey) =>
             {
                 var jwt = jwtOptions.Value;
 
@@ -46,8 +57,8 @@ public static class SecurityServiceCollectionExtensions
                     ValidateAudience = true,
                     ValidAudience = jwt.Audience,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.SigningKey)),
-                    ValidAlgorithms = [SecurityAlgorithms.HmacSha256],
+                    IssuerSigningKey = signingKey.SecurityKey,
+                    ValidAlgorithms = [SecurityAlgorithms.EcdsaSha256],
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.FromSeconds(30),
                     NameClaimType = "sub",
@@ -58,40 +69,6 @@ public static class SecurityServiceCollectionExtensions
         // Endpoints are protected unless they opt out with [AllowAnonymous].
         services.AddAuthorizationBuilder()
             .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
-
-        return services;
-    }
-
-    public static IServiceCollection AddRateLimiting(this IServiceCollection services)
-    {
-        services.AddRateLimiter(options =>
-        {
-            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-            options.AddPolicy(AuthRateLimitPolicy, httpContext => RateLimitPartition.GetFixedWindowLimiter(
-                httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
-                _ => new FixedWindowRateLimiterOptions
-                {
-                    PermitLimit = 10,
-                    Window = TimeSpan.FromMinutes(1),
-                    QueueLimit = 0
-                }));
-        });
-
-        return services;
-    }
-
-    /// <summary>Allows the SPA origin (taken from Frontend:BaseUrl) to call the API with cookies.</summary>
-    public static IServiceCollection AddFrontendCors(this IServiceCollection services, IConfiguration configuration)
-    {
-        var baseUrl = configuration[$"{FrontendOptions.SectionName}:BaseUrl"]
-            ?? throw new InvalidOperationException("Frontend:BaseUrl is not configured.");
-        var origin = new Uri(baseUrl).GetLeftPart(UriPartial.Authority);
-
-        services.AddCors(options => options.AddDefaultPolicy(policy => policy
-            .WithOrigins(origin)
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()));
 
         return services;
     }

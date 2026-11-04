@@ -2,6 +2,7 @@ using CoreApi.Enums;
 using CoreApi.Extensions;
 using CoreApi.Models.Requests;
 using CoreApi.Services.Auth;
+using CoreApi.Services.ProjectMembers;
 using CoreApi.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CoreApi.Controllers;
 
 [Authorize]
-public class UsersController(IUserService userService, IAccountService accountService) : ApiControllerBase
+public class UsersController(IUserService userService, IAccountService accountService, IProjectMemberService memberService) : ApiControllerBase
 {
     [HttpGet("me")]
     public async Task<IActionResult> GetMe(CancellationToken cancellationToken)
@@ -27,6 +28,12 @@ public class UsersController(IUserService userService, IAccountService accountSe
     public async Task<IActionResult> ChangePassword(ChangePasswordRequest request, CancellationToken cancellationToken)
     {
         return ToActionResult(await accountService.ChangePasswordAsync(User.GetUserId(), request, cancellationToken));
+    }
+
+    [HttpGet("me/projects")]
+    public async Task<IActionResult> GetMyProjects(CancellationToken cancellationToken)
+    {
+        return ToActionResult(await memberService.GetMyProjectsAsync(User.GetUserId(), cancellationToken));
     }
 
     [HttpGet]

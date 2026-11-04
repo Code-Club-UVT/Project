@@ -9,35 +9,31 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CoreApi.Services.Tokens;
 
-public class TokenService(IOptions<JwtOptions> options, TimeProvider timeProvider) : ITokenService
+public class TokenService(IOptions<JwtOptions> options, ISigningKeyProvider signingKey, TimeProvider timeProvider) : ITokenService
 {
     private readonly JwtOptions _jwt = options.Value;
     private readonly JsonWebTokenHandler _handler = new();
+    private readonly SigningCredentials _credentials = new(signingKey.SecurityKey, SecurityAlgorithms.EcdsaSha256);
 
     public AccessToken CreateAccessToken(User user)
     {
-        var now = timeProvider.GetUtcNow().UtcDateTime;
-        var expiresAt = now.AddMinutes(_jwt.AccessTokenMinutes);
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SigningKey));
-
-        var descriptor = new SecurityTokenDescriptor
+        return Create(_jwt.Audience, _jwt.AccessTokenMinutes, new Dictionary<string, object>
         {
-            Issuer = _jwt.Issuer,
-            Audience = _jwt.Audience,
-            NotBefore = now,
-            Expires = expiresAt,
-            SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256),
-            Claims = new Dictionary<string, object>
-            {
-                [JwtRegisteredClaimNames.Sub] = user.Id.ToString(),
-                [JwtRegisteredClaimNames.Jti] = Guid.NewGuid().ToString(),
-                [JwtRegisteredClaimNames.Email] = user.Email,
-                ["username"] = user.Username,
-                ["role"] = user.Role.ToString()
-            }
-        };
+            [JwtRegisteredClaimNames.Sub] = user.Id.ToString(),
+            [JwtRegisteredClaimNames.Email] = user.Email,
+            ["username"] = user.Username,
+            ["role"] = user.Role.ToString()
+        });
+    }
 
-        return new AccessToken(_handler.CreateToken(descriptor), expiresAt);
+    public AccessToken CreateProjectToken(User user, Project project, ProjectRole role)
+    {
+        return Create(project.Slug, _jwt.ProjectTokenMinutes, new Dictionary<string, object>
+        {
+            [JwtRegisteredClaimNames.Sub] = user.Id.ToString(),
+            ["username"] = user.Username,
+            ["role"] = role.Name
+        });
     }
 
     public string GenerateToken()
@@ -48,5 +44,25 @@ public class TokenService(IOptions<JwtOptions> options, TimeProvider timeProvide
     public string Hash(string token)
     {
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
+    }
+
+    private AccessToken Create(string audience, int minutes, Dictionary<string, object> claims)
+    {
+        var now = timeProvider.GetUtcNow().UtcDateTime;
+        var expiresAt = now.AddMinutes(minutes);
+
+        claims[JwtRegisteredClaimNames.Jti] = Guid.NewGuid().ToString();
+
+        var descriptor = new SecurityTokenDescriptor
+        {
+            Issuer = _jwt.Issuer,
+            Audience = audience,
+            NotBefore = now,
+            Expires = expiresAt,
+            SigningCredentials = _credentials,
+            Claims = claims
+        };
+
+        return new AccessToken(_handler.CreateToken(descriptor), expiresAt);
     }
 }

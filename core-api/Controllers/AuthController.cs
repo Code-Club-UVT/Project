@@ -1,25 +1,19 @@
 using CoreApi.Common.Results;
-using CoreApi.Extensions;
 using CoreApi.Models.Requests;
 using CoreApi.Options;
 using CoreApi.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
 
 namespace CoreApi.Controllers;
 
 [AllowAnonymous]
-[EnableRateLimiting(SecurityServiceCollectionExtensions.AuthRateLimitPolicy)]
 public class AuthController(
     IAuthService authService,
     IAccountService accountService,
     IOptions<RefreshTokenOptions> refreshOptions) : ApiControllerBase
 {
-    // The cookie is only sent to the auth endpoints.
-    private const string RefreshCookiePath = "/api/auth";
-
     private readonly RefreshTokenOptions _refresh = refreshOptions.Value;
 
     [HttpPost("register")]
@@ -104,7 +98,7 @@ public class AuthController(
             HttpOnly = true,
             Secure = _refresh.CookieSecure,
             SameSite = SameSiteMode.Strict,
-            Path = RefreshCookiePath,
+            Path = _refresh.CookiePath,
             IsEssential = true,
             Expires = expiresAt is null ? null : new DateTimeOffset(DateTime.SpecifyKind(expiresAt.Value, DateTimeKind.Utc))
         };

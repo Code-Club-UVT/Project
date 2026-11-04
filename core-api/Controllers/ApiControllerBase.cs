@@ -1,37 +1,7 @@
-using CoreApi.Common.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreApi.Controllers;
 
-[ApiController]
+/// <summary>Base for the public controllers: routes under <c>api/[controller]</c>.</summary>
 [Route("api/[controller]")]
-public abstract class ApiControllerBase : ControllerBase
-{
-    protected IActionResult ToActionResult(Result result)
-    {
-        return result.IsSuccess ? NoContent() : ToErrorResult(result.Error!);
-    }
-
-    protected IActionResult ToActionResult<T>(Result<T> result)
-    {
-        return result.IsSuccess ? Ok(result.Value) : ToErrorResult(result.Error!);
-    }
-
-    private ObjectResult ToErrorResult(Error error)
-    {
-        var (status, title) = error.Type switch
-        {
-            ErrorType.Validation => (StatusCodes.Status400BadRequest, "Bad Request"),
-            ErrorType.Unauthorized => (StatusCodes.Status401Unauthorized, "Unauthorized"),
-            ErrorType.Forbidden => (StatusCodes.Status403Forbidden, "Forbidden"),
-            ErrorType.NotFound => (StatusCodes.Status404NotFound, "Not Found"),
-            ErrorType.Conflict => (StatusCodes.Status409Conflict, "Conflict"),
-            _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
-        };
-
-        var problem = ProblemDetailsFactory.CreateProblemDetails(HttpContext, status, title, detail: error.Message);
-        problem.Extensions["code"] = error.Code;
-
-        return new ObjectResult(problem) { StatusCode = status };
-    }
-}
+public abstract class ApiControllerBase : ResultControllerBase;

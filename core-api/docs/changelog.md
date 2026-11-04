@@ -49,3 +49,44 @@
 - Applied the `InitialCreate` migration to the Docker database
 - Ran a scripted end-to-end test of all auth flows against the real database: 53 checks, all pass. Six checks first failed because of an argument mistake in the test script (the calls never ran); running them directly confirmed change password works (400, 400, 204, 401, 401, 200)
 - The test left users `admin`, `john` and `mary` in the development database
+
+## Step 8: SMTP email sender
+- Added the `MailKit` package, `SmtpOptions` (`Smtp` section) and `SmtpEmailSender` (confirmation and reset emails, text + HTML)
+- `AddServices` now takes the configuration: `Smtp:Enabled=true` registers the SMTP sender; otherwise the logging sender in Development; other environments fail at startup
+- SMTP options are validated at startup when enabled (the password cannot be the placeholder)
+- Placeholders added to `appsettings.json` and `appsettings.Development.json` (disabled by default)
+- Build is clean
+- Verified against a real SMTP account (Gmail app password): registration sent the confirmation email and forgot-password sent the reset email; both arrived in the inbox. The test user was deleted afterwards
+- Not tested: SMTP failure (wrong password), and opening the emailed links in the SPA (no frontend yet)
+
+## Step 9: styled email templates
+- Added `EmailTemplates` (confirmation and password reset): table-based HTML with inline styles, a bulletproof button, the link repeated as text, and a plain-text version
+- `SmtpEmailSender` now only builds and sends the message from the template output
+- Build is clean; both emails were sent through SMTP to the test inbox and the test user was deleted. Not verified by me: how they look in the inbox
+
+## Step 10: projects, project access and ES256 tokens (preparation for the gateway)
+- Tokens: HS256 shared secret replaced by ES256. `SigningKeyProvider` loads `Jwt:PrivateKeyPem` (temporary key in Development when empty), `GET /.well-known/jwks.json` publishes the public key. Edge token audience is now `gateway`; `TokenService.CreateProjectToken` makes project tokens (audience = slug, `role` = project role, 5 minutes)
+- New entities `Project`, `ProjectRole`, `ProjectMember`, enum `ProjectTokenMode`, configurations, three repositories, migration `AddProjects` (not applied to a database yet)
+- New services `ProjectService`, `ProjectRoleService`, `ProjectMemberService`, `ProjectTokenService`, `ProjectUrlRules`; `ProjectSeeder` creates the `core` project from `Seed:CoreProject`
+- New endpoints: `ProjectsController` (projects, roles, members; Admin), `GET /api/users/me/projects`, `POST /internal/project-tokens` (gateway only, `X-Internal-Key`), `/health`
+- Rate limiting and CORS removed from core-api (the gateway will own them); refresh cookie path is now `RefreshToken:CookiePath` (`/api/core/auth`)
+- `ApiControllerBase` split into `ResultControllerBase` and `ApiControllerBase`
+- No new NuGet packages
+- Verified without a database: build, JWKS output, token signatures checked with Node `crypto`, audience separation, internal key scheme, startup guards, migration SQL
+
+## Step 11: step 10 verified against PostgreSQL
+- Applied `AddProjects` to the Docker database and ran a scripted check of the project, role, member and internal token endpoints, the seeder, the cascades and the composite foreign key: 56 checks, all passed (details in [implementation.md](implementation.md)). No code changes were needed
+- The `gateway-auth` library was built and verified against this API (see `gateway-auth/docs/`)
+
+## Step 12: the gateway
+- The gateway (`gateway/`) was built and verified against this API: login, refresh cookie path, pass-through of the edge token, and token exchange through `/internal/project-tokens` all work through it (see `gateway/docs/`). No core-api code changes
+
+## Step 13: fixes from the code review
+- Removed `UseHttpsRedirection` (see [decisions.md](decisions.md)); verified that a plain-http request is answered with 200, not redirected, while an https endpoint is also configured
+- Other fixes of this review are in `gateway/` and `gateway-auth/`. Open points from the review are in [backlog.md](backlog.md)
+
+## Deployment support
+
+- Added `Dockerfile` (targets `api` and `migrate`: the EF migration bundle for the deployment job) and `Dockerfile.dockerignore`.
+- In the deployment the whole configuration (secrets included) is a JSON file mounted as `appsettings.Production.json`; no code change needed. Setup documented in `~/codeclub-uvt/README.md` on the server.
+- `appsettings.Development.json` no longer holds the SMTP password (placeholder); the real one is in the git-ignored `appsettings.Development.local.json`, loaded in Development only.

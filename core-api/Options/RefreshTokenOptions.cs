@@ -16,5 +16,9 @@ public sealed class RefreshTokenOptions
     [Required]
     public string CookieName { get; set; } = "refreshToken";
 
+    /// <summary>Public path the cookie is sent to: the gateway path of the core API auth endpoints.</summary>
+    [Required]
+    public string CookiePath { get; set; } = "/api/core/auth";
+
     public bool CookieSecure { get; set; } = true;
 }
