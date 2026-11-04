@@ -192,3 +192,24 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - Decision: data v3 is good enough for the first QLoRA training (Qwen2.5-Coder-7B-Instruct, train on data/train_v3.jsonl, settings on data/val_v3.jsonl). deleted_update and wrong_remainder stay small (5% each); val counts for them (2 and 4) are too few for per-category conclusions.
 - AI tools: gemma3:12b (answers), Claude Code (running the filter, checks, reading val extras, journal).
 - Commit: noted in the next entry.
+
+## 2026-11-04 · First QLoRA training on data v3 and evaluation on val (steps 4 + 5)
+- Why: first real tutor model: Qwen2.5-Coder-7B-Instruct with a LoRA adapter trained on data/train_v3.jsonl; choose the epoch on data/val_v3.jsonl.
+- Commit of the previous entry: a53c2f3.
+- New script scripts/4_train.py: model unsloth/Qwen2.5-Coder-7B-Instruct-bnb-4bit (4-bit), LoRA r=16, alpha=16, all attention and MLP projections, learning rate 2e-4 (linear, 5 warm-up steps), batch 4 x gradient accumulation 2 = 8 examples per update, 3 epochs (72 updates per epoch, 216 in total), max length 512 tokens (longest example 304), loss only on the assistant answer (train_on_responses_only), seed 3407. Val loss every 12 updates; adapter saved after each epoch (outputs/v3_r16_lr2e-4/checkpoint-72/144/216, not in git). Refuses to overwrite an existing output folder. Tested first for 12 updates on the small Qwen2.5-1.5B model (works).
+- Before training: gemma3:12b unloaded from the GPU (ollama stop gemma3:12b), it was using ~8.6 GB.
+- Run (by me): python scripts/4_train.py, output in results/2026-11-04_2124_4_train.txt. Time 6.4 min, peak VRAM 6.75 GB.
+- Val loss: 0.920 (step 12), 0.527 (end of epoch 1, step 72), 0.470 (end of epoch 2, step 144, lowest), 0.484 / 0.508 / 0.520 (steps 156-180), 0.509 (end of epoch 3, step 216). Train loss (logged, every 3rd value): ~0.63 at the end of epoch 1, ~0.44 at the end of epoch 2, 0.19-0.25 in epoch 3. Epoch 3: train loss halves while val loss rises = overfitting (memorising train).
+- New script scripts/5_eval_val.py: each model (base without adapter, step72, step144, step216) answers all 70 val examples (greedy decoding, max 200 new tokens, batches of 8, each model in its own process so its GPU memory is freed), and each answer is judged with rejection_reason from scripts/3_filter.py (same rules as the data). Test set not read. First version loaded all models in one process and ran out of GPU memory on the second model; fixed.
+- Run (by me): python scripts/5_eval_val.py, output in results/2026-11-04_2138_5_eval_val.txt, all 280 answers in results/2026-11-04_2138_5_eval_val_answers.jsonl.
+- Result (ok = passes the filter rules), base / step72 / step144 / step216:
+  - ok: 3 / 63 / 58 / 62 (of 70)
+  - does not point at the bug: 15 / 7 / 12 / 7; states the bug: 1 / 0 / 0 / 0; gives the solution: 1 / 0 / 0 / 1; too long (>350 chars): 50 / 0 / 0 / 0
+  - mean length: 563 / 166 / 161 / 153 characters
+  - ok per category, step72 / step144 / step216: return_in_loop (21) 21/17/20, deleted_initialization (15) 15/15/15, flipped_comparison (12) 11/8/9, wrong_initial_value (10) 8/10/8, shortened_range (6) 4/4/5, wrong_remainder (4) 3/3/4, deleted_update (2) 1/1/1.
+- Extra checks (Claude Code): answers copied word for word from train: 0 / 0 / 2 (step216, another sign of memorising). Openings: step72 "How does" 22, "On the" 20, "If you" 16, "What do" 12; step144 "If you" 34 (mostly "If you added a print statement ..."), "On the" only 2: less varied, and these print questions are often about a variable unrelated to the bug (e.g. #460, #374). Answers with 2+ questions: 11 / 1 / 7. Read all val cases where step144 failed or the checkpoints disagree (17): the verdicts are mostly right; a few step72 "does not point" answers are reasonable (#355, #799).
+- Interpretation: training changes the behaviour completely (base: long explanations that often give the fix; adapter: one short guiding question). Lowest val loss (step144) does not give the best answers. The differences between checkpoints are small (63 vs 58 vs 62 of 70, a few examples, judged by keyword rules) so they are not a strong result.
+- Decision: keep step72 (end of epoch 1) as the current best adapter: most ok answers, most varied questions, no copying from train. Main weakness for all: ~10-17% of answers ask about the code in general instead of the bug (the "learns style, not the bug" problem seen before).
+- Next ideas (to decide): 1-2 epochs with a lower learning rate (1e-4), or more varied data; a human check of a sample of the step72 answers; test set still unused.
+- AI tools: Claude Code (writing 4_train.py and 5_eval_val.py, test runs, analysis of the answers, journal). Prompts: tutor system prompt from scripts/tutor_text.py ("You are a programming tutor. Never give the solution. Ask questions that guide the student.") + the student complaint and code, same as in training.
+- Commit: noted in the next entry.
