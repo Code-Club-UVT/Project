@@ -11,3 +11,6 @@
 
 # Temporary files
 /docs
+
+# Local secrets for development (real values that must not be pushed)
+core-api/appsettings.Development.local.json
