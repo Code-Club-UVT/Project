@@ -256,3 +256,10 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - Next: the human check of the automatic judge (now even more important, since the judge cannot separate the models), then work on the data/judge rather than on training settings.
 - AI tools: Claude Code (comparison tables, extra checks, journal).
 - Commit: noted in the next entry.
+
+## 2026-11-04 · Human check file prepared
+- Why: next step of the plan; the automatic judge cannot tell the models apart, so its reliability must be checked by a person.
+- Commit of the previous entry: d2fff21.
+- What I did: reports/2026-11-04_human_check_30.md: 30 val answers of the current model (outputs/v3_r16_lr2e-4/checkpoint-144, first run), chosen at random (random.Random(0).sample from results/2026-11-04_2138_5_eval_val_answers.jsonl), each with the buggy code, the bug line and the correct line. Automatic verdict hidden. To fill in: G (good) or B (bad) per answer. Afterwards: compare the marks with the automatic verdicts.
+- AI tools: Claude Code (selection and file).
+- Commit: noted in the next entry.
