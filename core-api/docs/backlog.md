@@ -44,3 +44,10 @@
 - More `UserProfile` fields (display name, avatar, bio, ...).
 - Rate limiting and account lockout configuration.
 - Tests (none yet).
+
+## TODO: publish the OpenAPI schema in every environment
+
+- `Program.cs` maps OpenAPI only in Development. Map it at `/api/openapi/v1.json` with `AllowAnonymous()` in all environments (the gateway then serves it at `/api/core/openapi/v1.json`). Keep Swagger UI Development-only.
+- Path convention so the schema does not depend on the environment prefix (`/dev`, `/preprod`, `/prod`): strip the leading `/api` from the documented paths and set the server URL to the relative `..`, which resolves against the schema's own URL (`/<env>/api/core/openapi/v1.json` becomes `/<env>/api/core/`). Do it in a document transformer next to `BearerSecuritySchemeTransformer`; keep the Bearer security scheme.
+- Context and design: gateway-auth/docs/backlog.md.
+- Parked idea: Swagger UI pages on dev only, served by Caddy straight from the containers (`/dev/docs/<api>/swagger/index.html`), with only the docs paths allowed through.

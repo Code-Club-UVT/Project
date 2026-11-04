@@ -21,3 +21,9 @@
 - **Startup order**: routes load a moment after start; `/health` stays 503 until then. A probe-based start order in compose makes this invisible.
 - **PassThrough only for core, enforced in the data**: today only `ProjectService` in core-api stops a non-system project from being `PassThrough`. A row written another way would make the gateway send users' edge tokens to its `BaseUrl`. Add a CHECK constraint (`TokenMode <> 'PassThrough' OR IsSystem`) in core-api and/or make the gateway honour `PassThrough` only for the `core` slug (open from the code review).
 - **Access query**: `ProjectAccessService` runs two queries per cache miss (user, membership); one joined query would halve the load (open from the code review).
+
+## TODO: public route for each API's OpenAPI schema
+
+- Add a second, more specific route per project: `/api/<slug>/openapi/{**rest}`, `Order = -1`, authorization policy `anonymous`, GET only, the normal rate limit, no token exchange (nothing sensitive is forwarded). Core already has an anonymous route; this makes the Exchange-mode projects reachable too.
+- Do the same for the `openapi` sub-path inside `ProxyConfigBuilder.TryBuild`, with a test that a project route still requires a token everywhere else.
+- Context and design: gateway-auth/docs/backlog.md (OpenAPI schema for the planned APIM-like app).

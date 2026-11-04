@@ -5,8 +5,7 @@ name: Deployment
 # any other branch, started by hand (Run workflow) -> dev
 on:
     push:
-        # TEMPORARY: lets this branch deploy to dev before the workflow exists on main (then "Run workflow" works). Remove afterwards.
-        branches: [main, "releases/**", "barnie/core-api"]
+        branches: [main, "releases/**"]
     workflow_dispatch:
 
 permissions:

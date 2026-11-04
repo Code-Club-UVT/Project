@@ -12,3 +12,9 @@
 - **Using it in core-api**: core-api keeps its own validation (it holds the private key). It could still use `IRequestContext` and the correlation id middleware.
 - **Real client IP**: document or wrap a `UseForwardedHeaders` setup trusting the gateway.
 - **Tests**: no test project. The behaviours listed in `implementation.md` were checked by hand with a throwaway API; an automated test project would keep them checked.
+
+## TODO: publish each API's OpenAPI schema (for the planned APIM-like app)
+
+- Goal: every project API serves its OpenAPI JSON (the schema only, no Swagger UI) anonymously, and the gateway makes it public at `/api/<slug>/openapi/v1.json` in every environment. The APIM app reads the list of APIs (slug, name) from core-api's project list and the schema from that URL.
+- Suggested shape: a helper here, `MapGatewayOpenApi()`, that maps `/api/openapi/v1.json` with `AllowAnonymous()`, plus a document transformer so every API documents itself the same way (see core-api/docs/backlog.md for the path convention). This needs the `Microsoft.AspNetCore.OpenApi` package in this library: ask before adding it.
+- Open decision: public in prod too (reveals the API surface) or only behind a token/IP rule for the APIM app. Decide before building.
