@@ -1,0 +1,9 @@
+# The build context is the repository root; send only what the identity-api image needs.
+*
+!identity-api
+!platform-kit
+**/bin
+**/obj
+**/.vs
+identity-api/docs
+identity-api/appsettings.*.local.json
