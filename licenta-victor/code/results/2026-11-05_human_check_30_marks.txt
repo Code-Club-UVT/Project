@@ -1,0 +1,38 @@
+Human marks for reports/2026-11-04_human_check_30.md (model: outputs/v3_r16_lr2e-4/checkpoint-144, first run).
+Marks written by Victor; automatic verdicts joined by Claude Code (match on id + answer text in results/2026-11-04_2138_5_eval_val_answers.jsonl).
+Good (G): 3, 9, 12, 15, 18, 20, 24, 28. All other questions: Bad (B).
+Q  id   category               auto verdict               human
+1  4    deleted_initialization ok                         B
+2  10   wrong_remainder        ok                         B
+3  81   return_in_loop         ok                         G
+4  82   wrong_initial_value    ok                         B
+5  83   deleted_initialization ok                         B
+6  105  wrong_initial_value    ok                         B
+7  204  deleted_initialization ok                         B
+8  280  wrong_initial_value    ok                         B
+9  281  deleted_initialization ok                         G
+10 311  wrong_initial_value    ok                         B
+11 363  deleted_initialization ok                         B
+12 370  return_in_loop         ok                         G
+13 375  flipped_comparison     ok                         B
+14 394  deleted_initialization ok                         B
+15 445  wrong_initial_value    ok                         G
+16 446  deleted_initialization ok                         B
+17 455  flipped_comparison     ok                         B
+18 460  return_in_loop         does not point at the bug  G
+19 461  flipped_comparison     does not point at the bug  B
+20 472  return_in_loop         ok                         G
+21 486  deleted_initialization ok                         B
+22 487  wrong_initial_value    ok                         B
+23 520  return_in_loop         ok                         B
+24 567  return_in_loop         ok                         G
+25 591  return_in_loop         does not point at the bug  B
+26 695  deleted_update         does not point at the bug  B
+27 798  shortened_range        ok                         B
+28 799  flipped_comparison     ok                         G
+29 801  shortened_range        does not point at the bug  B
+30 812  flipped_comparison     ok                         B
+Summary: auto ok 25 of 30, human good 8 of 30.
+auto ok & human G 7 | auto ok & human B 18 | auto "does not point" & human G 1 | auto "does not point" & human B 4
+Agreement 11 of 30 (7+4).
+Human good per category: return_in_loop 5/7, deleted_initialization 1/8, wrong_initial_value 1/6, flipped_comparison 1/5, shortened_range 0/2, wrong_remainder 0/1, deleted_update 0/1.

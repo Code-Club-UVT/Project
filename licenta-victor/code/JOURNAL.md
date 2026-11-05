@@ -263,3 +263,15 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - What I did: reports/2026-11-04_human_check_30.md: 30 val answers of the current model (outputs/v3_r16_lr2e-4/checkpoint-144, first run), chosen at random (random.Random(0).sample from results/2026-11-04_2138_5_eval_val_answers.jsonl), each with the buggy code, the bug line and the correct line. Automatic verdict hidden. To fill in: G (good) or B (bad) per answer. Afterwards: compare the marks with the automatic verdicts.
 - AI tools: Claude Code (selection and file).
 - Commit: noted in the next entry.
+
+## 2026-11-05 · Human check of the automatic judge (30 val answers)
+- Why: the automatic judge (keyword rules) could not separate the models, so I checked whether it is reliable.
+- Commit of the previous entry: f9aab1d.
+- What I did: I marked the 30 answers of reports/2026-11-04_human_check_30.md (G good / B bad, with a short reason each). Claude Code joined my marks with the automatic verdicts: results/2026-11-05_human_check_30_marks.txt.
+- Numbers: automatic judge "ok" 25 of 30; my "good" only 8 of 30 (27%). Agreement 11 of 30 (7 ok&G + 4 not-ok&B). 18 answers the judge called ok were bad for me; 1 it called bad was good. Good per category: return_in_loop 5/7, deleted_initialization 1/8, wrong_initial_value 1/6, flipped_comparison 1/5, shortened_range 0/2, wrong_remainder 0/1, deleted_update 0/1.
+- My reasons for B (main patterns): (a) "print in the loop" questions that do not make the student question the starting value (Q4, 6, 8, 10, 30); (b) the question names the variable and the missing step, close to giving the fix (Q5, 7, 14, 16, 21; Q11 gives the fix away); (c) asks about the correct branch, not the buggy one (Q13, 19); (d) asks about the wrong variable or line (Q17, 22, 25, 26, 29); (e) vague or confusing (Q1, 2, 23, 27).
+- Interpretation: the keyword judge only checks form (short, one question, mentions the right area), so it is far too lenient: its ok rate (~59-63 of 70 = ~85-90%) overstates quality. By my marks about a quarter of the answers really help. Only 30 answers, one marker, one model (checkpoint-144): a rough estimate, not a precise one. The model is good at return_in_loop (the "when does the function stop" question) and weak where the bug is a missing or wrong starting value or a flipped comparison.
+- Decision: the "ok" counts of the earlier entries must not be reported as tutor quality in the thesis; report them as "form ok" and report the human result next to them. Training settings stay as decided (lr 2e-4, 2 epochs).
+- Next: decide how to evaluate the final model (e.g. a stricter judge or human marks on a fixed sample of test answers), then the test set once.
+- AI tools: Claude Code (joining my marks with the automatic verdicts, tables, journal). My marks were written by me.
+- Commit: noted in the next entry.
