@@ -1,4 +1,4 @@
-using CoreApi.Common.Results;
+using PlatformKit.Results;
 using CoreApi.Entities;
 using CoreApi.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -32,5 +32,10 @@ public class PostgresProjectRepository(PostgresDbContext context)
             .ToListAsync(cancellationToken);
 
         return new PagedResult<Project>(items, page, pageSize, totalCount);
+    }
+
+    public async Task<IReadOnlyList<Project>> GetActiveWithDefaultRoleAsync(CancellationToken cancellationToken = default)
+    {
+        return await Set.Where(p => p.IsActive && p.DefaultRoleId != null).ToListAsync(cancellationToken);
     }
 }

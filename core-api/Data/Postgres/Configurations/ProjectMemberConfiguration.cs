@@ -19,7 +19,7 @@ public class ProjectMemberConfiguration : IEntityTypeConfiguration<ProjectMember
             .HasForeignKey(m => m.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<User>()
+        builder.HasOne<UserProfile>()
             .WithMany()
             .HasForeignKey(m => m.GrantedByUserId)
             .OnDelete(DeleteBehavior.SetNull);

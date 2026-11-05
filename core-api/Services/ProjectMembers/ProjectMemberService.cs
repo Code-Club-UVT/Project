@@ -1,4 +1,4 @@
-using CoreApi.Common.Results;
+using PlatformKit.Results;
 using CoreApi.Entities;
 using CoreApi.Enums;
 using CoreApi.Mappings;
@@ -15,7 +15,7 @@ public class ProjectMemberService(
     IProjectRepository projects,
     IProjectRoleRepository roles,
     IProjectMemberRepository members,
-    IUserRepository users,
+    IUserProfileRepository users,
     IUnitOfWork unitOfWork,
     TimeProvider timeProvider) : IProjectMemberService
 {
@@ -42,7 +42,7 @@ public class ProjectMemberService(
         }
 
         var user = await users.GetByIdAsync(request.UserId, cancellationToken);
-        if (user is null || !user.IsActive)
+        if (user is null)
         {
             return UserErrors.NotFound;
         }
@@ -53,7 +53,7 @@ public class ProjectMemberService(
             return ProjectRoleErrors.NotFound;
         }
 
-        if (await members.GetAsync(projectId, user.Id, cancellationToken) is not null)
+        if (await members.GetAsync(projectId, user.UserId, cancellationToken) is not null)
         {
             return ProjectMemberErrors.AlreadyMember;
         }
@@ -61,7 +61,7 @@ public class ProjectMemberService(
         var now = timeProvider.GetUtcNow().UtcDateTime;
         var member = new ProjectMember
         {
-            UserId = user.Id,
+            UserId = user.UserId,
             ProjectId = projectId,
             ProjectRoleId = role.Id,
             GrantedByUserId = grantedByUserId,

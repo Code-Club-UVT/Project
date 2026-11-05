@@ -1,4 +1,3 @@
-using CoreApi.Enums;
 using CoreApi.Extensions;
 using CoreApi.Models.Requests;
 using CoreApi.Services.ProjectMembers;
@@ -10,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CoreApi.Controllers;
 
 /// <summary>Admin management of the APIs behind the gateway, their roles and who can use them.</summary>
-[Authorize(Roles = nameof(UserRole.Admin))]
+[Authorize(Roles = CoreRoles.Admin)]
 public class ProjectsController(
     IProjectService projectService,
     IProjectRoleService roleService,

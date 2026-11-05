@@ -1,4 +1,4 @@
-using CoreApi.Common.Results;
+using PlatformKit.Results;
 using CoreApi.Entities;
 using CoreApi.Enums;
 using CoreApi.Mappings;
@@ -68,6 +68,11 @@ public class ProjectRoleService(
             return ProjectRoleErrors.NotFound;
         }
 
+        if (await IsCoreAdminRoleAsync(role, cancellationToken))
+        {
+            return ProjectRoleErrors.SystemRole;
+        }
+
         var name = request.Name.Trim();
         var sameName = await roles.GetByNameAsync(projectId, name, cancellationToken);
         if (sameName is not null && sameName.Id != role.Id)
@@ -91,6 +96,12 @@ public class ProjectRoleService(
             return ProjectRoleErrors.NotFound;
         }
 
+        if (await IsCoreAdminRoleAsync(role, cancellationToken))
+        {
+            return ProjectRoleErrors.SystemRole;
+        }
+
+        // A project's default role may be deleted: the default is cleared (ON DELETE SET NULL).
         if (await roles.HasMembersAsync(roleId, cancellationToken))
         {
             return ProjectRoleErrors.InUse;
@@ -100,6 +111,17 @@ public class ProjectRoleService(
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
+    }
+
+    private async Task<bool> IsCoreAdminRoleAsync(ProjectRole role, CancellationToken cancellationToken)
+    {
+        if (!string.Equals(role.Name, CoreRoles.Admin, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        var project = await projects.GetByIdAsync(role.ProjectId, cancellationToken);
+        return project is { IsSystem: true, Slug: ProjectService.CoreSlug };
     }
 
     /// <summary>The project must exist and use project tokens; a pass-through project has no roles.</summary>

@@ -3,15 +3,13 @@ using CoreApi.Data.Postgres;
 using CoreApi.Data.Postgres.Repositories;
 using CoreApi.Options;
 using CoreApi.Repositories.Abstractions;
-using CoreApi.Services.Auth;
-using CoreApi.Services.Email;
 using CoreApi.Services.ProjectMembers;
 using CoreApi.Services.ProjectRoles;
 using CoreApi.Services.Projects;
 using CoreApi.Services.Seeding;
-using CoreApi.Services.Tokens;
 using CoreApi.Services.Users;
 using Microsoft.EntityFrameworkCore;
+using PlatformKit;
 
 namespace CoreApi.Extensions;
 
@@ -19,8 +17,9 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<PostgresDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("PostgresConnection")));
+        services.AddDbContext<PostgresDbContext>(options => options.UseNpgsql(
+            configuration.GetConnectionString("PostgresConnection"),
+            npgsql => npgsql.MigrationsHistoryTable("__EFMigrationsHistory", PostgresDbContext.Schema)));
 
         return services;
     }
@@ -29,9 +28,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IUnitOfWork, PostgresUnitOfWork>();
         services.AddScoped(typeof(IRepository<,>), typeof(PostgresRepository<,>));
-        services.AddScoped<IUserRepository, PostgresUserRepository>();
-        services.AddScoped<IRefreshTokenRepository, PostgresRefreshTokenRepository>();
-        services.AddScoped<IUserTokenRepository, PostgresUserTokenRepository>();
+        services.AddScoped<IUserProfileRepository, PostgresUserProfileRepository>();
         services.AddScoped<IProjectRepository, PostgresProjectRepository>();
         services.AddScoped<IProjectRoleRepository, PostgresProjectRoleRepository>();
         services.AddScoped<IProjectMemberRepository, PostgresProjectMemberRepository>();
@@ -39,53 +36,33 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddServices(this IServiceCollection services, IHostEnvironment environment, IConfiguration configuration)
+    public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
-        services.AddSingleton<ITokenService, TokenService>();
 
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserProvisioningService, UserProvisioningService>();
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<IProjectRoleService, ProjectRoleService>();
         services.AddScoped<IProjectMemberService, ProjectMemberService>();
-        services.AddScoped<IProjectTokenService, ProjectTokenService>();
 
-        services.AddHealthChecks().AddCheck<PostgresHealthCheck>("postgres");
-
-        services.AddOptions<SmtpOptions>()
-            .BindConfiguration(SmtpOptions.SectionName)
-            .Validate(IsValidSmtp, "Smtp is enabled but Host, Port, Username, Password and FromAddress must be set, and Password must not be the CHANGE-ME placeholder.")
-            .ValidateOnStart();
-
-        if (configuration.GetValue<bool>($"{SmtpOptions.SectionName}:Enabled"))
-        {
-            services.AddSingleton<IEmailSender, SmtpEmailSender>();
-        }
-        else if (environment.IsDevelopment())
-        {
-            services.AddSingleton<IEmailSender, LoggingEmailSender>();
-        }
-        else
-        {
-            throw new InvalidOperationException(
-                "No email sender is configured. Set Smtp__Enabled=true and the other Smtp__* settings.");
-        }
-
-        services.AddHostedService<AdminSeeder>();
+        services.AddOptions<SeedOptions>().BindConfiguration(SeedOptions.SectionName);
         services.AddHostedService<ProjectSeeder>();
+
+        services.AddPlatformHealth().AddCheck<PostgresHealthCheck>("postgres");
 
         return services;
     }
 
-    private static bool IsValidSmtp(SmtpOptions o) =>
-        !o.Enabled
-        || (!string.IsNullOrWhiteSpace(o.Host)
-            && o.Port is > 0 and <= 65535
-            && !string.IsNullOrWhiteSpace(o.Username)
-            && !string.IsNullOrWhiteSpace(o.Password)
-            && !o.Password.StartsWith(SmtpOptions.PlaceholderPrefix, StringComparison.Ordinal)
-            && !string.IsNullOrWhiteSpace(o.FromAddress)
-            && o.TimeoutSeconds > 0);
+    /// <summary>
+    /// Project tokens for <c>core</c> (default scheme, validated by platform-kit; the role is the user's core role, so
+    /// <c>Admin</c> means platform admin) and identity's internal key for <c>/internal/users</c>.
+    /// </summary>
+    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+    {
+        services.AddPlatformAuthentication(configuration);
+        services.AddAuthentication().AddInternalKeyAuthentication(environment);
+
+        return services;
+    }
 }

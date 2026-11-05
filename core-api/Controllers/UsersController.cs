@@ -1,8 +1,7 @@
-using CoreApi.Enums;
 using CoreApi.Extensions;
 using CoreApi.Models.Requests;
-using CoreApi.Services.Auth;
 using CoreApi.Services.ProjectMembers;
+using CoreApi.Services.Projects;
 using CoreApi.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CoreApi.Controllers;
 
 [Authorize]
-public class UsersController(IUserService userService, IAccountService accountService, IProjectMemberService memberService) : ApiControllerBase
+public class UsersController(IUserService userService, IProjectMemberService memberService) : ApiControllerBase
 {
     [HttpGet("me")]
     public async Task<IActionResult> GetMe(CancellationToken cancellationToken)
@@ -24,12 +23,6 @@ public class UsersController(IUserService userService, IAccountService accountSe
         return ToActionResult(await userService.UpdateProfileAsync(User.GetUserId(), request, cancellationToken));
     }
 
-    [HttpPost("me/change-password")]
-    public async Task<IActionResult> ChangePassword(ChangePasswordRequest request, CancellationToken cancellationToken)
-    {
-        return ToActionResult(await accountService.ChangePasswordAsync(User.GetUserId(), request, cancellationToken));
-    }
-
     [HttpGet("me/projects")]
     public async Task<IActionResult> GetMyProjects(CancellationToken cancellationToken)
     {
@@ -37,7 +30,7 @@ public class UsersController(IUserService userService, IAccountService accountSe
     }
 
     [HttpGet]
-    [Authorize(Roles = nameof(UserRole.Admin))]
+    [Authorize(Roles = CoreRoles.Admin)]
     public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken cancellationToken = default)
     {
         return ToActionResult(await userService.GetPagedAsync(page, pageSize, cancellationToken));

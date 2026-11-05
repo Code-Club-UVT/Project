@@ -1,4 +1,4 @@
-using CoreApi.Common.Results;
+using PlatformKit.Results;
 using CoreApi.Entities;
 
 namespace CoreApi.Repositories.Abstractions;
@@ -14,6 +14,9 @@ public interface IProjectMemberRepository
 
     /// <summary>Every project the user belongs to, with project and role, ordered by project name.</summary>
     Task<IReadOnlyList<ProjectMember>> GetByUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>The ids of the projects the user already belongs to.</summary>
+    Task<IReadOnlyList<Guid>> GetProjectIdsByUserAsync(Guid userId, CancellationToken cancellationToken = default);
 
     Task<ProjectMember> CreateAsync(ProjectMember member, CancellationToken cancellationToken = default);
     Task DeleteAsync(ProjectMember member, CancellationToken cancellationToken = default);

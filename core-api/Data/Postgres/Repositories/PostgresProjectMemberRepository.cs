@@ -1,4 +1,4 @@
-using CoreApi.Common.Results;
+using PlatformKit.Results;
 using CoreApi.Entities;
 using CoreApi.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +44,11 @@ public class PostgresProjectMemberRepository(PostgresDbContext context) : IProje
             .Where(m => m.UserId == userId)
             .OrderBy(m => m.Project.Name)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<Guid>> GetProjectIdsByUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await Set.Where(m => m.UserId == userId).Select(m => m.ProjectId).ToListAsync(cancellationToken);
     }
 
     public async Task<ProjectMember> CreateAsync(ProjectMember member, CancellationToken cancellationToken = default)

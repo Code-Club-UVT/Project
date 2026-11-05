@@ -1,4 +1,4 @@
-using CoreApi.Common.Results;
+using PlatformKit.Results;
 using CoreApi.Entities;
 using CoreApi.Enums;
 using CoreApi.Mappings;
@@ -10,14 +10,16 @@ namespace CoreApi.Services.Projects;
 
 public class ProjectService(
     IProjectRepository projects,
+    IProjectRoleRepository roles,
     IUnitOfWork unitOfWork,
     IHostEnvironment environment,
     TimeProvider timeProvider) : IProjectService
 {
     public const string CoreSlug = "core";
+    public const string IdentitySlug = "identity";
 
-    // Slugs that would be confusing as /api/<slug>; "core" is created by the app only.
-    private static readonly HashSet<string> ReservedSlugs = [CoreSlug, "gateway", "internal", "health", "admin"];
+    // Slugs that would be confusing as /api/<slug>; "core" and "identity" are created by the app only.
+    private static readonly HashSet<string> ReservedSlugs = [CoreSlug, IdentitySlug, "email", "gateway", "internal", "health", "admin"];
 
     public async Task<Result<PagedResult<ProjectResponse>>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken = default)
     {
@@ -101,6 +103,21 @@ public class ProjectService(
             }
         }
 
+        if (request.DefaultRoleId is { } defaultRoleId)
+        {
+            if (project.TokenMode == ProjectTokenMode.PassThrough)
+            {
+                return ProjectErrors.NoMemberships;
+            }
+
+            var role = await roles.GetByIdAsync(defaultRoleId, cancellationToken);
+            if (role is null || role.ProjectId != project.Id)
+            {
+                return ProjectErrors.InvalidDefaultRole;
+            }
+        }
+
+        project.DefaultRoleId = request.DefaultRoleId;
         project.Name = request.Name.Trim();
         project.Description = NullIfBlank(request.Description);
         project.BaseUrl = baseUrl;
@@ -123,6 +140,14 @@ public class ProjectService(
         if (project.IsSystem)
         {
             return ProjectErrors.SystemProtected;
+        }
+
+        // The project points at its default role and the role at the project: break that first, so the cascade below
+        // never has to update the row it is deleting.
+        if (project.DefaultRoleId is not null)
+        {
+            project.DefaultRoleId = null;
+            await unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
         // Roles and members go with the project (cascade).

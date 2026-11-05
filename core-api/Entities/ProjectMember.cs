@@ -7,13 +7,13 @@ public class ProjectMember
     public Guid ProjectId { get; set; }
     public Guid ProjectRoleId { get; set; }
 
-    /// <summary>The admin who granted the access; null if that account was deleted.</summary>
+    /// <summary>The admin who granted the access; null for a default role given at confirmation, or if that profile was deleted.</summary>
     public Guid? GrantedByUserId { get; set; }
 
     public DateTime GrantedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
-    public User User { get; set; } = null!;
+    public UserProfile User { get; set; } = null!;
     public Project Project { get; set; } = null!;
     public ProjectRole Role { get; set; } = null!;
 }

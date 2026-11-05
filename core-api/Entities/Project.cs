@@ -22,8 +22,14 @@ public class Project
     public ProjectTokenMode TokenMode { get; set; } = ProjectTokenMode.Exchange;
     public bool IsActive { get; set; } = true;
 
-    /// <summary>Created by the app (the core API). Cannot be deleted or deactivated.</summary>
+    /// <summary>Created by the app (<c>core</c>, <c>identity</c>). Cannot be deleted or deactivated.</summary>
     public bool IsSystem { get; set; }
+
+    /// <summary>
+    /// The role every new user gets in this project once their email is confirmed. Null means invite-only: an admin
+    /// grants access by hand. Not retroactive: setting it later does not change existing users.
+    /// </summary>
+    public Guid? DefaultRoleId { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

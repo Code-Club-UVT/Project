@@ -12,14 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoreApi.Data.Postgres.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20261104155539_AddProjects")]
-    partial class AddProjects
+    [Migration("20261105202440_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("core")
                 .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -39,6 +40,9 @@ namespace CoreApi.Data.Postgres.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DefaultRoleId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -78,11 +82,15 @@ namespace CoreApi.Data.Postgres.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DefaultRoleId");
+
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("Projects", t =>
+                    b.ToTable("Projects", "core", t =>
                         {
+                            t.HasCheckConstraint("CK_Projects_PassThrough_System", "\"TokenMode\" <> 'PassThrough' OR \"IsSystem\"");
+
                             t.HasCheckConstraint("CK_Projects_Slug_Format", "\"Slug\" ~ '^[a-z0-9]+(-[a-z0-9]+)*$'");
                         });
                 });
@@ -117,7 +125,7 @@ namespace CoreApi.Data.Postgres.Migrations
 
                     b.HasIndex("ProjectId", "ProjectRoleId");
 
-                    b.ToTable("ProjectMembers");
+                    b.ToTable("ProjectMembers", "core");
                 });
 
             modelBuilder.Entity("CoreApi.Entities.ProjectRole", b =>
@@ -149,59 +157,12 @@ namespace CoreApi.Data.Postgres.Migrations
                     b.HasIndex("ProjectId", "Name")
                         .IsUnique();
 
-                    b.ToTable("ProjectRoles");
+                    b.ToTable("ProjectRoles", "core");
                 });
 
-            modelBuilder.Entity("CoreApi.Entities.RefreshToken", b =>
+            modelBuilder.Entity("CoreApi.Entities.UserProfile", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("FamilyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("FamilyStartedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("ReplacedByTokenId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("TokenHash")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FamilyId");
-
-                    b.HasIndex("ReplacedByTokenId");
-
-                    b.HasIndex("TokenHash")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("CoreApi.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -210,51 +171,7 @@ namespace CoreApi.Data.Postgres.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("citext");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasDefaultValue("User");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("citext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Username")
-                        .IsUnique();
-
-                    b.ToTable("Users", t =>
-                        {
-                            t.HasCheckConstraint("CK_Users_Username_NoAt", "\"Username\" NOT LIKE '%@%'");
-                        });
-                });
-
-            modelBuilder.Entity("CoreApi.Entities.UserProfile", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(100)
@@ -264,52 +181,32 @@ namespace CoreApi.Data.Postgres.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.HasKey("UserId");
 
-                    b.ToTable("UserProfiles");
+                    b.HasIndex("Username");
+
+                    b.ToTable("UserProfiles", "core");
                 });
 
-            modelBuilder.Entity("CoreApi.Entities.UserToken", b =>
+            modelBuilder.Entity("CoreApi.Entities.Project", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("TokenHash")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<DateTime?>("UsedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TokenHash")
-                        .IsUnique();
-
-                    b.HasIndex("UserId", "Type");
-
-                    b.ToTable("UserTokens");
+                    b.HasOne("CoreApi.Entities.ProjectRole", null)
+                        .WithMany()
+                        .HasForeignKey("DefaultRoleId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("CoreApi.Entities.ProjectMember", b =>
                 {
-                    b.HasOne("CoreApi.Entities.User", null)
+                    b.HasOne("CoreApi.Entities.UserProfile", null)
                         .WithMany()
                         .HasForeignKey("GrantedByUserId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -320,7 +217,7 @@ namespace CoreApi.Data.Postgres.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreApi.Entities.User", "User")
+                    b.HasOne("CoreApi.Entities.UserProfile", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -351,44 +248,6 @@ namespace CoreApi.Data.Postgres.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("CoreApi.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("CoreApi.Entities.RefreshToken", null)
-                        .WithMany()
-                        .HasForeignKey("ReplacedByTokenId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("CoreApi.Entities.User", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CoreApi.Entities.UserProfile", b =>
-                {
-                    b.HasOne("CoreApi.Entities.User", "User")
-                        .WithOne("Profile")
-                        .HasForeignKey("CoreApi.Entities.UserProfile", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CoreApi.Entities.UserToken", b =>
-                {
-                    b.HasOne("CoreApi.Entities.User", "User")
-                        .WithMany("UserTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CoreApi.Entities.Project", b =>
                 {
                     b.Navigation("Members");
@@ -399,15 +258,6 @@ namespace CoreApi.Data.Postgres.Migrations
             modelBuilder.Entity("CoreApi.Entities.ProjectRole", b =>
                 {
                     b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("CoreApi.Entities.User", b =>
-                {
-                    b.Navigation("Profile");
-
-                    b.Navigation("RefreshTokens");
-
-                    b.Navigation("UserTokens");
                 });
 #pragma warning restore 612, 618
         }

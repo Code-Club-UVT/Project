@@ -29,6 +29,15 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
             .HasForeignKey(r => r.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // Plain FK (the service checks the role belongs to this project). Deleting the role clears the default.
+        builder.HasOne<ProjectRole>()
+            .WithMany()
+            .HasForeignKey(p => p.DefaultRoleId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // Only a system project may forward the edge token unchanged (identity).
+        builder.ToTable(t => t.HasCheckConstraint("CK_Projects_PassThrough_System", "\"TokenMode\" <> 'PassThrough' OR \"IsSystem\""));
+
         builder.HasMany(p => p.Members)
             .WithOne(m => m.Project)
             .HasForeignKey(m => m.ProjectId)

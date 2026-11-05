@@ -17,6 +17,7 @@ public static class ProjectMappings
             project.TokenMode.ToString(),
             project.IsActive,
             project.IsSystem,
+            project.DefaultRoleId,
             project.CreatedAt,
             project.UpdatedAt);
     }

@@ -10,5 +10,6 @@ public sealed record ProjectResponse(
     string TokenMode,
     bool IsActive,
     bool IsSystem,
+    Guid? DefaultRoleId,
     DateTime CreatedAt,
     DateTime UpdatedAt);

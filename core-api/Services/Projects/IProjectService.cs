@@ -1,4 +1,4 @@
-using CoreApi.Common.Results;
+using PlatformKit.Results;
 using CoreApi.Models.Requests;
 using CoreApi.Models.Responses;
 

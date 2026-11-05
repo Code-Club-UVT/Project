@@ -1,4 +1,4 @@
-using CoreApi.Common.Results;
+using PlatformKit.Results;
 using CoreApi.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 

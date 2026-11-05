@@ -1,11 +1,11 @@
 {
   "Servers": {
     "1": {
-      "Name": "coreapi (docker)",
+      "Name": "platform (docker)",
       "Group": "Servers",
       "Host": "postgres",
       "Port": 5432,
-      "MaintenanceDB": "coreapi",
+      "MaintenanceDB": "platform",
       "Username": "postgres",
       "SSLMode": "prefer"
     }

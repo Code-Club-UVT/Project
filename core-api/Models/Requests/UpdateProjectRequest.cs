@@ -18,4 +18,7 @@ public sealed record UpdateProjectRequest
     public string? HealthUrl { get; init; }
 
     public bool IsActive { get; init; } = true;
+
+    /// <summary>A role of this project that new users get once their email is confirmed; null (or omitted) means invite-only.</summary>
+    public Guid? DefaultRoleId { get; init; }
 }
