@@ -1,0 +1,51 @@
+25/661 done
+50/661 done
+75/661 done
+100/661 done
+125/661 done
+150/661 done
+175/661 done
+200/661 done
+225/661 done
+250/661 done
+275/661 done
+300/661 done
+325/661 done
+350/661 done
+375/661 done
+400/661 done
+425/661 done
+450/661 done
+475/661 done
+500/661 done
+525/661 done
+550/661 done
+575/661 done
+600/661 done
+625/661 done
+650/661 done
+
+Generated: 661 | kept: 540 | rejected: 121
+   rejected, does not point at the bug: 121
+Kept per category: {'return_in_loop': 212, 'deleted_initialization': 155, 'wrong_initial_value': 100, 'wrong_remainder': 24, 'shortened_range': 9, 'deleted_update': 2, 'flipped_comparison': 38}
+Train: 439 | val: 59 | test: 42
+
+--- 6 random examples ---
+
+[return_in_loop] line 11: return C[n][k]
+TUTOR: On the last pass through the outer loop of the `binomial_coeff` function, what value is being returned?
+
+[deleted_initialization] line 2: (line deleted)
+TUTOR: How does the value of the `sum` variable change during the loop, and what is its initial value before the loop starts?
+
+[return_in_loop] line 5: return result
+TUTOR: What do you think the `return` statement on line 5 is doing, and how might that affect how many times the loop runs?
+
+[flipped_comparison] line 5: if (arr[i] < arr[j]):
+TUTOR: What do you think the `if` statement on line 5 is supposed to check, and how does that relate to identifying an inversion?
+
+[wrong_initial_value] line 7: current_sum = 1
+TUTOR: How does the value of `current_sum` change as the code loops through the string, and does it always represent the sum of the values you intend it to?
+
+[shortened_range] line 4: for i in range(len(s) - 1):
+TUTOR: On the last pass through the loop, what value is added to `int_val` and why?
