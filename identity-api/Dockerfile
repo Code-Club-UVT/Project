@@ -16,7 +16,7 @@ RUN dotnet publish identity-api/IdentityApi.csproj -c Release -o /app --no-resto
 # Self-contained EF migration bundle: applies the migrations without the SDK. Run with --connection "<connection string>".
 WORKDIR /src/identity-api
 RUN dotnet tool restore \
-    && dotnet ef migrations bundle --self-contained -r linux-x64 --output /migrate/efbundle --force
+    && dotnet ef migrations bundle --context PostgresDbContext --self-contained -r linux-x64 --output /migrate/efbundle --force
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:10.0 AS migrate
 WORKDIR /migrate
