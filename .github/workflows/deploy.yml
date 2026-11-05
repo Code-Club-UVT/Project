@@ -1,19 +1,25 @@
 name: Deployment
 
-# main            -> preprod
-# releases/<name> -> prod
-# any other branch, started by hand (Run workflow) -> dev
+# push to main                  -> preprod (images tagged <sha> and latest)
+# published GitHub Release      -> prod    (images tagged with the release tag only)
+# any branch, started by hand   -> dev     (images tagged <sha>)
 on:
     push:
-        branches: [main, "releases/**"]
+        branches: [main]
+    release:
+        types: [published]
     workflow_dispatch:
 
 permissions:
     contents: read
     packages: write
 
+env:
+    # The image tag deploy.sh is given: the release tag for a release, the commit sha otherwise
+    IMAGE_TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
+
 concurrency:
-    group: deploy-${{ github.ref_name == 'main' && 'preprod' || startsWith(github.ref_name, 'releases/') && 'prod' || 'dev' }}
+    group: deploy-${{ github.event_name == 'release' && 'prod' || github.ref_name == 'main' && 'preprod' || 'dev' }}
     cancel-in-progress: false
 
 jobs:
@@ -53,7 +59,9 @@ jobs:
                   file: ${{ matrix.dockerfile }}
                   target: ${{ matrix.target }}
                   push: true
-                  tags: ${{ steps.image.outputs.name }}:${{ github.sha }}
+                  tags: |
+                      ${{ steps.image.outputs.name }}:${{ env.IMAGE_TAG }}
+                      ${{ github.event_name == 'push' && github.ref_name == 'main' && format('{0}:latest', steps.image.outputs.name) || '' }}
                   cache-from: type=gha,scope=${{ matrix.name }}
                   cache-to: type=gha,mode=max,scope=${{ matrix.name }}
 
@@ -65,11 +73,13 @@ jobs:
             - name: Pick the environment
               id: env
               run: |
-                  case "${GITHUB_REF_NAME}" in
-                    main) echo "name=preprod" >> "$GITHUB_OUTPUT" ;;
-                    releases/*) echo "name=prod" >> "$GITHUB_OUTPUT" ;;
-                    *) echo "name=dev" >> "$GITHUB_OUTPUT" ;;
-                  esac
+                  if [ "${GITHUB_EVENT_NAME}" = "release" ]; then
+                    echo "name=prod" >> "$GITHUB_OUTPUT"
+                  elif [ "${GITHUB_REF_NAME}" = "main" ]; then
+                    echo "name=preprod" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "name=dev" >> "$GITHUB_OUTPUT"
+                  fi
 
             # The compose files, scripts and config live on the server in ~/codeclub-uvt (see its README); this only starts the new version.
             - name: Deploy on the server
@@ -84,4 +94,4 @@ jobs:
                   envs: GHCR_USER,GHCR_TOKEN
                   script: |
                       cd /home/${{ secrets.USERNAME }}/codeclub-uvt
-                      sudo GHCR_USER="$GHCR_USER" GHCR_TOKEN="$GHCR_TOKEN" bash scripts/deploy.sh ${{ steps.env.outputs.name }} ${{ github.sha }}
+                      sudo GHCR_USER="$GHCR_USER" GHCR_TOKEN="$GHCR_TOKEN" bash scripts/deploy.sh ${{ steps.env.outputs.name }} ${{ env.IMAGE_TAG }}
