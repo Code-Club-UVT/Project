@@ -62,4 +62,4 @@ Development without `Smtp:Enabled` writes each email (recipient, subject, text b
 
 ## Verified
 
-Built. The end-to-end run on the dev server is recorded in the changelog.
+On the dev server (2026-11-05, commit 3252626, through Caddy and the gateway at `https://codeclub.info.uvt.ro/dev`), a scripted run of 83 checks: 79 passed; the other 4 were test mistakes, not bugs (the outbox still retrying rows from a broken earlier deploy, a wrong field name, the gateway's 30-second access cache, and the per-IP auth rate limit kicking in). A re-check confirmed a grant takes effect after the cache time. One real email was sent over SMTP. Covered here: confirmation and reset emails rendered and logged (Development), `SentEmails` filled with identity's message id and caller, one email per message after outbox retries, and one real email over SMTP to the test address.

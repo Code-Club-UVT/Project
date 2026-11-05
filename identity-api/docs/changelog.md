@@ -6,3 +6,5 @@
 - New: own schema `identity` with a fresh `InitialCreate` migration; `CoreReadDbContext` to mint project tokens from core's tables; an outbox (`OutboxMessages`, `IOutbox`, `OutboxDispatcher`) that replaces inline email sending and tells core about new and confirmed users; `AdminSeeder` queues both events
 - Uses platform-kit for results, ProblemDetails, request context, health and the internal key scheme (`InternalAuth:Callers:gateway`)
 - Dockerfile with `api` and `migrate` targets, `IdentityApi.http`, `CLAUDE.md`, this `docs/` folder
+- The migration bundle names its context (`--context PostgresDbContext`): with `CoreReadDbContext` there are two (found by the first dev deploy)
+- Verified on the dev server (see implementation.md)

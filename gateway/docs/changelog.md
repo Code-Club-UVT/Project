@@ -25,3 +25,4 @@
 - Read-only models now map `core.Projects`, `core.ProjectMembers` and `identity.Users`
 - The stricter auth rate limit moved from `/api/core/auth/*` to `/api/identity/auth/*` (route id `identity/auth`); core is now an `Exchange` project
 - Library renamed from `gateway-auth` to `platform-kit` (settings section `PlatformAuth`); `Gateway.http` added
+- Verified on the dev server: routes for the seeded and new projects, PassThrough for identity, Exchange for core and mock (project token swapped in; a token minted for one project is rejected by another project's API), access changes after the cache time, the per-IP limit on `/api/identity/auth`, and nothing under `/internal` or `/.well-known` reachable

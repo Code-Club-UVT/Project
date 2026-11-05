@@ -98,3 +98,4 @@
 - New: `Projects.DefaultRoleId` (set with `PUT /api/projects/{id}`), granted on email confirmation; `/internal/users` and `/internal/users/{id}/confirmed` for identity's outbox; CHECK that only a system project is `PassThrough`; the seeder creates `core` (roles `User`, default, and `Admin`) and `identity`; `Seed:AdminEmail` makes the first admin
 - Fresh start: own schema `core`, old migrations replaced by a new `InitialCreate`; local database renamed `coreapi` to `platform`
 - Dropped MailKit and the JwtBearer package reference (it comes with platform-kit); `CoreApi.http` replaced by `identity-api/IdentityApi.http` and `gateway/Gateway.http`
+- Verified on the dev server, which now runs the split services from `stack-v2/` (see implementation.md and the server README)

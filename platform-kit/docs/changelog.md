@@ -15,3 +15,4 @@
 - Moved in from core-api: `Result`, `Result<T>`, `Error`, `ErrorType`, `PagedResult<T>` (`PlatformKit.Results`), `ResultControllerBase` and the global exception handler (`PlatformKit.Web`, `AddPlatformProblemDetails`)
 - New: the `InternalKey` scheme with one key per caller (`AddInternalKeyAuthentication`, `InternalAuth:Callers`) and `AddInternalClient` for calling another service's `/internal` endpoints
 - Tokens are now issued by identity-api (issuer `identity`); the validation itself did not change
+- Verified on the dev server through all five services: project tokens (audience per project), the internal key scheme (gateway to identity, identity to core and email), the shared ProblemDetails format (`code`), the correlation id
