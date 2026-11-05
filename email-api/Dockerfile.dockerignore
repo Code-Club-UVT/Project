@@ -1,0 +1,9 @@
+# The build context is the repository root; send only what the email-api image needs.
+*
+!email-api
+!platform-kit
+**/bin
+**/obj
+**/.vs
+email-api/docs
+email-api/appsettings.*.local.json
