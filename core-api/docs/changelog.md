@@ -90,3 +90,11 @@
 - Added `Dockerfile` (targets `api` and `migrate`: the EF migration bundle for the deployment job) and `Dockerfile.dockerignore`.
 - In the deployment the whole configuration (secrets included) is a JSON file mounted as `appsettings.Production.json`; no code change needed. Setup documented in `~/codeclub-uvt/README.md` on the server.
 - `appsettings.Development.json` no longer holds the SMTP password (placeholder); the real one is in the git-ignored `appsettings.Development.local.json`, loaded in Development only.
+
+## Step 14: service split
+- Moved out: accounts, login, refresh, password flows, token signing, JWKS and project-token minting to `identity-api/`; email sending and templates to `email-api/`; `Result`, `ResultControllerBase`, the exception handler and the internal key scheme to `platform-kit/` (was `gateway-auth`). `auth-design.md` moved to identity-api/docs
+- `User` is gone; `UserProfile` (keyed by the account id from identity) holds the name and a read copy of username and email. The global `UserRole` is gone: platform admin is the `Admin` role on the `core` project
+- Core is now an `Exchange` project: it validates project tokens (`aud=core`) with platform-kit. Change password moved to identity (`/api/identity/account/change-password`)
+- New: `Projects.DefaultRoleId` (set with `PUT /api/projects/{id}`), granted on email confirmation; `/internal/users` and `/internal/users/{id}/confirmed` for identity's outbox; CHECK that only a system project is `PassThrough`; the seeder creates `core` (roles `User`, default, and `Admin`) and `identity`; `Seed:AdminEmail` makes the first admin
+- Fresh start: own schema `core`, old migrations replaced by a new `InitialCreate`; local database renamed `coreapi` to `platform`
+- Dropped MailKit and the JwtBearer package reference (it comes with platform-kit); `CoreApi.http` replaced by `identity-api/IdentityApi.http` and `gateway/Gateway.http`

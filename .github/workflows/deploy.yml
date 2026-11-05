@@ -29,8 +29,12 @@ jobs:
             fail-fast: true
             matrix:
                 include:
+                    - { name: identity-api, dockerfile: identity-api/Dockerfile, target: api }
+                    - { name: identity-api-migrate, dockerfile: identity-api/Dockerfile, target: migrate }
                     - { name: core-api, dockerfile: core-api/Dockerfile, target: api }
                     - { name: core-api-migrate, dockerfile: core-api/Dockerfile, target: migrate }
+                    - { name: email-api, dockerfile: email-api/Dockerfile, target: api }
+                    - { name: email-api-migrate, dockerfile: email-api/Dockerfile, target: migrate }
                     - { name: gateway, dockerfile: gateway/Dockerfile, target: "" }
                     - { name: mock-api, dockerfile: mock-api/Dockerfile, target: "" }
 

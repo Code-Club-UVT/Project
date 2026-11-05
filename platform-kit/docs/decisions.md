@@ -19,3 +19,9 @@
 | No NuGet package beyond `Microsoft.AspNetCore.Authentication.JwtBearer` | It already brings `Microsoft.IdentityModel.*` |
 | A failed key download is retried after 5 seconds; only a successful one starts the longer `UnknownKeyRefreshMinutes` wait | Otherwise an API that started before the core API rejected every token for a full minute after the core API came up (found by code review) |
 | A request that finds a download already running does not wait for it, unless no key is loaded yet | Many concurrent requests must not each block a thread for the HTTP timeout during a rotation or an outage |
+| Renamed `gateway-auth` to `platform-kit` (`PlatformKit`) when the result and web plumbing moved in | It is no longer only about the gateway's tokens; it is the kit every service is built on. "Common" was avoided because it tends to become a dumping ground |
+| `Result`, `Error`, `PagedResult`, `ResultControllerBase` and the exception handler live here | Identity, core and email all use the same Result pattern and ProblemDetails shape; one copy keeps the error format identical across services |
+| Service-to-service calls use a key per caller (`InternalAuth:Callers`), not one shared key | A leaked key exposes one edge (for example identity to email), not every internal endpoint; the caller's name is known to the receiver |
+| The internal scheme compares every configured key, without stopping at the first match | Timing does not tell which caller (or whether any) matched |
+| `AddInternalClient` builds the HttpClient for internal calls (key header, correlation id, timeout) | Each caller would otherwise repeat the same few lines and the placeholder check |
+| Settings section `PlatformAuth` (was `GatewayAuth`) | Matches the new name; services were reconfigured in the same change |

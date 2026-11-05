@@ -12,24 +12,25 @@ Controller  ->  Service  ->  Repository  ->  data store (PostgresDbContext, late
 ## Folder map
 
 ```
-Controllers/                   thin; ApiControllerBase converts Result to HTTP
+Controllers/                   thin; ApiControllerBase (api/[controller]) on platform-kit's ResultControllerBase, which converts Result to HTTP
 Services/                      business logic, grouped by feature (interface next to its implementation)
-  Auth/                        IAuthService/AuthService (login, refresh, logout), IAccountService/AccountService
-                               (register, confirm email, reset/change password), AuthErrors, AuthSession
-  Users/                       IUserService/UserService, UserErrors
-  Tokens/                      ITokenService/TokenService (JWT, random tokens, hashing), AccessToken
-  Email/                       IEmailSender, LoggingEmailSender (Development only)
-  Seeding/                     AdminSeeder
+  Users/                       IUserService/UserService (profile, admin list), IUserProvisioningService/UserProvisioningService
+                               (identity's events: profile upsert, default roles on confirmation), UserErrors
+  Projects/                    IProjectService/ProjectService, ProjectUrlRules, CoreRoles, ProjectErrors
+  ProjectRoles/, ProjectMembers/
+  Seeding/                     ProjectSeeder (core and identity projects, core roles)
 Models/Requests, Responses/    DTOs exchanged with the API clients
 Mappings/                      entity <-> model mapping (hand-written)
-Options/                       strongly typed configuration classes (Jwt, RefreshToken, Auth, Frontend, Seed)
+Options/                       strongly typed configuration (Seed)
 Repositories/Abstractions/     IRepository<,>, IUnitOfWork, specific repository interfaces
-Data/Postgres/                 PostgresDbContext, Configurations, Migrations
+Data/Postgres/                 PostgresDbContext (schema core), Configurations, Migrations, DesignTimeDbContextFactory
 Data/Postgres/Repositories/    EF Core implementations of the repository interfaces
 Entities/                      relational entities (PostgreSQL)
-Common/                        Result types, paging, GlobalExceptionHandler
-Extensions/                    DI registration (AddPostgres, AddRepositories, AddServices, AddAuth, AddRateLimiting, AddFrontendCors), ClaimsPrincipal helpers
+Common/                        PostgreSQL health check, Swagger Bearer transformer
+Extensions/                    DI registration (AddPostgres, AddRepositories, AddServices, AddAuth), ClaimsPrincipal helper
 ```
+
+`Result`, `Error`, `PagedResult`, `ResultControllerBase` and the exception handler come from platform-kit (shared by identity, core and email).
 
 ## Layer rules
 
@@ -55,7 +56,7 @@ Extensions/                    DI registration (AddPostgres, AddRepositories, Ad
 ## Error handling
 
 - Expected failures: `Result` with an `Error` (`Code`, `Message`, `Type`).
-- `ApiControllerBase` maps the error type to a ProblemDetails (RFC 9457) response, with the error `Code` as an extension field:
+- `ResultControllerBase` (platform-kit) maps the error type to a ProblemDetails (RFC 9457) response, with the error `Code` as an extension field:
 
 | ErrorType | HTTP |
 |---|---|
@@ -66,11 +67,11 @@ Extensions/                    DI registration (AddPostgres, AddRepositories, Ad
 | Conflict | 409 |
 
 - Success: `Result<T>` gives 200 with the value; `Result` without a value gives 204.
-- Unexpected exceptions: `GlobalExceptionHandler` logs them and returns a 500 ProblemDetails. The exception message is included only in Development.
+- Unexpected exceptions: platform-kit's exception handler (`AddPlatformProblemDetails`) logs them and returns a 500 ProblemDetails. The exception message is included only in Development.
 
 ## Pipeline order (`Program.cs`)
 
-Exception handler, (Development: OpenAPI + Swagger UI), HTTPS redirection, CORS, rate limiter, authentication, authorization, controllers. Authentication and authorization are described in [auth-design.md](auth-design.md). Endpoints require a logged-in user by default (fallback policy); anonymous endpoints must say `[AllowAnonymous]`.
+Exception handler, (Development: OpenAPI + Swagger UI), authentication, request context, authorization, controllers, `/health`. Authentication: project tokens with audience `core` (platform-kit, default scheme) and identity's internal key on `/internal/...`; the token design is in identity-api/docs/auth-design.md. TLS, CORS and rate limiting are the gateway's job. Endpoints require a logged-in user by default (fallback policy); anonymous endpoints must say `[AllowAnonymous]`.
 
 ## Async
 

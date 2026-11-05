@@ -2,15 +2,15 @@
 
 ## What it is
 
-A YARP reverse proxy (`Yarp.ReverseProxy` 2.3.0) on .NET 10. Every API is reached through it at `/api/<slug>/...`; core-api is the project `core`. Packages: `Yarp.ReverseProxy`, `Npgsql.EntityFrameworkCore.PostgreSQL` (read-only access), and the `gateway-auth` project reference (edge token validation, request context, health).
+A YARP reverse proxy (`Yarp.ReverseProxy` 2.3.0) on .NET 10. Every API is reached through it at `/api/<slug>/...`; identity is the project `identity` (PassThrough) and core-api the project `core` (Exchange). Packages: `Yarp.ReverseProxy`, `Npgsql.EntityFrameworkCore.PostgreSQL` (read-only access), and the `platform-kit` project reference (edge token validation, request context, health).
 
 ## Layout
 
 ```
 gateway/
   Program.cs                     pipeline: CORS, authentication, request context, rate limiter, authorization, health, proxy
-  Options/GatewayOptions.cs      CoreApiOptions, RoutingOptions, RateLimitOptions, FrontendCorsOptions
-  Data/                          GatewayDbContext (read-only models of Projects, ProjectMembers, Users), health check
+  Options/GatewayOptions.cs      IdentityOptions, RoutingOptions, RateLimitOptions, FrontendCorsOptions
+  Data/                          GatewayDbContext (read-only models of core.Projects, core.ProjectMembers, identity.Users), health check
   Routing/
     ProxyConfigBuilder.cs        projects -> YARP routes and clusters (pure)
     DbProxyConfigProvider.cs     current config + change signal for YARP
@@ -20,7 +20,7 @@ gateway/
     TtlCache.cs                  cache with a fresh time and a stale grace period
     ProjectAccessService.cs      user active? member? role? (cached)
   Tokens/
-    CoreTokenClient.cs           POST {core}/internal/project-tokens with X-Internal-Key
+    IdentityTokenClient.cs       POST {identity}/internal/project-tokens with X-Internal-Key
     ProjectTokenProvider.cs      caches project tokens until shortly before they expire
   Pipeline/
     ProjectAccessMiddleware.cs   runs before forwarding: access check, token swap, header clean-up
@@ -33,25 +33,25 @@ gateway/
 ## How a request flows
 
 1. **CORS** for the origins in `Cors:AllowedOrigins` (credentials allowed, `X-Correlation-Id` exposed).
-2. **Authentication**: `gateway-auth` validates the edge token (ES256, issuer `CoreApi`, audience `gateway`) with the keys from core-api's JWKS. A request without a token is still passed on; a token that is present but invalid is anonymous at this point.
+2. **Authentication**: `platform-kit` validates the edge token (ES256, issuer `identity`, audience `gateway`) with the keys from identity's JWKS. A request without a token is still passed on; a token that is present but invalid is anonymous at this point.
 3. **Request context**: the correlation id is taken from `X-Correlation-Id` (if safe) or generated, and returned on the response.
-4. **Rate limiter**: policy `per-user` (the token's `sub`, else the client IP) for everything, `per-ip-auth` for `/api/core/auth/*` (login, register, password reset, ...).
-5. **Authorization**: `Exchange` routes need a valid edge token (401 otherwise, empty body from the framework). `PassThrough` routes (core) are anonymous at this level.
+4. **Rate limiter**: policy `per-user` (the token's `sub`, else the client IP) for everything, `per-ip-auth` for `/api/identity/auth/*` (login, register, password reset, ...).
+5. **Authorization**: `Exchange` routes need a valid edge token (401 otherwise, empty body from the framework). `PassThrough` routes (identity) are anonymous at this level.
 6. **ProjectAccessMiddleware** (inside the YARP pipeline):
    - removes `X-User-*` and `X-Internal-Key` headers from the client and sets `X-Correlation-Id`;
-   - **PassThrough** (core): a token that is present but invalid gets 401 `Auth.InvalidToken`; otherwise the request is forwarded with the original `Authorization` header (core-api validates it itself and decides about anonymous endpoints);
-   - **Exchange**: reads the user's access from the database (cached): unknown or disabled user 401 `Auth.AccountUnavailable`, not a member 403 `Project.NotMember`; then gets a project token from core-api (cached) and replaces `Authorization` with it. If the database or core-api cannot be used and there is no usable cached value (this includes the call to core-api timing out after `CoreApi:TimeoutSeconds`): 503 `Gateway.Unavailable`.
-7. **YARP** removes `/api/<slug>` from the path and forwards to the project's `BaseUrl` (which may contain a path: core is `http://host:5054/api`, so `/api/core/auth/login` becomes `/api/auth/login`). `X-Forwarded-*` headers are set by the gateway, a client `Forwarded` header is dropped.
+   - **PassThrough** (identity): a token that is present but invalid gets 401 `Auth.InvalidToken`; otherwise the request is forwarded with the original `Authorization` header (identity validates it itself and decides about anonymous endpoints);
+   - **Exchange**: reads the user's access from the database (cached): unknown or disabled user 401 `Auth.AccountUnavailable`, not a member 403 `Project.NotMember`; then gets a project token from identity (cached) and replaces `Authorization` with it. Core itself is such a project: its admin endpoints check the `Admin` role of the core project token. If the database or identity cannot be used and there is no usable cached value (this includes the call to identity timing out after `Identity:TimeoutSeconds`): 503 `Gateway.Unavailable`.
+7. **YARP** removes `/api/<slug>` from the path and forwards to the project's `BaseUrl` (which may contain a path: identity is `http://host:5060/api`, so `/api/identity/auth/login` becomes `/api/auth/login`). `X-Forwarded-*` headers are set by the gateway, a client `Forwarded` header is dropped.
 
 ## Routes from the database
 
-`ProjectConfigPoller` reads the active projects every `Routing:PollSeconds` (30). For each project: route `/api/<slug>/{**rest}` and a cluster with one destination (`BaseUrl`). A project with a `HealthUrl` gets YARP active health checks (every 30 s, 5 s timeout, consecutive failures). The core project also gets a second route `/api/core/auth/{**rest}` with the stricter rate limit. The config is replaced only when something changed (fingerprint of id, slug, URLs, token mode, `UpdatedAt`). New, changed, deactivated and deleted projects take effect within one poll interval without a restart. If the database cannot be read the current routes stay. A project that cannot be routed (an invalid URL in its row, or anything YARP's own validator rejects) is skipped with a warning (`Project <slug> is not routed: ...`) and the other projects are updated normally; otherwise YARP would reject the whole configuration and no change would reach the routes. The extra core route is named `core/auth`, an id no slug can have, so it cannot collide with a project's route.
+`ProjectConfigPoller` reads the active projects every `Routing:PollSeconds` (30). For each project: route `/api/<slug>/{**rest}` and a cluster with one destination (`BaseUrl`). A project with a `HealthUrl` gets YARP active health checks (every 30 s, 5 s timeout, consecutive failures). The identity project also gets a second route `/api/identity/auth/{**rest}` with the stricter rate limit. The config is replaced only when something changed (fingerprint of id, slug, URLs, token mode, `UpdatedAt`). New, changed, deactivated and deleted projects take effect within one poll interval without a restart. If the database cannot be read the current routes stay. A project that cannot be routed (an invalid URL in its row, or anything YARP's own validator rejects) is skipped with a warning (`Project <slug> is not routed: ...`) and the other projects are updated normally; otherwise YARP would reject the whole configuration and no change would reach the routes. The extra route is named `identity/auth`, an id no slug can have, so it cannot collide with a project's route.
 
 Readiness: `/health` is 200 only when PostgreSQL is reachable and the routes were loaded at least once (before the first load every request would be refused, so probes must not send traffic yet).
 
 ## Caching
 
-| What | Fresh for | If the database / core-api fails |
+| What | Fresh for | If the database / identity fails |
 |---|---|---|
 | Routes | `Routing:PollSeconds` (30) | current routes stay |
 | Access (user active, role) per user and project | `Routing:AccessCacheSeconds` (30) | the old entry is used for up to `Routing:StaleGraceSeconds` (300), then 503 |
@@ -63,24 +63,24 @@ So a revoked grant or a disabled user can keep working for up to about 30 second
 
 | Section | Keys |
 |---|---|
-| `ConnectionStrings:PostgresConnection` | the core API's database (read-only user in production) |
-| `GatewayAuth` | `Issuer` (`CoreApi`), `Audience` (`gateway`), `JwksUrl`, `AllowInsecureJwksUrl` (see gateway-auth docs) |
-| `CoreApi` | `InternalUrl` (root of core-api, no `/api`), `InternalKey` (same as core-api `Internal:ApiKey`; the `CHANGE-ME` placeholder works only in Development), `TimeoutSeconds` (5) |
+| `ConnectionStrings:PostgresConnection` | the `platform` database (read-only user in production: SELECT on `core.Projects`, `core.ProjectMembers`, `identity.Users`) |
+| `PlatformAuth` | `Issuer` (`identity`), `Audience` (`gateway`), `JwksUrl` (identity's), `AllowInsecureJwksUrl` (see platform-kit docs) |
+| `Identity` | `InternalUrl` (root of identity, no `/api`), `InternalKey` (same as identity's `InternalAuth:Callers:gateway`; the `CHANGE-ME` placeholder works only in Development), `TimeoutSeconds` (5) |
 | `Routing` | `PollSeconds` (30), `AccessCacheSeconds` (30), `StaleGraceSeconds` (300) |
 | `RateLimiting` | `AuthPerMinute` (10, per IP), `DefaultPerMinute` (300, per user or IP) |
 | `Cors` | `AllowedOrigins` (the SPA origins) |
 
-Environment variables use `__` (`CoreApi__InternalKey`, `Cors__AllowedOrigins__0`). Options are validated at startup. Development values are in `appsettings.Development.json` (database on localhost, core-api at `http://localhost:5054`).
+Environment variables use `__` (`Identity__InternalKey`, `Cors__AllowedOrigins__0`). Options are validated at startup. Development values are in `appsettings.Development.json` (database on localhost, core-api at `http://localhost:5054`).
 
 ## Running and testing locally
 
-1. `docker compose up -d` in `core-api/` (PostgreSQL), `dotnet ef database update`.
-2. Start core-api on `http://localhost:5054` (the `core` project row is seeded with that address), then the gateway (`dotnet run` in `gateway/`, port 5100).
-3. Point the SPA at `http://localhost:5100/api/core/...`; project APIs at `/api/<slug>/...`.
+1. PostgreSQL with the database `platform` (`docker compose up -d` in `core-api/`, or the dev server), then `dotnet ef database update` in identity-api (`--context PostgresDbContext`), core-api and email-api.
+2. Start identity (5060), core-api (5054, it seeds the `core` and `identity` project rows with those addresses) and email-api (5070), then the gateway (`dotnet run` in `gateway/`, port 5100).
+3. Point the SPA at `http://localhost:5100/api/identity/...` (login) and `/api/core/...`; project APIs at `/api/<slug>/...`. `Gateway.http` has sample requests.
 
 ## Verified
 
-Scripted run against the real core-api, PostgreSQL and a throwaway downstream API built on `gateway-auth` (51 checks, all passed; the sample was deleted):
+Before the service split, scripted run against the real core-api (which then also issued the tokens), PostgreSQL and a throwaway downstream API built on `gateway-auth` (51 checks, all passed; the sample was deleted). The run after the split is in the changelog:
 
 - the SPA's view of core-api through the gateway: login, refresh cookie keeps `Path=/api/core/auth`, refresh, token forwarded unchanged, anonymous endpoints, invalid token rejected by the gateway, role checks, admin endpoints
 - a project created through the gateway is routed within a poll interval; the downstream sees the user, the project role and the stripped path and query

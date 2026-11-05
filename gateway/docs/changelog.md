@@ -19,3 +19,9 @@
 
 - In the deployment its configuration is a JSON file mounted as `appsettings.Production.json` (see `~/codeclub-uvt/README.md` on the server).
 - Forwarded headers: the client address is taken from `X-Forwarded-For` only when the request comes from a trusted proxy (`Proxy:TrustedNetworks`, default `172.16.0.0/12`), so rate limiting and the forwarded address use the real client IP behind Caddy. See the server README.
+
+## Step 3: service split
+- Tokens come from identity-api: `CoreApiOptions`/`CoreTokenClient` became `IdentityOptions`/`IdentityTokenClient` (settings section `Identity`), issuer `identity`, JWKS from identity
+- Read-only models now map `core.Projects`, `core.ProjectMembers` and `identity.Users`
+- The stricter auth rate limit moved from `/api/core/auth/*` to `/api/identity/auth/*` (route id `identity/auth`); core is now an `Exchange` project
+- Library renamed from `gateway-auth` to `platform-kit` (settings section `PlatformAuth`); `Gateway.http` added

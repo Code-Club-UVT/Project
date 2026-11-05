@@ -1,27 +1,35 @@
 # CLAUDE.md
 
-Instructions for `gateway-auth/`. The root [CLAUDE.md](../CLAUDE.md) also applies.
+Instructions for `platform-kit/`. The root [CLAUDE.md](../CLAUDE.md) also applies.
 
 ## Overview
 
-A small shared class library (`GatewayAuth`, .NET 10) that every API behind the gateway references. It validates the project tokens the core API issues and gives the API a request context (user, role, correlation id). It is not a web app and has no business logic.
+A shared class library (`PlatformKit`, .NET 10) that every service references (identity-api, core-api, email-api, gateway, mock-api). It holds the cross-cutting pieces each service would otherwise copy:
+
+- **Auth**: validation of the tokens identity issues (ES256, keys from identity's JWKS), with a "must be logged in" fallback policy.
+- **Request context**: `IRequestContext` (user, role, project, correlation id, client IP), the correlation id middleware and its propagation on outgoing calls, `/health`.
+- **Results**: `Result`, `Result<T>`, `Error`, `ErrorType`, `PagedResult<T>`.
+- **Web**: `ResultControllerBase` (Result to ProblemDetails with a `code`) and the global exception handler.
+- **Internal**: the `InternalKey` scheme for service-to-service `/internal/...` endpoints and an HttpClient helper that sends the key.
+
+It is not a web app and has no business logic.
 
 ## Commands
 
-Run from `gateway-auth/`:
+Run from `platform-kit/`:
 
 - Build: `dotnet build`
 
-APIs reference it by project reference (`<ProjectReference Include="..\gateway-auth\GatewayAuth.csproj" />`). Because of that, an API's Dockerfile must use the repo root as build context.
+Services reference it by project reference (`<ProjectReference Include="..\platform-kit\PlatformKit.csproj" />`). Because of that, a service's Dockerfile must use the repo root as build context.
 
 ## Rules
 
-- Keep it small and generic: authentication, request context, health. No code that belongs to one API.
-- Validation must stay strict and fail closed: pinned algorithm (ES256), issuer, audience (this API's slug), lifetime, signature from the published keys. Do not add switches that weaken it. Loosening it affects every API.
-- The public surface is the extension methods in `GatewayAuthExtensions` and `IRequestContext`; everything else is `internal`. Changing either is a change for all APIs, so note it in `docs/changelog.md`.
+- Keep it generic: nothing that belongs to one service.
+- Validation must stay strict and fail closed: pinned algorithm (ES256), issuer, audience (the service's slug), lifetime, signature from the published keys. Do not add switches that weaken it; loosening it affects every API. The same goes for the internal key scheme (constant-time compare, placeholder keys refused outside Development).
+- The public surface is the extension methods (`PlatformAuthExtensions`, `PlatformWebExtensions`, `InternalAuthExtensions`), `IRequestContext`, `ResultControllerBase`, the `Results` types and `InternalAuth`; everything else is `internal`. Changing any of them is a change for every service, so note it in `docs/changelog.md`.
 - Ask before adding NuGet dependencies.
-- Settings come from the `GatewayAuth` configuration section and can be overridden by environment variables (`GatewayAuth__Audience`, ...).
-- All claim names (`sub`, `username`, `role`) must match what core-api's `TokenService` writes; change both together.
+- Settings come from the `PlatformAuth` and `InternalAuth` configuration sections and can be overridden by environment variables (`PlatformAuth__Audience`, `InternalAuth__Callers__gateway`, ...).
+- All claim names (`sub`, `username`, `role`) must match what identity-api's `TokenService` writes; change both together.
 
 ## Documentation
 

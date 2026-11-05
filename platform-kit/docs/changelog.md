@@ -9,3 +9,9 @@
 ## Step 2: fixes from the code review
 - `JwksKeyStore`: a failed download is retried after 5 seconds instead of after the full unknown-key interval; the timestamps are read and written atomically; a request does not queue behind a running download unless no key is loaded yet
 - Verified with the real core-api and a throwaway API: an API started while core-api was down rejected the first token, and accepted the same token seconds after core-api came back (it used to wait a minute)
+
+## Step 3: platform-kit (service split)
+- Renamed the folder, project and namespaces from `gateway-auth` / `GatewayAuth` to `platform-kit` / `PlatformKit`; the configuration section is now `PlatformAuth`; `AddGatewayAuthentication`, `AddGatewayHealth`, `MapGatewayHealth` became `AddPlatformAuthentication`, `AddPlatformHealth`, `MapPlatformHealth`. Breaking for every service; all were updated in the same change
+- Moved in from core-api: `Result`, `Result<T>`, `Error`, `ErrorType`, `PagedResult<T>` (`PlatformKit.Results`), `ResultControllerBase` and the global exception handler (`PlatformKit.Web`, `AddPlatformProblemDetails`)
+- New: the `InternalKey` scheme with one key per caller (`AddInternalKeyAuthentication`, `InternalAuth:Callers`) and `AddInternalClient` for calling another service's `/internal` endpoints
+- Tokens are now issued by identity-api (issuer `identity`); the validation itself did not change

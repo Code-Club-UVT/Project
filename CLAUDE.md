@@ -19,15 +19,19 @@ This is the root instruction file. Read it at the start of every session.
 
 ## Projects
 
-| Directory | Instructions |
-|-----------|--------------|
-| `licenta-victor/` | [licenta-victor/CLAUDE.md](licenta-victor/CLAUDE.md) |
-| `core-api/` | [core-api/CLAUDE.md](core-api/CLAUDE.md) |
-| `gateway-auth/` | [gateway-auth/CLAUDE.md](gateway-auth/CLAUDE.md) |
-| `gateway/` | [gateway/CLAUDE.md](gateway/CLAUDE.md) |
-| `mock-api/` | [mock-api/CLAUDE.md](mock-api/CLAUDE.md) |
+| Directory | What it is | Instructions |
+|-----------|------------|--------------|
+| `licenta-victor/` | Thesis (LaTeX) | [licenta-victor/CLAUDE.md](licenta-victor/CLAUDE.md) |
+| `identity-api/` | Accounts, login, edge/refresh/project tokens, JWKS | [identity-api/CLAUDE.md](identity-api/CLAUDE.md) |
+| `core-api/` | Profiles, projects, project roles, members, default roles | [core-api/CLAUDE.md](core-api/CLAUDE.md) |
+| `email-api/` | Templated email (internal only) | [email-api/CLAUDE.md](email-api/CLAUDE.md) |
+| `gateway/` | The single entry point (YARP): routing, access check, token swap | [gateway/CLAUDE.md](gateway/CLAUDE.md) |
+| `platform-kit/` | Shared library: token validation, request context, results/ProblemDetails, internal-key auth | [platform-kit/CLAUDE.md](platform-kit/CLAUDE.md) |
+| `mock-api/` | Throw-away project API for end-to-end tests | [mock-api/CLAUDE.md](mock-api/CLAUDE.md) |
 
 When a new project directory is added to this repo, give it its own `CLAUDE.md` and a `docs/` folder, and add a row to the table above.
+
+How they fit together: the browser talks only to the gateway (`/api/<slug>/...`). Identity is the one signer of tokens; every other API validates project tokens with platform-kit. Each service owns one schema of the single PostgreSQL database `platform` (`identity`, `core`, `email`); only the owner writes, and the gateway and identity read the few tables they need. Identity tells core and email what happened through an outbox (internal HTTP with `X-Internal-Key`, retried).
 
 ## Repo-wide notes
 
