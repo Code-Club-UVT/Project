@@ -9,10 +9,10 @@ public interface IProjectTokenProvider
 }
 
 /// <summary>
-/// Caches the tokens the core API issues, so the core API is called about once per token lifetime per user and project.
+/// Caches the tokens identity issues, so identity is called about once per token lifetime per user and project.
 /// The role id is part of the key, so a role change gets a new token without waiting for the old one to expire.
 /// </summary>
-public sealed class ProjectTokenProvider(CoreTokenClient client, IMemoryCache cache, TimeProvider timeProvider) : IProjectTokenProvider
+public sealed class ProjectTokenProvider(IdentityTokenClient client, IMemoryCache cache, TimeProvider timeProvider) : IProjectTokenProvider
 {
     private const int Stripes = 64;
     private static readonly TimeSpan MaxMargin = TimeSpan.FromSeconds(60);

@@ -2,17 +2,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Gateway.Options;
 
-/// <summary>How the gateway reaches the core API's internal endpoints (token exchange).</summary>
-public sealed class CoreApiOptions
+/// <summary>How the gateway reaches identity's internal endpoint (token exchange).</summary>
+public sealed class IdentityOptions
 {
-    public const string SectionName = "CoreApi";
+    public const string SectionName = "Identity";
     public const string PlaceholderKeyPrefix = "CHANGE-ME";
 
-    /// <summary>Root URL of the core API, without <c>/api</c>, for example <c>http://core-api:8080</c>.</summary>
+    /// <summary>Root URL of identity, without <c>/api</c>, for example <c>http://identity-api:8080</c>.</summary>
     [Required, Url]
     public string InternalUrl { get; set; } = string.Empty;
 
-    /// <summary>Shared secret sent as <c>X-Internal-Key</c>; must equal the core API's <c>Internal:ApiKey</c>.</summary>
+    /// <summary>Sent as <c>X-Internal-Key</c>; must equal identity's <c>InternalAuth:Callers:gateway</c>.</summary>
     [Required, MinLength(32)]
     public string InternalKey { get; set; } = string.Empty;
 
@@ -42,7 +42,7 @@ public sealed class RateLimitOptions
 {
     public const string SectionName = "RateLimiting";
 
-    /// <summary>Per client IP, for the core API's auth endpoints (login, register, ...).</summary>
+    /// <summary>Per client IP, for identity's auth endpoints (login, register, ...).</summary>
     [Range(1, 100000)]
     public int AuthPerMinute { get; set; } = 10;
 

@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Gateway.Data;
 
 /// <summary>
-/// Read-only view of the tables the core API owns. The gateway never writes and never migrates; in production connect
-/// with a database user that only has SELECT on these tables. Only the columns the gateway needs are mapped, so
-/// adding columns in the core API does not affect it.
+/// Read-only view of the tables it needs: projects and memberships from the core API (schema <c>core</c>) and the
+/// active flag of accounts from identity (schema <c>identity</c>). The gateway never writes and never migrates; in
+/// production connect with a database user that only has SELECT on these tables. Only the columns the gateway needs
+/// are mapped, so the owners can add columns freely.
 /// </summary>
 public class GatewayDbContext(DbContextOptions<GatewayDbContext> options) : DbContext(options)
 {
@@ -15,9 +16,9 @@ public class GatewayDbContext(DbContextOptions<GatewayDbContext> options) : DbCo
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ProjectRow>().ToTable("Projects").HasKey(p => p.Id);
-        modelBuilder.Entity<MemberRow>().ToTable("ProjectMembers").HasKey(m => new { m.UserId, m.ProjectId });
-        modelBuilder.Entity<UserRow>().ToTable("Users").HasKey(u => u.Id);
+        modelBuilder.Entity<ProjectRow>().ToTable("Projects", "core").HasKey(p => p.Id);
+        modelBuilder.Entity<MemberRow>().ToTable("ProjectMembers", "core").HasKey(m => new { m.UserId, m.ProjectId });
+        modelBuilder.Entity<UserRow>().ToTable("Users", "identity").HasKey(u => u.Id);
     }
 }
 

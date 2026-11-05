@@ -11,8 +11,8 @@ namespace Gateway.Pipeline;
 /// Runs for every proxied request, after the edge token was validated and before the request is forwarded.
 /// <list type="bullet">
 /// <item><b>Exchange</b> projects: the user must be active and a member of the project; the <c>Authorization</c> header is
-/// replaced by a project token from the core API.</item>
-/// <item><b>PassThrough</b> projects (core): the edge token is forwarded unchanged; no token is fine (login, register), but
+/// replaced by a project token from identity.</item>
+/// <item><b>PassThrough</b> projects (identity): the edge token is forwarded unchanged; no token is fine (login, register), but
 /// a token that is present and invalid is rejected here.</item>
 /// </list>
 /// Headers a client could use to pretend to be someone else are removed first.
@@ -94,7 +94,7 @@ public sealed class ProjectAccessMiddleware(RequestDelegate next, ILogger<Projec
 
             projectToken = token.Token!;
         }
-        // A timeout of the call to core-api is also an OperationCanceledException; only a client that went away is not ours to answer.
+        // A timeout of the call to identity is also an OperationCanceledException; only a client that went away is not ours to answer.
         catch (Exception ex) when (!context.RequestAborted.IsCancellationRequested)
         {
             logger.LogError(ex, "Could not check access or get a project token for project {Slug}", slug);

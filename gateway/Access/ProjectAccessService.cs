@@ -16,7 +16,7 @@ public interface IProjectAccessService
     Task<AccessDecision> GetAsync(Guid userId, Guid projectId, CancellationToken cancellationToken);
 }
 
-/// <summary>Reads (and caches) the user's membership. The core API checks again when it issues the token.</summary>
+/// <summary>Reads (and caches) the user's membership. Identity checks again when it issues the token.</summary>
 public sealed class ProjectAccessService(
     IDbContextFactory<GatewayDbContext> dbFactory,
     TtlCache cache,

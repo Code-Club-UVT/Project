@@ -19,12 +19,12 @@ public static class GatewayServiceExtensions
 {
     public static IServiceCollection AddGatewayOptions(this IServiceCollection services, IHostEnvironment environment)
     {
-        services.AddOptions<CoreApiOptions>()
-            .BindConfiguration(CoreApiOptions.SectionName)
+        services.AddOptions<IdentityOptions>()
+            .BindConfiguration(IdentityOptions.SectionName)
             .ValidateDataAnnotations()
             .Validate(
-                o => environment.IsDevelopment() || !o.InternalKey.StartsWith(CoreApiOptions.PlaceholderKeyPrefix, StringComparison.Ordinal),
-                "CoreApi:InternalKey is still the placeholder. Set the key shared with the core API outside Development (for example with the CoreApi__InternalKey environment variable).")
+                o => environment.IsDevelopment() || !o.InternalKey.StartsWith(IdentityOptions.PlaceholderKeyPrefix, StringComparison.Ordinal),
+                "Identity:InternalKey is still the placeholder. Set the key identity expects from the gateway outside Development (for example with the Identity__InternalKey environment variable).")
             .ValidateOnStart();
 
         services.AddOptions<RoutingOptions>().BindConfiguration(RoutingOptions.SectionName).ValidateDataAnnotations().ValidateOnStart();
@@ -58,7 +58,7 @@ public static class GatewayServiceExtensions
         return services;
     }
 
-    /// <summary>Read-only access to the core API's tables (projects, memberships, users).</summary>
+    /// <summary>Read-only access to the tables the gateway needs: <c>core.Projects</c>, <c>core.ProjectMembers</c>, <c>identity.Users</c>.</summary>
     public static IServiceCollection AddGatewayData(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("PostgresConnection")
@@ -90,13 +90,13 @@ public static class GatewayServiceExtensions
         services.AddSingleton<TtlCache>();
         services.AddSingleton<IProjectAccessService, ProjectAccessService>();
 
-        services.AddHttpClient<CoreTokenClient>((sp, client) => CoreTokenClient.Configure(client, sp.GetRequiredService<IOptions<CoreApiOptions>>().Value));
+        services.AddHttpClient<IdentityTokenClient>((sp, client) => IdentityTokenClient.Configure(client, sp.GetRequiredService<IOptions<IdentityOptions>>().Value));
         services.AddScoped<IProjectTokenProvider, ProjectTokenProvider>();
 
         return services;
     }
 
-    /// <summary>Per user (per IP when anonymous) for all projects, and a stricter per-IP limit for the core API's auth endpoints.</summary>
+    /// <summary>Per user (per IP when anonymous) for all projects, and a stricter per-IP limit for identity's auth endpoints.</summary>
     public static IServiceCollection AddGatewayRateLimiting(this IServiceCollection services)
     {
         services.AddRateLimiter(_ => { });

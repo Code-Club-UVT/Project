@@ -21,7 +21,7 @@ public static class ProxyConfigBuilder
     public const string PassThrough = "PassThrough";
     public const string Exchange = "Exchange";
 
-    private const string CoreSlug = "core";
+    private const string IdentitySlug = "identity";
 
     private static readonly Regex SlugPattern = new("^[a-z0-9]+(-[a-z0-9]+)*$", RegexOptions.Compiled);
 
@@ -60,7 +60,7 @@ public static class ProxyConfigBuilder
             [TokenModeKey] = passThrough ? PassThrough : Exchange
         };
 
-        // Pass-through projects (core) decide on authentication themselves: login and register are anonymous there.
+        // Pass-through projects (identity) decide on authentication themselves: login and register are anonymous there.
         // The gateway still rejects a token that is present but invalid (see ProjectAccessMiddleware).
         var authorizationPolicy = passThrough ? "anonymous" : "default";
 
@@ -69,7 +69,7 @@ public static class ProxyConfigBuilder
             NewRoute(project.Slug, project.Slug, prefix + "/{**rest}", prefix, DefaultRateLimitPolicy, authorizationPolicy, metadata, order: 0)
         };
 
-        if (project.Slug == CoreSlug)
+        if (project.Slug == IdentitySlug)
         {
             // Stricter limit for login, register, password reset, ... (per IP). The id contains a '/', which a slug cannot,
             // so it can never collide with the route of a project.

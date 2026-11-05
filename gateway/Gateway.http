@@ -1,0 +1,67 @@
+# Everything through the gateway (port 5100). Core needs a project token, so it is only reachable through here.
+@Gateway = http://localhost:5100
+@accessToken =
+@projectId =
+@roleId =
+@userId =
+
+### Login (identity, PassThrough); copy accessToken above
+POST {{Gateway}}/api/identity/auth/login
+Content-Type: application/json
+
+{ "identifier": "admin", "password": "admin12345" }
+
+### Current user's profile (core)
+GET {{Gateway}}/api/core/users/me
+Authorization: Bearer {{accessToken}}
+
+### Update profile
+PUT {{Gateway}}/api/core/users/me
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "firstName": "John", "lastName": "Doe" }
+
+### My projects
+GET {{Gateway}}/api/core/users/me/projects
+Authorization: Bearer {{accessToken}}
+
+### List users (core Admin)
+GET {{Gateway}}/api/core/users?page=1&pageSize=20
+Authorization: Bearer {{accessToken}}
+
+### List projects (core Admin)
+GET {{Gateway}}/api/core/projects
+Authorization: Bearer {{accessToken}}
+
+### Create a project
+POST {{Gateway}}/api/core/projects
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "slug": "mock", "name": "Mock API", "baseUrl": "http://localhost:5200/api", "healthUrl": "http://localhost:5200/health" }
+
+### Create a role
+POST {{Gateway}}/api/core/projects/{{projectId}}/roles
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "name": "Viewer" }
+
+### Make it the default role for new users (null = invite-only)
+PUT {{Gateway}}/api/core/projects/{{projectId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "name": "Mock API", "baseUrl": "http://localhost:5200/api", "healthUrl": "http://localhost:5200/health", "isActive": true, "defaultRoleId": "{{roleId}}" }
+
+### Grant a user access
+POST {{Gateway}}/api/core/projects/{{projectId}}/members
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "userId": "{{userId}}", "roleId": "{{roleId}}" }
+
+### Call the project API (the gateway swaps the token)
+GET {{Gateway}}/api/mock/whoami
+Authorization: Bearer {{accessToken}}
