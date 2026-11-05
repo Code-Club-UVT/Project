@@ -1,4 +1,4 @@
-namespace GatewayAuth.RequestContext;
+namespace PlatformKit.RequestContext;
 
 /// <summary>Who is calling and which request this is, for the current HTTP request. Register it with <c>AddRequestContext()</c>.</summary>
 public interface IRequestContext
@@ -13,7 +13,7 @@ public interface IRequestContext
     /// <summary>The user's role in this project (the <c>role</c> claim); null when anonymous.</summary>
     string? Role { get; }
 
-    /// <summary>This API's slug, from <c>GatewayAuth:Audience</c>.</summary>
+    /// <summary>This API's slug, from <c>PlatformAuth:Audience</c>.</summary>
     string ProjectSlug { get; }
 
     /// <summary>Taken from <c>X-Correlation-Id</c> when valid, otherwise generated. Same value in logs, the response and outgoing calls.</summary>

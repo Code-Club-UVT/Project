@@ -1,6 +1,5 @@
-using GatewayAuth.Authentication;
-using GatewayAuth.Options;
-using GatewayAuth.RequestContext;
+using PlatformKit.Auth;
+using PlatformKit.RequestContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -12,34 +11,34 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace GatewayAuth;
+namespace PlatformKit;
 
-public static class GatewayAuthExtensions
+public static class PlatformAuthExtensions
 {
     /// <summary>
     /// Validates project tokens: ES256 signature (keys come from the JWKS URL), issuer, this API's slug as audience and lifetime.
     /// Every endpoint requires a valid token unless it says <c>[AllowAnonymous]</c>. The user's role in the project is the
     /// <c>role</c> claim, so <c>[Authorize(Roles = "Editor")]</c> works.
     /// </summary>
-    public static IServiceCollection AddGatewayAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPlatformAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<GatewayAuthOptions>()
-            .Bind(configuration.GetSection(GatewayAuthOptions.SectionName))
+        services.AddOptions<PlatformAuthOptions>()
+            .Bind(configuration.GetSection(PlatformAuthOptions.SectionName))
             .ValidateDataAnnotations()
-            .Validate(IsValidJwksUrl, "GatewayAuth:JwksUrl must be an absolute https URL (or http with GatewayAuth:AllowInsecureJwksUrl=true).")
+            .Validate(IsValidJwksUrl, "PlatformAuth:JwksUrl must be an absolute https URL (or http with PlatformAuth:AllowInsecureJwksUrl=true).")
             .ValidateOnStart();
 
-        // One long-lived client; its connections are recycled so a changed address of the core API is picked up.
+        // One long-lived client; its connections are recycled so a changed address of identity is picked up.
         services.AddSingleton(sp => new JwksKeyStore(
             new HttpClient(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(5) }) { Timeout = TimeSpan.FromSeconds(5) },
-            sp.GetRequiredService<IOptions<GatewayAuthOptions>>(),
+            sp.GetRequiredService<IOptions<PlatformAuthOptions>>(),
             sp.GetRequiredService<TimeProvider>(),
             sp.GetRequiredService<ILogger<JwksKeyStore>>()));
         services.TryAddSingleton(TimeProvider.System);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
         services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
-            .Configure<IOptions<GatewayAuthOptions>, JwksKeyStore>((bearer, gatewayOptions, keyStore) =>
+            .Configure<IOptions<PlatformAuthOptions>, JwksKeyStore>((bearer, gatewayOptions, keyStore) =>
             {
                 var gateway = gatewayOptions.Value;
 
@@ -91,18 +90,18 @@ public static class GatewayAuthExtensions
     }
 
     /// <summary>Adds health checks; chain further checks on the returned builder.</summary>
-    public static IHealthChecksBuilder AddGatewayHealth(this IServiceCollection services)
+    public static IHealthChecksBuilder AddPlatformHealth(this IServiceCollection services)
     {
         return services.AddHealthChecks();
     }
 
     /// <summary>Maps an anonymous <c>/health</c> endpoint, the same in every API, for the gateway's probes.</summary>
-    public static IEndpointConventionBuilder MapGatewayHealth(this IEndpointRouteBuilder endpoints)
+    public static IEndpointConventionBuilder MapPlatformHealth(this IEndpointRouteBuilder endpoints)
     {
         return endpoints.MapHealthChecks("/health").AllowAnonymous();
     }
 
-    private static bool IsValidJwksUrl(GatewayAuthOptions options)
+    private static bool IsValidJwksUrl(PlatformAuthOptions options)
     {
         return Uri.TryCreate(options.JwksUrl, UriKind.Absolute, out var uri)
             && (uri.Scheme == Uri.UriSchemeHttps || (uri.Scheme == Uri.UriSchemeHttp && options.AllowInsecureJwksUrl));

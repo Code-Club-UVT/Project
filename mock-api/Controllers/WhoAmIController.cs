@@ -1,4 +1,4 @@
-using GatewayAuth.RequestContext;
+using PlatformKit.RequestContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,24 +1,23 @@
-using GatewayAuth.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace GatewayAuth.Authentication;
+namespace PlatformKit.Auth;
 
 /// <summary>
-/// Holds the public signing keys downloaded from the core API's JWKS and hands them to the token validator.
+/// Holds the public signing keys downloaded from identity's JWKS and hands them to the token validator.
 /// <list type="bullet">
-/// <item>Keys are downloaded on first use and again every <see cref="GatewayAuthOptions.KeysRefreshMinutes"/>.</item>
-/// <item>A token that names an unknown <c>kid</c> (the core API rotated its key) triggers an immediate download, so that same
+/// <item>Keys are downloaded on first use and again every <see cref="PlatformAuthOptions.KeysRefreshMinutes"/>.</item>
+/// <item>A token that names an unknown <c>kid</c> (identity rotated its key) triggers an immediate download, so that same
 /// request is accepted. After a successful download the next one waits at least
-/// <see cref="GatewayAuthOptions.UnknownKeyRefreshMinutes"/>, so tokens with made-up key ids cannot make the API hammer the core API.</item>
-/// <item>After a failed download (core API not up yet, network blip) the next try is allowed after a few seconds, not after the
-/// full interval, so the API recovers shortly after the core API does. The previous keys stay in use meanwhile.</item>
+/// <see cref="PlatformAuthOptions.UnknownKeyRefreshMinutes"/>, so tokens with made-up key ids cannot make the API hammer identity.</item>
+/// <item>After a failed download (identity not up yet, network blip) the next try is allowed after a few seconds, not after the
+/// full interval, so the API recovers shortly after identity does. The previous keys stay in use meanwhile.</item>
 /// </list>
 /// The validator asks for keys synchronously, so a download blocks the request that triggers it for at most the HTTP timeout.
 /// Other requests do not wait for it, except while no key has been loaded at all.
 /// </summary>
-internal sealed class JwksKeyStore(HttpClient httpClient, IOptions<GatewayAuthOptions> options, TimeProvider timeProvider, ILogger<JwksKeyStore> logger)
+internal sealed class JwksKeyStore(HttpClient httpClient, IOptions<PlatformAuthOptions> options, TimeProvider timeProvider, ILogger<JwksKeyStore> logger)
 {
     private static readonly TimeSpan FailureBackoff = TimeSpan.FromSeconds(5);
     private static readonly TimeSpan ColdStartWait = TimeSpan.FromSeconds(10);
@@ -46,7 +45,7 @@ internal sealed class JwksKeyStore(HttpClient httpClient, IOptions<GatewayAuthOp
         return matches;
     }
 
-    private void Refresh(GatewayAuthOptions settings)
+    private void Refresh(PlatformAuthOptions settings)
     {
         // Someone else is already downloading: if there are keys to work with, do not queue behind them. With no keys at
         // all (first requests after start) wait, because there is nothing to validate against.

@@ -1,7 +1,7 @@
 using Gateway.Access;
 using Gateway.Routing;
 using Gateway.Tokens;
-using GatewayAuth.RequestContext;
+using PlatformKit.RequestContext;
 using Microsoft.Net.Http.Headers;
 using Yarp.ReverseProxy.Model;
 

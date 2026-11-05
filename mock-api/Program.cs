@@ -1,4 +1,4 @@
-using GatewayAuth;
+using PlatformKit;
 using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +13,9 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownIPNetworks.Add(System.Net.IPNetwork.Parse("172.16.0.0/12"));
 });
 
-builder.Services.AddGatewayAuthentication(builder.Configuration);
+builder.Services.AddPlatformAuthentication(builder.Configuration);
 builder.Services.AddRequestContext();
-builder.Services.AddGatewayHealth();
+builder.Services.AddPlatformHealth();
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -25,7 +25,7 @@ app.UseAuthentication();
 app.UseRequestContext();
 app.UseAuthorization();
 
-app.MapGatewayHealth();
+app.MapPlatformHealth();
 app.MapControllers();
 
 app.Run();

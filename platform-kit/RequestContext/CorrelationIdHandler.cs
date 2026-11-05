@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace GatewayAuth.RequestContext;
+namespace PlatformKit.RequestContext;
 
 /// <summary>Sends the current request's correlation id on outgoing calls, so one id follows a request across APIs.</summary>
 internal sealed class CorrelationIdHandler(IHttpContextAccessor accessor) : DelegatingHandler

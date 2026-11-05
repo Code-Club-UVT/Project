@@ -1,12 +1,12 @@
-using GatewayAuth.Options;
+using PlatformKit.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace GatewayAuth.RequestContext;
+namespace PlatformKit.RequestContext;
 
-internal sealed class HttpRequestContext(IHttpContextAccessor accessor, IOptions<GatewayAuthOptions> options) : IRequestContext
+internal sealed class HttpRequestContext(IHttpContextAccessor accessor, IOptions<PlatformAuthOptions> options) : IRequestContext
 {
-    internal const string CorrelationIdItem = "GatewayAuth.CorrelationId";
+    internal const string CorrelationIdItem = "PlatformKit.CorrelationId";
 
     private HttpContext? Http => accessor.HttpContext;
 

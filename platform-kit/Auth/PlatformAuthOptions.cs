@@ -1,13 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace GatewayAuth.Options;
+namespace PlatformKit.Auth;
 
-/// <summary>Settings an API needs to validate the project tokens the core API issues for it.</summary>
-public sealed class GatewayAuthOptions
+/// <summary>Settings an API needs to validate the project tokens identity issues for it.</summary>
+public sealed class PlatformAuthOptions
 {
-    public const string SectionName = "GatewayAuth";
+    public const string SectionName = "PlatformAuth";
 
-    /// <summary>Must equal the <c>iss</c> of the tokens (core API: <c>Jwt:Issuer</c>).</summary>
+    /// <summary>Must equal the <c>iss</c> of the tokens (identity: <c>Jwt:Issuer</c>).</summary>
     [Required]
     public string Issuer { get; set; } = string.Empty;
 

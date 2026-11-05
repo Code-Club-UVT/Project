@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace GatewayAuth.RequestContext;
+namespace PlatformKit.RequestContext;
 
 /// <summary>
 /// Settles the correlation id (incoming header if it looks safe, otherwise a new one), returns it on the response, and
