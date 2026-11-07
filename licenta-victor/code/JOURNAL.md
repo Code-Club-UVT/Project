@@ -275,3 +275,11 @@ before that day use the Romanian names. Romanian quotes are kept, with a transla
 - Next: decide how to evaluate the final model (e.g. a stricter judge or human marks on a fixed sample of test answers), then the test set once.
 - AI tools: Claude Code (joining my marks with the automatic verdicts, tables, journal). My marks were written by me.
 - Commit: noted in the next entry.
+
+## 2026-11-07 · Summary and plans file (Barnie.md)
+- Why: a single file with a summary of all the work so far and all the planned next steps, to be pushed to GitHub.
+- Commit of the previous entry: none (the rubric draft commit fb4b04f, 2026-11-06, has no entry of its own: it added reports/question_rubric_draft.md, a draft of what a good tutor question looks like from my 30 marks).
+- What I did: wrote Barnie.md (summary table, main findings, open problems, plans 1-8, rules). Plans 1-3 come from the journal; plans 4-8 are suggestions, not decided. No runs, no numbers computed; all numbers are copied from this journal.
+- Decision / next: I choose which plans to follow; first the rubric and how the final model is evaluated.
+- AI tools: Claude Code (reading the journal and reports, writing the file). Prompt: "fa un sumar a tot ce ai facut pana acum si spune mi toate planurile tale, scrie le toate intr un fisier si da push pe github. numeste-l Barnie.md".
+- Commit: noted in the next entry.
