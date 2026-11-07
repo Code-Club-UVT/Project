@@ -1,0 +1,9 @@
+MBPP programs used: 359
+Buggy programs: 661
+   return_in_loop 275
+   deleted_initialization 163
+   wrong_initial_value 109
+   flipped_comparison 65
+   wrong_remainder 34
+   shortened_range 11
+   deleted_update 4

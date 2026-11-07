@@ -1,0 +1,206 @@
+
+===== TEST 1 (deleted_initialization, line 2): (line deleted)
+def maxim(lista):
+    for x in lista:
+        if x > m:
+            m = x
+    return m
+
+--- BASE ---
+Este o întâlnire frecventă! Îmi pare rău, dar nu pot să te ajut cu acest cod de automatizare pentru că nu am încredere în funcțiile existente. Sunt foarte bine în ceea ce se referă la codul Python și aștept să te ajut în cazul unei probleme specifice. Cu toate acestea, dori să îți pregătesc o întrebare: "Ce este ceva în continuarea codului?"
+
+--- TOY ---
+Uită-te la `m` din buclă. Ce valoare are acelei variabilă? Sunt o copie a lui `x`, sau o nouă variabilă?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă cu trei elemente. Ce opreie prin buclă? De ce `m` e prima valoare din listă?
+
+===== TEST 2 (flipped_comparison, line 4): if x < m:
+def maxim(lista):
+    m = lista[0]
+    for x in lista:
+        if x < m:
+            m = x
+    return m
+
+--- BASE ---
+Este o întâlnire frecventă! Îmi pare rău, dar nu pot să te ajut cu acest cod deoarece nu am încredere că funcția ta este corectă. 
+
+Pentru a începe, vrei să verificați dacă lista este neplină? Dacă nu e plină, atunci trebuie să verificăm daca primul element din lista este cel mai mare. De fapt, pentru a avea un număr valid de argumente, lista trebuie să fie plină și trebuie să avem un element mai mare decât toate restul.
+
+Dacă nu este plină, puteți să afi
+
+--- TOY ---
+Uită-te la `for`-ul. Ce element din listă se face prima dată? Ce se întâmplă când trecem prin restul lui?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă cu trei elemente. Ce opreie prin buclă? De unde e `m` în primul rând?
+
+===== TEST 3 (return_in_loop, line 6): return m
+def maxim(lista):
+    m = lista[0]
+    for x in lista:
+        if x > m:
+            m = x
+        return m
+
+--- BASE ---
+Este o întâlnire frecventă! Îmi pare rău, dar ambele întrebările sunt corecte. Voi să te ajut cu două întrebări:
+
+1) Pentru a calcula cel mai mare număr dintr-o listă, trebuie să folosești o structură de date diferită, cum ar fi o matrice sau o tabelă. Funcțiile Python pentru a face acest lucru includ `max()` și `min()`. 
+
+2) Dacă vrei să afișezi cel mai mare număr din lista, poti folosi `max(list)` unde `list` este lista pe care îl cautas
+
+--- TOY ---
+Uită-te la `return` din buclă. Din ce bloc se face? Sunt o funcție sau o buclă? Ce tine să facă după ce ajunge la `return`?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `m` înainte ca bucla să ajungă la ultimul element?
+
+===== TEST 4 (wrong_initial_value, line 2): contor = 1
+def numara_pare(lista):
+    contor = 1
+    for x in lista:
+        if x % 2 == 0:
+            contor += 1
+    return contor
+
+--- BASE ---
+Este o întâlnire frecventă! Îmi pare rău, dar nu pot furniza informațiile specifice pentru funcția "numara_pare" din cauza faptului că nu am acces la codul original sau la documentările despre ele. 
+
+Pentru a începe să analizeam problema, vă oferoi să explicăm cum se poate fi bine implementat această funcție:
+
+```python
+def numara_pare(lista):
+    # Initializăm contorul cu 1 (ca doar primul element este par)
+    contor = 1
+    
+    # Iterăm prin listele
+    for x in lista:
+
+
+--- TOY ---
+Uită-te la `for`-ul. Ce element din listă se face pe prima trecere? Sunt o valoare sau o variabilă?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `contor` după primul element?
+
+===== TEST 5 (deleted_initialization, line 2): (line deleted)
+def numara_pare(lista):
+    for x in lista:
+        if x % 2 == 0:
+            contor += 1
+    return contor
+
+--- BASE ---
+Este o întâlnire frecventă! Îmi pare rău, dar nu pot furniza informațiile specifice pentru funcția "numara_pare" din cauza faptului că nu am acces la codul original sau la documentatii publicate. 
+
+Pentru a începe să analizeam problema, vă oferoi să explicăm cum se poate fi bine implementată această funcție:
+
+```python
+def numara_pare(lista):
+    count = 0
+    for x in lista:
+        if x % 2 == 0:
+            count += 1
+    return count
+```
+
+Acest cod este corect și func
+
+--- TOY ---
+Uită-te la `for`-ul. Ce element din listă se face parte din buclă? Sunt toate ele sau doar unele?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmplă după prima valoare?
+
+===== TEST 6 (wrong_remainder, line 4): if x % 2 == 1:
+def numara_pare(lista):
+    contor = 0
+    for x in lista:
+        if x % 2 == 1:
+            contor += 1
+    return contor
+
+--- BASE ---
+Este o întâlnire frecventă! Îmi pare rău, dar nu pot să te ajut cu acest cod de fapt. Sunt sigur că ai putea să-l încercați mai mult și să începiți doar din nou. Dacă vrei, pot oferi câteva sugestii despre cum să începiți:
+
+1. Verifica daca e corectă structura de date (lista) și daca este adevărată.
+2. Verifica daca e corectă regulile de test pentru funcție (numărul de argumente, tipurile de date).
+3. Verifica daca e corectă utiliz
+
+--- TOY ---
+Uită-te la `if` din buclă. Ce valoare are `x` când se face o trecere? Sunt prime sau impare?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `x` la prima dată când condiția e verificată?
+
+===== TEST 7 (return_in_loop, line 6): return contor
+def numara_pare(lista):
+    contor = 0
+    for x in lista:
+        if x % 2 == 0:
+            contor += 1
+        return contor
+
+--- BASE ---
+Este o întâlnire frecventă! Îmi pare rău, dar nu am putea să te ajut cu acest cod de fapt pentru că nu ai specificat când a fost compilat și dacă ești sigur că este corect? 
+
+Pentru a face asta mai bine, vrei să îți explic cum se poate verifica daca unele elemente sunt pare sau impare?
+
+- Un număr este par dacă există cel puțin un alt număr pare între ele.
+- Un număr este impar dacă toate cele două dintre ele sunt pare.
+
+Dacă aveți claritatea în acest aspect, pot încerca
+
+--- TOY ---
+Uită-te la `return` din interiorul buclei. Ce se întâmplă când Python trec să urmărească? Ce opțiune are funcția `return`?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă cu trei elemente. Ce se întâmple cu `contor` după prima trecere prin buclă?
+
+===== TEST 8 (shortened_range, line 2): for i in range(len(lista) - 1):
+def cauta(lista, x):
+    for i in range(len(lista) - 1):
+        if lista[i] == x:
+            return i
+    return -1
+
+--- BASE ---
+Este o întâlnire comună! Îmi pare rău, dar nu pot să te ajut cu codul de căutare pentru că ambele sunt mai bune decât cel mai puțin de trei ori mai rapid. 
+
+Pentru a începe, este important să vă explicăm cum funcționează acest cod:
+
+```python
+def cauta(lista, x):
+    for i in range(len(lista) - 1):
+        if lista[i] == x:
+            return i
+    return -1
+```
+
+Această funcție se aplica la o listă (lista) și un număr (x). Ela începând din prima po
+
+--- TOY ---
+Uită-te la `range` din buclă. Ce valoare are `len(lista)`? Ce poziție următoarea trecutului este?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă mică și unul mare. Ce se întâmplă după prima dată?
+
+===== TEST 9 (return_in_loop, line 5): return -1
+def cauta(lista, x):
+    for i in range(len(lista)):
+        if lista[i] == x:
+            return i
+        return -1
+
+--- BASE ---
+Este o întâlnire frecventă! Îmi pare rău, dar nu pot să te ajut cu acest cod deoarece nu am încredere că funcțiilele sale sunt clarificabile pentru toate. 
+
+Pentru a face asta mai bine, vrei să explicăm cum se poate implementa această funcție? De obicei, este cel mai bun mod de a înțelege și a putea rezolva probleme.
+
+--- TOY ---
+Uită-te la `return` din buclă. Ce se întâmplă când funcția urmărește să se oprească? Ce valoare are `i` atunci când aceleia se face prima dată?
+
+--- V2 ---
+Rulează funcția pe hârtie cu o listă cu trei elemente și unul din ele. Ce ar trebui să returneze `return -1`? De unde e valoarea lui `x` în `if`-ului?

@@ -1,0 +1,88 @@
+W1104 22:01:04.112000 8508 /home/victor/Project/licenta-victor/code/.venv/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1104 22:01:04.135000 8508 /home/victor/Project/licenta-victor/code/.venv/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+==((====))==  Unsloth 2026.10.3: Fast Qwen2 patching. Transformers: 5.17.0.
+   \\   /|    NVIDIA GeForce RTX 4070. Num GPUs = 1. Max memory: 11.994 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.14.1+cu130. CUDA: 8.9. CUDA Toolkit: 13.0. Triton: 3.8.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:00<02:12,  2.55it/s]Loading weights:   1%|          | 2/339 [00:00<01:24,  3.99it/s]Loading weights:  12%|█▏        | 42/339 [00:00<00:02, 102.94it/s]Loading weights:  26%|██▌       | 88/339 [00:00<00:01, 195.85it/s]Loading weights:  40%|████      | 136/339 [00:00<00:00, 270.09it/s]Loading weights:  54%|█████▍    | 184/339 [00:00<00:00, 321.86it/s]Loading weights:  68%|██████▊   | 232/339 [00:01<00:00, 361.50it/s]Loading weights:  81%|████████▏ | 276/339 [00:01<00:00, 382.57it/s]Loading weights:  94%|█████████▍| 318/339 [00:01<00:00, 388.72it/s]Loading weights: 100%|██████████| 339/339 [00:01<00:00, 260.64it/s]
+Unsloth 2026.10.3 patched 28 layers with 28 QKV layers, 28 O layers and 28 MLP layers.
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+step72: done in 0.8 min
+W1104 22:01:51.623000 8795 /home/victor/Project/licenta-victor/code/.venv/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1104 22:01:51.644000 8795 /home/victor/Project/licenta-victor/code/.venv/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+==((====))==  Unsloth 2026.10.3: Fast Qwen2 patching. Transformers: 5.17.0.
+   \\   /|    NVIDIA GeForce RTX 4070. Num GPUs = 1. Max memory: 11.994 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.14.1+cu130. CUDA: 8.9. CUDA Toolkit: 13.0. Triton: 3.8.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:00<02:02,  2.75it/s]Loading weights:   1%|          | 2/339 [00:00<01:11,  4.73it/s]Loading weights:  16%|█▌        | 53/339 [00:00<00:01, 147.80it/s]Loading weights:  32%|███▏      | 110/339 [00:00<00:00, 268.79it/s]Loading weights:  47%|████▋     | 161/339 [00:00<00:00, 338.80it/s]Loading weights:  65%|██████▍   | 220/339 [00:00<00:00, 407.59it/s]Loading weights:  81%|████████  | 273/339 [00:00<00:00, 441.68it/s]Loading weights:  97%|█████████▋| 328/339 [00:01<00:00, 462.85it/s]Loading weights: 100%|██████████| 339/339 [00:01<00:00, 310.43it/s]
+Unsloth 2026.10.3 patched 28 layers with 28 QKV layers, 28 O layers and 28 MLP layers.
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+step144: done in 1.1 min
+W1104 22:03:03.535000 9081 /home/victor/Project/licenta-victor/code/.venv/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1104 22:02:56.306000 9081 /home/victor/Project/licenta-victor/code/.venv/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+==((====))==  Unsloth 2026.10.3: Fast Qwen2 patching. Transformers: 5.17.0.
+   \\   /|    NVIDIA GeForce RTX 4070. Num GPUs = 1. Max memory: 11.994 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.14.1+cu130. CUDA: 8.9. CUDA Toolkit: 13.0. Triton: 3.8.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:00<02:06,  2.68it/s]Loading weights:   1%|          | 2/339 [00:00<01:12,  4.62it/s]Loading weights:  16%|█▌        | 53/339 [00:00<00:01, 144.22it/s]Loading weights:  33%|███▎      | 112/339 [00:00<00:00, 270.26it/s]Loading weights:  49%|████▉     | 166/339 [00:00<00:00, 347.46it/s]Loading weights:  65%|██████▍   | 220/339 [00:00<00:00, 402.78it/s]Loading weights:  82%|████████▏ | 278/339 [00:00<00:00, 444.58it/s]Loading weights:  99%|█████████▊| 334/339 [00:01<00:00, 476.42it/s]Loading weights: 100%|██████████| 339/339 [00:01<00:00, 309.05it/s]
+Unsloth 2026.10.3 patched 28 layers with 28 QKV layers, 28 O layers and 28 MLP layers.
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Both `max_new_tokens` (=200) and `max_length`(=32768) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+step216: done in 1.2 min
+
+=== Summary on 70 val examples (verdict = same rules as the data filter) ===
+verdict                        step72  step144  step216
+ok                                 55       58       59
+does not point at the bug          14       11       10
+states the bug                      0        0        0
+gives the solution                  1        1        1
+no question                         0        0        0
+contains code                       0        0        0
+too long                            0        0        0
+mean length (chars)               137      149      152
+
+ok per category:
+  return_in_loop (21)              20       19       20
+  deleted_initialization (15)       15       15       15
+  flipped_comparison (12)           9        7        7
+  wrong_initial_value (10)          8        9        7
+  shortened_range (6)               1        5        6
+  wrong_remainder (4)               1        2        3
+  deleted_update (2)                1        1        1
+
+Answers saved to results/2026-11-04_2201_5_eval_val_seed1_answers.jsonl

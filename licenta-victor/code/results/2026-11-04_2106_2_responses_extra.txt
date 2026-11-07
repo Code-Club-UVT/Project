@@ -1,0 +1,32 @@
+215 mutants in data/mutants_extra.jsonl, 0 already answered in data/raw_responses_extra.jsonl
+25/215 done
+50/215 done
+75/215 done
+100/215 done
+125/215 done
+150/215 done
+175/215 done
+200/215 done
+
+Done: 215/215 answered in data/raw_responses_extra.jsonl
+Next: python scripts/3_filter.py
+
+--- 6 random answers ---
+
+[shortened_range] line 3: for i in range(0, n - 1):
+TUTOR: How does the value of `i` change with each iteration of the loop, and how does that affect which elements of the string `s` are checked?
+
+[flipped_comparison] line 6: if x > 0:
+TUTOR: How does the value of `n1` change each time the loop runs, and does this accurately reflect the number of negative numbers you are trying to count?
+
+[shortened_range] line 3: for i in range(n - 1):
+TUTOR: If you run the code with the input `arr = [1, 3, 2, 4, 5]` and `n = 5`, what should the longest subsequence with a difference of one be, and does the code correctly find that length?
+
+[shortened_range] line 4: for k in range(n):
+TUTOR: If `n` is 5, `x` is 2, and `y` is 1, what value do you expect the function to return, and why might the loop’s current ending point cause a problem in finding the maximum value?
+
+[shortened_range] line 7: for j in range(i + 1, arr_len - 1):
+TUTOR: If you were to run this code with the input `[1, 5, 4, 2]`, what values would `x` and `y` ultimately hold, and why might that not be the maximum product you expect?
+
+[shortened_range] line 4: for j in range(0, i - 1):
+TUTOR: If you added a print statement inside the first loop, specifically printing `MSIBS[i]` after the inner loop finishes, what value would you see for `MSIBS[i]` when `i` is 1?

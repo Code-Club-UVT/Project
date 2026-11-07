@@ -1,0 +1,5 @@
+.venv/
+outputs/
+unsloth_compiled_cache/
+*.safetensors
+experiments/*/tokenizer.json
