@@ -28,10 +28,11 @@ This is the root instruction file. Read it at the start of every session.
 | `gateway/` | The single entry point (YARP): routing, access check, token swap | [gateway/CLAUDE.md](gateway/CLAUDE.md) |
 | `platform-kit/` | Shared library: token validation, request context, results/ProblemDetails, internal-key auth | [platform-kit/CLAUDE.md](platform-kit/CLAUDE.md) |
 | `mock-api/` | Throw-away project API for end-to-end tests | [mock-api/CLAUDE.md](mock-api/CLAUDE.md) |
+| `harness-web/` | React front end (test page) and the nginx that is each environment's public door to the gateway | [harness-web/CLAUDE.md](harness-web/CLAUDE.md) |
 
 When a new project directory is added to this repo, give it its own `CLAUDE.md` and a `docs/` folder, and add a row to the table above.
 
-How they fit together: the browser talks only to the gateway (`/api/<slug>/...`). Identity is the one signer of tokens; every other API validates project tokens with platform-kit. Each service owns one schema of the single PostgreSQL database `platform` (`identity`, `core`, `email`); only the owner writes, and the gateway and identity read the few tables they need. Identity tells core and email what happened through an outbox (internal HTTP with `X-Internal-Key`, retried).
+How they fit together: the browser talks only to the gateway (`/api/<slug>/...`), through the harness container's nginx, which is the only thing Caddy exposes per environment (the gateway has no public route). Identity is the one signer of tokens; every other API validates project tokens with platform-kit. Each service owns one schema of the single PostgreSQL database `platform` (`identity`, `core`, `email`); only the owner writes, and the gateway and identity read the few tables they need. Identity tells core and email what happened through an outbox (internal HTTP with `X-Internal-Key`, retried).
 
 ## Repo-wide notes
 

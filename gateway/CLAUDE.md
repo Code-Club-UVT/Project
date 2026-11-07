@@ -21,7 +21,7 @@ Run from `gateway/` (identity-api, core-api and PostgreSQL must be running):
 - No business logic and no data of its own: it reads `core.Projects`, `core.ProjectMembers` and `identity.Users` (read-only models in `Data/`) and asks identity for tokens. User, role and project management belongs to core-api; accounts and tokens to identity.
 - Never write to the database. In production use a database user with SELECT only on those three tables.
 - Fail closed: if access cannot be checked (database or identity down and no usable cached value), answer 503, never forward the request.
-- The gateway is the only thing that may be reachable from outside. Identity, core-api, email-api and all project APIs must be on a private network. It removes the client's `X-User-*`, `X-Internal-Key` and `Forwarded` headers, replaces `Authorization` with the project token and sets `X-Forwarded-*` itself; keep doing that when adding code.
+- The gateway is the only backend that may be reached from outside, and only through the harness container's nginx (`harness-web/nginx`), which forwards `/api` to it; Caddy has no route to it. Identity, core-api, email-api and all project APIs must be on a private network. It removes the client's `X-User-*`, `X-Internal-Key` and `Forwarded` headers, replaces `Authorization` with the project token and sets `X-Forwarded-*` itself; keep doing that when adding code.
 - `/internal/...` and `/.well-known/...` of any service must never get a route (the gateway only routes `/api/<slug>/...`, which every project's `BaseUrl` maps below `/api`). Email-api is not a project and has no route at all.
 - YARP reserves the policy names `default` and `disable` for CORS and rate limiting; use other names.
 - Ask before adding NuGet dependencies.

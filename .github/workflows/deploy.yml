@@ -37,6 +37,7 @@ jobs:
                     - { name: email-api-migrate, dockerfile: email-api/Dockerfile, target: migrate }
                     - { name: gateway, dockerfile: gateway/Dockerfile, target: "" }
                     - { name: mock-api, dockerfile: mock-api/Dockerfile, target: "" }
+                    - { name: harness, dockerfile: harness-web/Dockerfile, target: "" }
 
         steps:
             - name: Checkout code

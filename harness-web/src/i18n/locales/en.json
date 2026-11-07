@@ -1,0 +1,54 @@
+{
+  "app": {
+    "title": "Harness",
+    "subtitle": "Test page for the platform's account and gateway flows"
+  },
+  "theme": { "label": "Theme", "light": "Light", "dark": "Dark", "system": "System" },
+  "language": { "label": "Language", "en": "English", "ro": "Română" },
+  "common": { "loading": "Loading…", "working": "Working…" },
+  "register": {
+    "title": "Register",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First name (optional)",
+    "lastName": "Last name (optional)",
+    "submit": "Register",
+    "success": "Account created. Confirm the email, then log in."
+  },
+  "login": {
+    "title": "Log in",
+    "identifier": "Username or email",
+    "password": "Password",
+    "submit": "Log in"
+  },
+  "session": {
+    "title": "Session",
+    "anonymous": "Not logged in.",
+    "loggedInAs": "Logged in as {{username}} ({{email}})",
+    "expiresAt": "Access token expires at {{time}}",
+    "logout": "Log out",
+    "profile": "GET /core/users/me",
+    "projects": "GET /core/users/me/projects",
+    "mock": "GET /{{slug}}/whoami",
+    "gatewayHint": "These calls go through the gateway, which swaps the access token for a project token."
+  },
+  "errors": {
+    "Network": "Cannot reach the server. Check the connection and try again.",
+    "Unknown": "Something went wrong.",
+    "Auth.InvalidCredentials": "Wrong username, email or password.",
+    "Auth.EmailNotConfirmed": "Confirm your email first.",
+    "Auth.EmailTaken": "That email is already registered.",
+    "Auth.UsernameTaken": "That username is taken.",
+    "Auth.InvalidRefreshToken": "Your session expired. Log in again.",
+    "Http.400": "Some of the values are not valid.",
+    "Http.401": "You need to log in.",
+    "Http.403": "You do not have access.",
+    "Http.404": "Not found.",
+    "Http.429": "Too many requests. Wait a moment and try again.",
+    "Http.502": "The service is not available right now.",
+    "Http.503": "The service is not available right now.",
+    "Project.NotMember": "You are not a member of this project.",
+    "Project.NotFound": "That project does not exist."
+  }
+}
