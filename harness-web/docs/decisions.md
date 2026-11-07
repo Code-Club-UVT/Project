@@ -8,4 +8,4 @@
 - **Retries only where safe.** The axios interceptor retries idempotent requests; react-query does not retry.
 - **Biome only** for linting and formatting; `npm run ci` runs in the Docker build, so a lint or type error fails the image.
 - **No router, no tests, no generated API clients yet** (by choice; tests for the APIs and the app come later).
-- **Read-only containers.** The harness and the app services run read-only, without capabilities and with `no-new-privileges`; they write only to a tmpfs `/tmp`.
+- **Read-only containers.** The harness and the app services run read-only and without capabilities; they write only to a tmpfs `/tmp`. `no-new-privileges` was tried and dropped: on the server it makes `exec` fail for the dotnet binary and the harness entrypoint alike.

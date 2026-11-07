@@ -67,6 +67,6 @@ Caddy adds `Strict-Transport-Security`, `nosniff` and `no-referrer` to every res
 ## Deployment
 
 - The workflow builds the `harness` image (`harness-web/Dockerfile`: `npm run ci` and the build must pass, then nginx-unprivileged).
-- The server (`~/codeclub-uvt`, not in git) runs it as the `harness` service of `stack-v2/docker-compose.yml`, with `HARNESS_BASE_PATH` and `HARNESS_API_MODE` from `<env>/.env`. The app services and the harness run with a read-only root filesystem, no capabilities and `no-new-privileges`.
+- The server (`~/codeclub-uvt`, not in git) runs it as the `harness` service of `stack-v2/docker-compose.yml`, with `HARNESS_BASE_PATH` and `HARNESS_API_MODE` from `<env>/.env`. The app services and the harness run with a read-only root filesystem and no capabilities (`no-new-privileges` is not used: on the server it stops every container from starting).
 - URLs: dev `https://codeclub.info.uvt.ro/dev/` (API at `/dev/api/...`), preprod `/preprod/`, prod `/` (API at `/api/...`). The refresh cookie path is `<prefix>/api/identity/auth`, set in identity's config by `init-v2.sh`.
 - Preprod still runs the old stack until it is moved to stack-v2; prod has nothing deployed yet (the root answers 502).
