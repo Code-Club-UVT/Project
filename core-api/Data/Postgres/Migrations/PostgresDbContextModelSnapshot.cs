@@ -30,8 +30,7 @@ namespace CoreApi.Data.Postgres.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("BaseUrl")
-                        .IsRequired()
+                    b.Property<string>("BackendUrl")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
@@ -42,6 +41,10 @@ namespace CoreApi.Data.Postgres.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("FrontendUrl")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 

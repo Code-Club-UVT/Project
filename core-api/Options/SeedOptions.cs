@@ -19,8 +19,8 @@ public sealed class SeedOptions
 
 public sealed class SeedProjectOptions
 {
-    /// <summary>Base URL including the <c>/api</c> path, for example <c>http://core-api:8080/api</c>.</summary>
-    public string? BaseUrl { get; set; }
+    /// <summary>Backend URL including the <c>/api</c> path, for example <c>http://core-api:8080/api</c>.</summary>
+    public string? BackendUrl { get; set; }
 
     public string? HealthUrl { get; set; }
 }

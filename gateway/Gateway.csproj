@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- The test project lives in a subfolder; keep its sources out of the gateway itself. -->
+    <Compile Remove="Gateway.Tests/**" />
+    <Content Remove="Gateway.Tests/**" />
+    <EmbeddedResource Remove="Gateway.Tests/**" />
+    <None Remove="Gateway.Tests/**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\platform-kit\PlatformKit.csproj" />
   </ItemGroup>
 

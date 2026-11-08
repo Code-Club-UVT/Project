@@ -25,4 +25,4 @@ The client IP is read from `X-Forwarded-For`, trusted only from the private Dock
 
 ## Registering it as a project
 
-Once per environment, as a core admin (Admin role on the `core` project): create a project with slug `mock`, base URL `http://mock-api:8080/api` and health URL `http://mock-api:8080/health` (see `core-api/docs/implementation.md`, endpoint `/api/core/projects`), then add yourself as a member, or create a role and set it as the project's default role so every newly confirmed user gets it.
+Once per environment, as a core admin (Admin role on the `core` project): create a project with slug `mock`, `backendUrl` `http://mock-api:8080/api` and health URL `http://mock-api:8080/health` (add `frontendUrl` `http://mock-web:8080/` to get the `Mock` tab with [mock-web](../../mock-web/docs/implementation.md)) (see `core-api/docs/implementation.md`, endpoint `/api/core/projects`), then add yourself as a member, or create a role and set it as the project's default role so every newly confirmed user gets it.

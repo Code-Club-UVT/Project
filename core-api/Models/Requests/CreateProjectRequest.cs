@@ -13,8 +13,13 @@ public sealed record CreateProjectRequest
     [StringLength(500)]
     public string? Description { get; init; }
 
-    [Required, StringLength(500)]
-    public string BaseUrl { get; init; } = string.Empty;
+    /// <summary>Where the gateway forwards API calls. Omit for a project without a backend.</summary>
+    [StringLength(500)]
+    public string? BackendUrl { get; init; }
+
+    /// <summary>Internal address of the static frontend. Omit for a project without a frontend.</summary>
+    [StringLength(500)]
+    public string? FrontendUrl { get; init; }
 
     [StringLength(500)]
     public string? HealthUrl { get; init; }

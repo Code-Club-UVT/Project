@@ -53,8 +53,9 @@ An API behind the gateway, reachable at `/api/{Slug}`.
 | `Id` | uuid PK |
 | `Slug` | varchar(50), unique; check `^[a-z0-9]+(-[a-z0-9]+)*$`. Part of the public path and the token audience, so it never changes |
 | `Name`, `Description?` | display |
-| `BaseUrl` | where the gateway forwards to; may include a path (core is `http://core-api:8080/api`, so `/api/core/users/me` becomes `/api/users/me`) |
-| `HealthUrl?` | full URL the gateway probes |
+| `BackendUrl?` | where the gateway forwards API calls (`/api/<slug>`); may include a path (core is `http://core-api:8080/api`, so `/api/core/users/me` becomes `/api/users/me`). Null = no backend, so no API route |
+| `FrontendUrl?` | internal address of the project's static frontend; the gateway serves it at `/apps/<slug>/` and the harness shows it in a tab. Null = no frontend. Never sent to browsers. A project may have a backend, a frontend, both or neither |
+| `HealthUrl?` | full URL the gateway probes (only valid together with a `BackendUrl`) |
 | `TokenMode` | `Exchange` (gateway swaps the edge token for a project token) or `PassThrough` (token forwarded as is). Check: only a system project can be `PassThrough` (identity) |
 | `IsActive` | inactive projects get no route, no token and no default-role grants |
 | `IsSystem` | created by the app (`core`, `identity`): URLs and active state cannot be edited, cannot be deleted |
@@ -75,7 +76,7 @@ All public endpoints are reached through the gateway at `/api/core/...` with a *
 |---|---|---|
 | `GET /api/users/me` | any core member | the profile; 404 until identity's event arrived |
 | `PUT /api/users/me` | any core member | updates first and last name |
-| `GET /api/users/me/projects` | any core member | the user's active projects and role in each |
+| `GET /api/users/me/projects` | any core member | the user's active projects and role in each, with `hasFrontend` and `hasBackend` flags (never the URLs); the harness shows a tab for each project with a frontend |
 | `GET /api/users?page=&pageSize=` | Admin | paged profiles (username order) |
 | `/api/projects` `GET`, `GET {id}`, `POST`, `PUT {id}`, `DELETE {id}` | Admin | projects; `PUT` takes `defaultRoleId` (a role of this project, or null) |
 | `/api/projects/{id}/roles` `GET`, `POST`, `PUT {roleId}`, `DELETE {roleId}` | Admin | roles |
@@ -94,7 +95,7 @@ Rules (`ProjectService`, `ProjectRoleService`): the slug is lowercased and canno
 
 ## Seeding (`ProjectSeeder`, at startup)
 
-- `core`: Exchange, system, from `Seed:CoreProject` (`BaseUrl`, `HealthUrl`); roles `User` (made the default the first time) and `Admin`.
+- `core`: Exchange, system, from `Seed:CoreProject` (`BackendUrl`, `HealthUrl`); roles `User` (made the default the first time) and `Admin`.
 - `identity`: PassThrough, system, from `Seed:IdentityProject`.
 - A project without a base URL is skipped with a warning; URLs are updated when the configuration changes. A database failure is logged and the app still starts.
 
@@ -105,7 +106,7 @@ Rules (`ProjectService`, `ProjectRoleService`): the slug is lowercased and canno
 | `ConnectionStrings:PostgresConnection` | database `platform` |
 | `PlatformAuth` | `Issuer` (`identity`), `Audience` (`core`), `JwksUrl` (identity's `/.well-known/jwks.json`), `AllowInsecureJwksUrl` (true on the private network) |
 | `InternalAuth:Callers` | `identity`: the key identity sends |
-| `Seed` | `AdminEmail`, `CoreProject:BaseUrl`/`HealthUrl`, `IdentityProject:BaseUrl`/`HealthUrl` |
+| `Seed` | `AdminEmail`, `CoreProject:BackendUrl`/`HealthUrl`, `IdentityProject:BackendUrl`/`HealthUrl` |
 
 Development values (`appsettings.Development.json`): database on localhost, JWKS at `http://localhost:5060`, core at 5054, identity at 5060, `AdminEmail` = identity's seeded `admin@example.com`.
 

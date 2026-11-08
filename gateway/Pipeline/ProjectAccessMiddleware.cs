@@ -29,6 +29,21 @@ public sealed class ProjectAccessMiddleware(RequestDelegate next, ILogger<Projec
         IRequestContext requestContext)
     {
         var metadata = context.GetReverseProxyFeature().Route.Config.Metadata;
+
+        // A project's static frontend (/apps/<slug>/): public files, no token and no membership check (an iframe navigation
+        // cannot send an Authorization header). Nothing identifying the user is forwarded to the static upstream.
+        if (metadata is not null
+            && metadata.TryGetValue(ProxyConfigBuilder.RouteKindKey, out var routeKind)
+            && routeKind == ProxyConfigBuilder.RouteKindFrontend)
+        {
+            RemoveClientIdentityHeaders(context.Request.Headers);
+            context.Request.Headers.Remove(HeaderNames.Authorization);
+            context.Request.Headers.Remove(HeaderNames.Cookie);
+            context.Request.Headers[RequestContextHeaders.CorrelationId] = requestContext.CorrelationId;
+            await next(context);
+            return;
+        }
+
         if (metadata is null
             || !metadata.TryGetValue(ProxyConfigBuilder.SlugKey, out var slug)
             || !metadata.TryGetValue(ProxyConfigBuilder.TokenModeKey, out var mode)

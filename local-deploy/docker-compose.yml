@@ -1,0 +1,246 @@
+# The whole platform on your own machine, built from the source in this repository. It mirrors the server's stack-v2
+# (identity, core, email, gateway, mock, harness; one PostgreSQL database with a schema per service), with the settings
+# given as environment variables instead of JSON files. Read README.md first.
+#
+#   node init.mjs                      once: creates .env with random secrets (and asks for the SMTP password)
+#   docker compose up -d --build       run from this folder
+#
+# Open http://localhost:8080 (the harness). Its nginx is the only door: it serves the app and forwards /api to the gateway.
+
+name: uvt-local
+
+networks:
+  default:
+    name: uvt-local
+    ipam:
+      config:
+        # Fixed range inside 172.16.0.0/12, which is what the gateway and the harness trust for X-Forwarded-For.
+        - subnet: 172.28.0.0/16
+
+x-dotnet-health: &dotnet-health
+  test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8080 && printf 'GET /health HTTP/1.0\\r\\n\\r\\n' >&3 && head -n1 <&3 | grep -q ' 200 '"]
+  interval: 10s
+  timeout: 5s
+  retries: 12
+  start_period: 20s
+
+# Same hardening as on the server: no capabilities, read-only root filesystem, /tmp is a tmpfs.
+x-hardened: &hardened
+  read_only: true
+  cap_drop: [ALL]
+  tmpfs: ["/tmp"]
+
+x-migrate: &migrate
+  restart: "no"
+  entrypoint: ["sh", "/migrate.sh"]
+  environment:
+    MIGRATE_CONNECTION: Host=postgres;Port=5432;Database=platform;Username=postgres;Password=${PG_ADMIN_PASSWORD:?run node init.mjs first}
+  volumes:
+    - ./migrate.sh:/migrate.sh:ro
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: local-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: platform
+      POSTGRES_PASSWORD: ${PG_ADMIN_PASSWORD:?run node init.mjs first}
+    ports:
+      # Your machine only, for a database client (user postgres, database platform, password in .env).
+      - "127.0.0.1:${LOCAL_PG_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d platform"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # One-shot jobs: each service applies its own migrations, one after the other (they share the citext extension).
+  migrate-core:
+    <<: *migrate
+    build: { context: .., dockerfile: core-api/Dockerfile, target: migrate }
+    image: uvt-local/core-api-migrate:local
+    container_name: local-migrate-core
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  migrate-identity:
+    <<: *migrate
+    build: { context: .., dockerfile: identity-api/Dockerfile, target: migrate }
+    image: uvt-local/identity-api-migrate:local
+    container_name: local-migrate-identity
+    depends_on:
+      migrate-core: { condition: service_completed_successfully }
+
+  migrate-email:
+    <<: *migrate
+    build: { context: .., dockerfile: email-api/Dockerfile, target: migrate }
+    image: uvt-local/email-api-migrate:local
+    container_name: local-migrate-email
+    depends_on:
+      migrate-identity: { condition: service_completed_successfully }
+
+  # One-shot: creates the database roles and their grants (idempotent), then exits.
+  db-setup:
+    image: postgres:17
+    container_name: local-db-setup
+    restart: "no"
+    entrypoint: ["sh", "/db-setup.sh"]
+    environment:
+      PG_ADMIN_PASSWORD: ${PG_ADMIN_PASSWORD}
+      PG_IDENTITY_PASSWORD: ${PG_IDENTITY_PASSWORD:?run node init.mjs first}
+      PG_CORE_PASSWORD: ${PG_CORE_PASSWORD:?run node init.mjs first}
+      PG_EMAIL_PASSWORD: ${PG_EMAIL_PASSWORD:?run node init.mjs first}
+      PG_GATEWAY_PASSWORD: ${PG_GATEWAY_PASSWORD:?run node init.mjs first}
+    volumes:
+      - ./db-setup.sh:/db-setup.sh:ro
+      - ./grants.sql:/grants.sql:ro
+    depends_on:
+      migrate-email: { condition: service_completed_successfully }
+
+  identity-api:
+    <<: *hardened
+    build: { context: .., dockerfile: identity-api/Dockerfile, target: api }
+    image: uvt-local/identity-api:local
+    container_name: local-identity-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development # no signing key set: a temporary one is made at each start
+      ConnectionStrings__PostgresConnection: Host=postgres;Port=5432;Database=platform;Username=identity_app;Password=${PG_IDENTITY_PASSWORD}
+      InternalAuth__Callers__gateway: ${KEY_GATEWAY_IDENTITY:?run node init.mjs first}
+      Services__Core__Url: http://core-api:8080
+      Services__Core__Key: ${KEY_IDENTITY_CORE:?run node init.mjs first}
+      Services__Email__Url: http://email-api:8080
+      Services__Email__Key: ${KEY_IDENTITY_EMAIL:?run node init.mjs first}
+      RefreshToken__CookieSecure: "false" # plain HTTP on localhost
+      RefreshToken__CookiePath: /api/identity/auth
+      Seed__Admin__Username: ${ADMIN_USERNAME:-admin}
+      Seed__Admin__Email: ${ADMIN_EMAIL:?run node init.mjs first}
+      Seed__Admin__Password: ${ADMIN_PASSWORD:?run node init.mjs first}
+      Frontend__BaseUrl: http://localhost:${LOCAL_HTTP_PORT:-8080}
+    depends_on:
+      db-setup: { condition: service_completed_successfully }
+    healthcheck: *dotnet-health
+
+  core-api:
+    <<: *hardened
+    build: { context: .., dockerfile: core-api/Dockerfile, target: api }
+    image: uvt-local/core-api:local
+    container_name: local-core-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__PostgresConnection: Host=postgres;Port=5432;Database=platform;Username=core_app;Password=${PG_CORE_PASSWORD}
+      PlatformAuth__JwksUrl: http://identity-api:8080/.well-known/jwks.json
+      PlatformAuth__AllowInsecureJwksUrl: "true"
+      InternalAuth__Callers__identity: ${KEY_IDENTITY_CORE}
+      Seed__AdminEmail: ${ADMIN_EMAIL}
+      Seed__CoreProject__BackendUrl: http://core-api:8080/api
+      Seed__CoreProject__HealthUrl: http://core-api:8080/health
+      Seed__IdentityProject__BackendUrl: http://identity-api:8080/api
+      Seed__IdentityProject__HealthUrl: http://identity-api:8080/health
+    depends_on:
+      db-setup: { condition: service_completed_successfully }
+    healthcheck: *dotnet-health
+
+  email-api:
+    <<: *hardened
+    build: { context: .., dockerfile: email-api/Dockerfile, target: api }
+    image: uvt-local/email-api:local
+    container_name: local-email-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__PostgresConnection: Host=postgres;Port=5432;Database=platform;Username=email_app;Password=${PG_EMAIL_PASSWORD}
+      InternalAuth__Callers__identity: ${KEY_IDENTITY_EMAIL}
+      # Real email through your SMTP account (set by node init.mjs). SMTP_ENABLED=false only logs the emails.
+      Smtp__Enabled: ${SMTP_ENABLED:-false}
+      Smtp__Host: ${SMTP_HOST:-smtp.gmail.com}
+      Smtp__Port: ${SMTP_PORT:-587}
+      Smtp__UseStartTls: ${SMTP_STARTTLS:-true}
+      Smtp__Username: ${SMTP_USERNAME:-}
+      Smtp__Password: ${SMTP_PASSWORD:-CHANGE-ME-smtp-password}
+      Smtp__FromAddress: ${SMTP_FROM:-}
+      Smtp__FromName: CodeClub UVT (local)
+    depends_on:
+      db-setup: { condition: service_completed_successfully }
+    healthcheck: *dotnet-health
+
+  gateway:
+    <<: *hardened
+    build: { context: .., dockerfile: gateway/Dockerfile }
+    image: uvt-local/gateway:local
+    container_name: local-gateway
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__PostgresConnection: Host=postgres;Port=5432;Database=platform;Username=gateway_ro;Password=${PG_GATEWAY_PASSWORD}
+      Identity__InternalUrl: http://identity-api:8080
+      Identity__InternalKey: ${KEY_GATEWAY_IDENTITY}
+      PlatformAuth__JwksUrl: http://identity-api:8080/.well-known/jwks.json
+      PlatformAuth__AllowInsecureJwksUrl: "true"
+      Cors__AllowedOrigins__0: http://localhost:${LOCAL_HTTP_PORT:-8080}
+      Cors__AllowedOrigins__1: http://localhost:5173 # npm run dev (Vite) in harness-web
+    depends_on:
+      identity-api: { condition: service_healthy }
+      core-api: { condition: service_healthy }
+    healthcheck: *dotnet-health
+
+  # Test API for the whole chain. To use it, create a project with slug "mock" as the admin (see mock-api/docs).
+  mock-api:
+    <<: *hardened
+    build: { context: .., dockerfile: mock-api/Dockerfile }
+    image: uvt-local/mock-api:local
+    container_name: local-mock-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      PlatformAuth__JwksUrl: http://identity-api:8080/.well-known/jwks.json
+      PlatformAuth__AllowInsecureJwksUrl: "true"
+    depends_on:
+      identity-api: { condition: service_healthy }
+    healthcheck: *dotnet-health
+
+  # Test frontend for the whole chain (an app in an iframe of the harness). To use it, set the "mock" project's frontendUrl
+  # to http://mock-web:8080/ as the admin (see mock-web/docs).
+  mock-web:
+    <<: *hardened
+    build: { context: .., dockerfile: mock-web/Dockerfile }
+    image: uvt-local/mock-web:local
+    container_name: local-mock-web
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+
+  # The front end and the only door: serves the app and forwards /api and /apps to the gateway (open mode, like dev).
+  harness:
+    <<: *hardened
+    build: { context: .., dockerfile: harness-web/Dockerfile }
+    image: uvt-local/harness:local
+    container_name: local-harness
+    restart: unless-stopped
+    environment:
+      HARNESS_BASE_PATH: /
+      HARNESS_API_MODE: open
+      HARNESS_GATEWAY_URL: http://gateway:8080
+      HARNESS_MOCK_SLUG: mock
+    ports:
+      - "127.0.0.1:${LOCAL_HTTP_PORT:-8080}:8080"
+    depends_on:
+      gateway: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+
+volumes:
+  pgdata:

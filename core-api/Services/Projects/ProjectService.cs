@@ -44,7 +44,7 @@ public class ProjectService(
             return ProjectErrors.SlugReserved;
         }
 
-        var urlError = ValidateUrls(request.BaseUrl, request.HealthUrl);
+        var urlError = ValidateUrls(request.BackendUrl, request.FrontendUrl, request.HealthUrl);
         if (urlError is not null)
         {
             return urlError;
@@ -62,7 +62,8 @@ public class ProjectService(
             Slug = slug,
             Name = request.Name.Trim(),
             Description = NullIfBlank(request.Description),
-            BaseUrl = request.BaseUrl.Trim(),
+            BackendUrl = NullIfBlank(request.BackendUrl),
+            FrontendUrl = NullIfBlank(request.FrontendUrl),
             HealthUrl = NullIfBlank(request.HealthUrl),
             TokenMode = ProjectTokenMode.Exchange,
             CreatedAt = now,
@@ -83,20 +84,21 @@ public class ProjectService(
             return ProjectErrors.NotFound;
         }
 
-        var baseUrl = request.BaseUrl.Trim();
+        var backendUrl = NullIfBlank(request.BackendUrl);
+        var frontendUrl = NullIfBlank(request.FrontendUrl);
         var healthUrl = NullIfBlank(request.HealthUrl);
 
         if (project.IsSystem)
         {
             // The core project's URLs come from configuration (see ProjectSeeder) and it must stay reachable.
-            if (baseUrl != project.BaseUrl || healthUrl != project.HealthUrl || !request.IsActive)
+            if (backendUrl != project.BackendUrl || frontendUrl != project.FrontendUrl || healthUrl != project.HealthUrl || !request.IsActive)
             {
                 return ProjectErrors.SystemProtected;
             }
         }
         else
         {
-            var urlError = ValidateUrls(baseUrl, healthUrl);
+            var urlError = ValidateUrls(backendUrl, frontendUrl, healthUrl);
             if (urlError is not null)
             {
                 return urlError;
@@ -120,7 +122,8 @@ public class ProjectService(
         project.DefaultRoleId = request.DefaultRoleId;
         project.Name = request.Name.Trim();
         project.Description = NullIfBlank(request.Description);
-        project.BaseUrl = baseUrl;
+        project.BackendUrl = backendUrl;
+        project.FrontendUrl = frontendUrl;
         project.HealthUrl = healthUrl;
         project.IsActive = request.IsActive;
         project.UpdatedAt = timeProvider.GetUtcNow().UtcDateTime;
@@ -157,17 +160,31 @@ public class ProjectService(
         return Result.Success();
     }
 
-    private Error? ValidateUrls(string baseUrl, string? healthUrl)
+    /// <summary>Each URL is optional (a project may have a backend, a frontend, both or neither); the ones given must be valid.</summary>
+    private Error? ValidateUrls(string? backendUrl, string? frontendUrl, string? healthUrl)
     {
         var allowLocal = environment.IsDevelopment();
 
-        var error = ProjectUrlRules.Validate(baseUrl.Trim(), "BaseUrl", allowLocal);
-        if (error is null && !string.IsNullOrWhiteSpace(healthUrl))
+        if (string.IsNullOrWhiteSpace(backendUrl) && !string.IsNullOrWhiteSpace(healthUrl))
         {
-            error = ProjectUrlRules.Validate(healthUrl.Trim(), "HealthUrl", allowLocal);
+            return ProjectErrors.InvalidUrl("HealthUrl needs a BackendUrl: it is the health check of the backend.");
         }
 
-        return error;
+        foreach (var (url, label) in new[] { (backendUrl, "BackendUrl"), (frontendUrl, "FrontendUrl"), (healthUrl, "HealthUrl") })
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                continue;
+            }
+
+            var error = ProjectUrlRules.Validate(url.Trim(), label, allowLocal);
+            if (error is not null)
+            {
+                return error;
+            }
+        }
+
+        return null;
     }
 
     private static string? NullIfBlank(string? value)

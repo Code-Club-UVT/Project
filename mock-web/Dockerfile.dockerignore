@@ -1,0 +1,7 @@
+# The build context is the repository root; send only what the mock-web image needs.
+*
+!mock-web
+!platform-kit-web
+mock-web/node_modules
+mock-web/dist
+platform-kit-web/node_modules

@@ -15,7 +15,7 @@ namespace CoreApi.Services.Seeding;
 /// it) and <c>Admin</c> (platform admin rights).</item>
 /// <item><c>identity</c> (PassThrough: login and register are anonymous, and identity validates its own edge tokens).</item>
 /// </list>
-/// A project without a base URL is skipped. A failure (for example the database is not reachable yet) is logged and
+/// A project without a backend URL is skipped. A failure (for example the database is not reachable yet) is logged and
 /// never stops the app from starting.
 /// </summary>
 public class ProjectSeeder(
@@ -57,16 +57,16 @@ public class ProjectSeeder(
         IProjectRepository projects, IUnitOfWork unitOfWork, string slug, string name, string description,
         ProjectTokenMode tokenMode, SeedProjectOptions settings, string settingsName, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(settings.BaseUrl))
+        if (string.IsNullOrWhiteSpace(settings.BackendUrl))
         {
-            logger.LogWarning("Seeding of project {Slug} skipped: {Settings}:BaseUrl is not set, so the gateway will not route it", slug, settingsName);
+            logger.LogWarning("Seeding of project {Slug} skipped: {Settings}:BackendUrl is not set, so the gateway will not route it", slug, settingsName);
             return await projects.GetBySlugAsync(slug, cancellationToken);
         }
 
-        var baseUrl = settings.BaseUrl.Trim();
+        var backendUrl = settings.BackendUrl.Trim();
         var healthUrl = string.IsNullOrWhiteSpace(settings.HealthUrl) ? null : settings.HealthUrl.Trim();
 
-        var urlError = ProjectUrlRules.Validate(baseUrl, $"{settingsName}:BaseUrl", allowLocalAddresses: true)
+        var urlError = ProjectUrlRules.Validate(backendUrl, $"{settingsName}:BackendUrl", allowLocalAddresses: true)
             ?? (healthUrl is null ? null : ProjectUrlRules.Validate(healthUrl, $"{settingsName}:HealthUrl", allowLocalAddresses: true));
         if (urlError is not null)
         {
@@ -84,7 +84,7 @@ public class ProjectSeeder(
                 Slug = slug,
                 Name = name,
                 Description = description,
-                BaseUrl = baseUrl,
+                BackendUrl = backendUrl,
                 HealthUrl = healthUrl,
                 TokenMode = tokenMode,
                 IsActive = true,
@@ -94,15 +94,15 @@ public class ProjectSeeder(
             };
             await projects.CreateAsync(project, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation("Seeded the {Slug} project at {BaseUrl}", slug, baseUrl);
+            logger.LogInformation("Seeded the {Slug} project at {BackendUrl}", slug, backendUrl);
         }
-        else if (project.BaseUrl != baseUrl || project.HealthUrl != healthUrl)
+        else if (project.BackendUrl != backendUrl || project.HealthUrl != healthUrl)
         {
-            project.BaseUrl = baseUrl;
+            project.BackendUrl = backendUrl;
             project.HealthUrl = healthUrl;
             project.UpdatedAt = now;
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation("Updated the {Slug} project URLs from configuration ({BaseUrl})", slug, baseUrl);
+            logger.LogInformation("Updated the {Slug} project URLs from configuration ({BackendUrl})", slug, backendUrl);
         }
 
         return project;

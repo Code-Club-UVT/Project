@@ -39,7 +39,7 @@ POST {{Gateway}}/api/core/projects
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
-{ "slug": "mock", "name": "Mock API", "baseUrl": "http://localhost:5200/api", "healthUrl": "http://localhost:5200/health" }
+{ "slug": "mock", "name": "Mock API", "backendUrl": "http://localhost:5200/api", "healthUrl": "http://localhost:5200/health" }
 
 ### Create a role
 POST {{Gateway}}/api/core/projects/{{projectId}}/roles
@@ -53,7 +53,7 @@ PUT {{Gateway}}/api/core/projects/{{projectId}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
-{ "name": "Mock API", "baseUrl": "http://localhost:5200/api", "healthUrl": "http://localhost:5200/health", "isActive": true, "defaultRoleId": "{{roleId}}" }
+{ "name": "Mock API", "backendUrl": "http://localhost:5200/api", "healthUrl": "http://localhost:5200/health", "isActive": true, "defaultRoleId": "{{roleId}}" }
 
 ### Grant a user access
 POST {{Gateway}}/api/core/projects/{{projectId}}/members

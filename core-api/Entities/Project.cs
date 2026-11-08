@@ -13,10 +13,19 @@ public class Project
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
 
-    /// <summary>Where the gateway forwards to. May include a path, for example <c>http://core-api:8080/api</c>.</summary>
-    public string BaseUrl { get; set; } = string.Empty;
+    /// <summary>
+    /// Where the gateway forwards API calls (<c>/api/{Slug}</c>). May include a path, for example
+    /// <c>http://core-api:8080/api</c>. Null means the project has no backend.
+    /// </summary>
+    public string? BackendUrl { get; set; }
 
-    /// <summary>Full URL the gateway probes to see whether the API is up. Optional.</summary>
+    /// <summary>
+    /// Internal address of the project's static frontend; the gateway serves it at <c>/apps/{Slug}/</c> and the harness
+    /// shows it in a tab. Null means the project has no frontend. Never sent to browsers.
+    /// </summary>
+    public string? FrontendUrl { get; set; }
+
+    /// <summary>Full URL the gateway probes to see whether the API is up. Optional, only meaningful with a backend.</summary>
     public string? HealthUrl { get; set; }
 
     public ProjectTokenMode TokenMode { get; set; } = ProjectTokenMode.Exchange;

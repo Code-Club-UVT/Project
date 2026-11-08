@@ -6,6 +6,12 @@
   "theme": { "label": "Theme", "light": "Light", "dark": "Dark", "system": "System" },
   "language": { "label": "Language", "en": "English", "ro": "Română" },
   "common": { "loading": "Loading…", "working": "Working…" },
+  "apps": {
+    "tabs": "Apps",
+    "home": "Home",
+    "role": "Your role: {{role}}",
+    "loadError": "Could not load your apps. Reload the page to try again."
+  },
   "register": {
     "title": "Register",
     "username": "Username",

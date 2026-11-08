@@ -26,6 +26,16 @@ Paths in the code are relative to `apiUrl` (for example `/identity/auth/login`),
 | `i18n/` | i18next, English and Romanian, saved in localStorage (`harness.lang`), browser language as the first guess |
 | `components/` | Header, the three cards, shared `ui.tsx` (Card, Field, Button, ErrorNote, JsonBox) |
 
+## Apps in iframes (`src/apps/`)
+
+After login `useMyProjects` loads `GET /core/users/me/projects`. `visibleApps` keeps the projects with `hasFrontend` (not `core`/`identity`), sorted by name; each gets a tab (`AppTabs`, hash routes `#/app/<slug>/<path>`; `#/` is the home tab with the account cards).
+
+- **Frames** (`AppFrames`): one iframe per opened app, loaded the first time its tab opens and kept mounted (hidden) afterwards, so the app keeps its state. `src` is `<base path>apps/<slug>/` (`appUrl`; the base path comes from `<base href>` through `config.basePath`: `/dev/`, `/preprod/`, `/`). The frame is registered with the host before `src` is set.
+- **Bridge** (`AppBridge`): one `createAppHost` from `platform-kit-web/sdk`. `init` carries the user, the role (a UI hint), slug, language and theme. API calls from an app go through `fetchApi` (the shared `http` instance with the token, the single refresh and retries; `Authorization`, cookies and `X-User-*` set by the app are dropped, `Set-Cookie` is never returned). The app's path is mirrored in the address (`navigated` → `#/app/<slug>/<path>`), and a tab link goes back to the last path. Events to every app: `theme` (from the `dark` class of `<html>`), `locale`, `logout` (sent before the frames are removed) and `role-changed` (`{slug, role}`, when a refetch shows another role).
+- An unknown or inaccessible slug redirects to `#/`; the `/api` calls stay protected by the gateway whatever the tabs show.
+- nginx: `location /apps/` (`nginx/apps.conf`) forwards to the gateway (GET and HEAD, gzip) with `nginx/apps-headers.conf` (`frame-ancestors 'self'`, `X-Frame-Options: SAMEORIGIN`; the upstream's own are hidden). The harness page keeps `DENY`. Vite's dev proxy forwards `/apps` too.
+- Tests (`npm test`): `visibleApps`, `appUrl`/`appPathFromRoute`, header filtering. The frames, routing and bridge in a real browser are checked end to end on dev.
+
 ## The axios instance (`api/http.ts`)
 
 - Adds `Authorization: Bearer <access token>` to every request.
@@ -47,7 +57,7 @@ The build has no environment values. The container's entrypoint (`nginx/entrypoi
 
 It writes `/tmp/site/config.js` (the settings the app reads), sets `<base href>` in `index.html` (assets are relative, so one build works under any path) and chooses the nginx API config. Everything writable is in `/tmp`, so the container runs read-only.
 
-For `npm run dev`, `public/config.js` holds local defaults (`apiUrl: "/api"`) and the Vite dev server proxies `/api` to `VITE_PROXY_TARGET` (default http://localhost:5100, the gateway's launch URL). To use the dev server instead, set `VITE_PROXY_TARGET=https://codeclub.info.uvt.ro/dev`; the proxy rewrites the refresh cookie's path and domain so it works on localhost (the real cookie path contains the environment prefix).
+For `npm run dev`, `public/config.js` holds local defaults (`apiUrl: "/api"`) and the Vite dev server proxies `/api` to `VITE_PROXY_TARGET` (default http://localhost:8080, the local stack in `local-deploy/`). To use the dev server instead, set `VITE_PROXY_TARGET=https://codeclub.info.uvt.ro/dev`; the proxy rewrites the refresh cookie's path and domain so it works on localhost (the real cookie path contains the environment prefix).
 
 ## nginx and the API door
 
@@ -63,6 +73,10 @@ Caddy sends everything of an environment to its harness container (`/dev/*`, `/p
 Also in both: `X-Forwarded-For` from Caddy becomes the client address (`set_real_ip_from 172.16.0.0/12`) and is passed to the gateway as one value, so the gateway's per-IP rate limit sees the user; `limit_req` 20/min (burst 10) on `/api/identity/auth/`; 1 MB body limit and short header/body timeouts; security headers (`Content-Security-Policy` with `default-src 'self'`, `nosniff`, `X-Frame-Options: DENY`, `no-referrer`) on the app; hashed assets cached for a year, `index.html` and the settings files never cached. `/healthz` answers only from inside the container.
 
 Caddy adds `Strict-Transport-Security`, `nosniff` and `no-referrer` to every response, and removes the `Server` header.
+
+## Running everything locally
+
+`local-deploy/` runs the whole platform, harness included, with Docker Compose (see its README). `npm run dev` then gives hot reload on top of that stack.
 
 ## Deployment
 

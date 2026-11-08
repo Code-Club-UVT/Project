@@ -5,8 +5,11 @@ using Yarp.ReverseProxy.Health;
 
 namespace Gateway.Routing;
 
-/// <summary>The YARP routes and the cluster of one project.</summary>
-public sealed record ProjectConfig(IReadOnlyList<RouteConfig> Routes, ClusterConfig Cluster);
+/// <summary>
+/// The YARP routes and clusters of one project: the API route and cluster (when it has a backend) and the frontend
+/// route and cluster (when it has a frontend). Both lists are empty when it has neither.
+/// </summary>
+public sealed record ProjectConfig(IReadOnlyList<RouteConfig> Routes, IReadOnlyList<ClusterConfig> Clusters);
 
 /// <summary>Turns the active projects into YARP routes and clusters. Pure, so it can be reasoned about on its own.</summary>
 public static class ProxyConfigBuilder
@@ -21,7 +24,14 @@ public static class ProxyConfigBuilder
     public const string PassThrough = "PassThrough";
     public const string Exchange = "Exchange";
 
+    /// <summary>Route metadata: <see cref="RouteKindFrontend"/> for the static frontend route; absent for API routes.</summary>
+    public const string RouteKindKey = "RouteKind";
+    public const string RouteKindFrontend = "frontend";
+
     private const string IdentitySlug = "identity";
+
+    /// <summary>Route and cluster id of a project's frontend. The '/' cannot be part of a slug, so it never collides.</summary>
+    public static string FrontendId(string slug) => slug + "/web";
 
     private static readonly Regex SlugPattern = new("^[a-z0-9]+(-[a-z0-9]+)*$", RegexOptions.Compiled);
 
@@ -39,9 +49,18 @@ public static class ProxyConfigBuilder
             return false;
         }
 
-        if (!IsHttpUrl(project.BaseUrl))
+        var hasBackend = !string.IsNullOrWhiteSpace(project.BackendUrl);
+        var hasFrontend = !string.IsNullOrWhiteSpace(project.FrontendUrl);
+
+        if (hasBackend && !IsHttpUrl(project.BackendUrl!))
         {
-            problem = "BaseUrl is not an absolute http(s) URL";
+            problem = "BackendUrl is not an absolute http(s) URL";
+            return false;
+        }
+
+        if (hasFrontend && !IsHttpUrl(project.FrontendUrl!))
+        {
+            problem = "FrontendUrl is not an absolute http(s) URL";
             return false;
         }
 
@@ -51,32 +70,53 @@ public static class ProxyConfigBuilder
             return false;
         }
 
-        var passThrough = project.TokenMode == PassThrough;
-        var prefix = "/api/" + project.Slug;
-        var metadata = new Dictionary<string, string>
-        {
-            [SlugKey] = project.Slug,
-            [ProjectIdKey] = project.Id.ToString(),
-            [TokenModeKey] = passThrough ? PassThrough : Exchange
-        };
+        var routes = new List<RouteConfig>();
+        var clusters = new List<ClusterConfig>();
 
-        // Pass-through projects (identity) decide on authentication themselves: login and register are anonymous there.
-        // The gateway still rejects a token that is present but invalid (see ProjectAccessMiddleware).
-        var authorizationPolicy = passThrough ? "anonymous" : "default";
-
-        var routes = new List<RouteConfig>
+        if (hasBackend)
         {
-            NewRoute(project.Slug, project.Slug, prefix + "/{**rest}", prefix, DefaultRateLimitPolicy, authorizationPolicy, metadata, order: 0)
-        };
+            var passThrough = project.TokenMode == PassThrough;
+            var prefix = "/api/" + project.Slug;
+            var metadata = new Dictionary<string, string>
+            {
+                [SlugKey] = project.Slug,
+                [ProjectIdKey] = project.Id.ToString(),
+                [TokenModeKey] = passThrough ? PassThrough : Exchange
+            };
 
-        if (project.Slug == IdentitySlug)
-        {
-            // Stricter limit for login, register, password reset, ... (per IP). The id contains a '/', which a slug cannot,
-            // so it can never collide with the route of a project.
-            routes.Add(NewRoute(project.Slug + "/auth", project.Slug, prefix + "/auth/{**rest}", prefix, AuthRateLimitPolicy, authorizationPolicy, metadata, order: -1));
+            // Pass-through projects (identity) decide on authentication themselves: login and register are anonymous there.
+            // The gateway still rejects a token that is present but invalid (see ProjectAccessMiddleware).
+            var authorizationPolicy = passThrough ? "anonymous" : "default";
+
+            routes.Add(NewRoute(project.Slug, project.Slug, prefix + "/{**rest}", prefix, DefaultRateLimitPolicy, authorizationPolicy, metadata, order: 0));
+
+            if (project.Slug == IdentitySlug)
+            {
+                // Stricter limit for login, register, password reset, ... (per IP). The id contains a '/', which a slug cannot,
+                // so it can never collide with the route of a project.
+                routes.Add(NewRoute(project.Slug + "/auth", project.Slug, prefix + "/auth/{**rest}", prefix, AuthRateLimitPolicy, authorizationPolicy, metadata, order: -1));
+            }
+
+            clusters.Add(NewBackendCluster(project));
         }
 
-        config = new ProjectConfig(routes, NewCluster(project));
+        if (hasFrontend)
+        {
+            // The static frontend: public files (an iframe navigation cannot send an Authorization header), so the route is
+            // anonymous and ProjectAccessMiddleware lets it through. The API behind the app is what is protected.
+            var prefix = "/apps/" + project.Slug;
+            var metadata = new Dictionary<string, string>
+            {
+                [SlugKey] = project.Slug,
+                [ProjectIdKey] = project.Id.ToString(),
+                [RouteKindKey] = RouteKindFrontend
+            };
+
+            routes.Add(NewRoute(FrontendId(project.Slug), FrontendId(project.Slug), prefix + "/{**rest}", prefix, DefaultRateLimitPolicy, "anonymous", metadata, order: 0));
+            clusters.Add(NewFrontendCluster(project));
+        }
+
+        config = new ProjectConfig(routes, clusters);
         problem = null;
         return true;
     }
@@ -91,7 +131,7 @@ public static class ProxyConfigBuilder
     {
         return string.Join(
             '|',
-            projects.OrderBy(p => p.Id).Select(p => $"{p.Id}/{p.Slug}/{p.BaseUrl}/{p.HealthUrl}/{p.TokenMode}/{p.UpdatedAt.Ticks}"));
+            projects.OrderBy(p => p.Id).Select(p => $"{p.Id}/{p.Slug}/{p.BackendUrl}/{p.FrontendUrl}/{p.HealthUrl}/{p.TokenMode}/{p.UpdatedAt.Ticks}"));
     }
 
     private static RouteConfig NewRoute(
@@ -118,7 +158,19 @@ public static class ProxyConfigBuilder
         };
     }
 
-    private static ClusterConfig NewCluster(ProjectRow project)
+    private static ClusterConfig NewFrontendCluster(ProjectRow project)
+    {
+        return new ClusterConfig
+        {
+            ClusterId = FrontendId(project.Slug),
+            Destinations = new Dictionary<string, DestinationConfig>
+            {
+                ["main"] = new() { Address = project.FrontendUrl!.Trim() }
+            }
+        };
+    }
+
+    private static ClusterConfig NewBackendCluster(ProjectRow project)
     {
         var healthCheck = string.IsNullOrWhiteSpace(project.HealthUrl)
             ? null
@@ -139,7 +191,7 @@ public static class ProxyConfigBuilder
             HealthCheck = healthCheck,
             Destinations = new Dictionary<string, DestinationConfig>
             {
-                ["main"] = new() { Address = project.BaseUrl, Health = string.IsNullOrWhiteSpace(project.HealthUrl) ? null : project.HealthUrl }
+                ["main"] = new() { Address = project.BackendUrl!.Trim(), Health = string.IsNullOrWhiteSpace(project.HealthUrl) ? null : project.HealthUrl }
             }
         };
     }

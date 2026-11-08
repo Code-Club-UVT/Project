@@ -29,6 +29,8 @@ This is the root instruction file. Read it at the start of every session.
 | `platform-kit/` | Shared library: token validation, request context, results/ProblemDetails, internal-key auth | [platform-kit/CLAUDE.md](platform-kit/CLAUDE.md) |
 | `mock-api/` | Throw-away project API for end-to-end tests | [mock-api/CLAUDE.md](mock-api/CLAUDE.md) |
 | `harness-web/` | React front end (test page) and the nginx that is each environment's public door to the gateway | [harness-web/CLAUDE.md](harness-web/CLAUDE.md) |
+| `platform-kit-web/` | Shared front-end library: the bridge between the harness and the apps in its iframes | [platform-kit-web/CLAUDE.md](platform-kit-web/CLAUDE.md) |
+| `mock-web/` | Throw-away project frontend (iframe app) for end-to-end tests | [mock-web/CLAUDE.md](mock-web/CLAUDE.md) |
 
 When a new project directory is added to this repo, give it its own `CLAUDE.md` and a `docs/` folder, and add a row to the table above.
 
@@ -39,4 +41,5 @@ How they fit together: the browser talks only to the gateway (`/api/<slug>/...`)
 - The root `/docs` is gitignored (temporary files). Do not rely on it being tracked. Project `docs/` folders (such as `core-api/docs/`) are tracked.
 - LaTeX build artifacts (`.aux`, `.log`, `.bbl`, etc.) are gitignored. Do not commit them.
 - Deployment: the server setup (`/home/ubuntu/codeclub-uvt`: compose files, scripts, Caddy, per-environment config with secrets) lives only on the server, not in this repo. Its `README.md` documents it. The repo holds the Dockerfiles and `.github/workflows/deploy.yml` (push to main to preprod, a published GitHub Release to prod, any other branch started by hand to dev; images are tagged with the commit sha, plus `latest` on main, or with the release tag on a release). Do not run deploy commands against the server unless asked.
+- Local run: `local-deploy/` builds and runs the whole platform with Docker Compose (harness at http://localhost:8080). Its README explains it; keep it in step with the server's `stack-v2` when services or settings change. `local-deploy/.env` holds secrets and is gitignored.
 - Server access: `ssh CodeClubUVT` (alias in the local `~/.ssh/config`: HostName `194.102.62.209`, User `ubuntu`, key-based). The setup is in `~/codeclub-uvt` (`dev/`, `preprod/`, `prod/`, `proxy/`, `scripts/`, `stack/`, `README.md`). Read-only commands (reading files, `docker ps`, logs) are fine; ask before changing anything there (files, containers, databases, deploys).

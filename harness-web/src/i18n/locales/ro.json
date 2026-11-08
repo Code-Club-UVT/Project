@@ -6,6 +6,12 @@
   "theme": { "label": "Temă", "light": "Luminoasă", "dark": "Întunecată", "system": "Sistem" },
   "language": { "label": "Limbă", "en": "English", "ro": "Română" },
   "common": { "loading": "Se încarcă…", "working": "Se lucrează…" },
+  "apps": {
+    "tabs": "Aplicații",
+    "home": "Acasă",
+    "role": "Rolul tău: {{role}}",
+    "loadError": "Nu am putut încărca aplicațiile tale. Reîncarcă pagina."
+  },
   "register": {
     "title": "Înregistrare",
     "username": "Nume de utilizator",

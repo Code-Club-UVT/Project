@@ -11,8 +11,11 @@ public sealed record UpdateProjectRequest
     [StringLength(500)]
     public string? Description { get; init; }
 
-    [Required, StringLength(500)]
-    public string BaseUrl { get; init; } = string.Empty;
+    [StringLength(500)]
+    public string? BackendUrl { get; init; }
+
+    [StringLength(500)]
+    public string? FrontendUrl { get; init; }
 
     [StringLength(500)]
     public string? HealthUrl { get; init; }

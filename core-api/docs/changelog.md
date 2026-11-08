@@ -99,3 +99,10 @@
 - Fresh start: own schema `core`, old migrations replaced by a new `InitialCreate`; local database renamed `coreapi` to `platform`
 - Dropped MailKit and the JwtBearer package reference (it comes with platform-kit); `CoreApi.http` replaced by `identity-api/IdentityApi.http` and `gateway/Gateway.http`
 - Verified on the dev server, which now runs the split services from `stack-v2/` (see implementation.md and the server README)
+
+## Harness shell: project URLs
+- `Project.BaseUrl` renamed `BackendUrl` (nullable); added nullable `FrontendUrl`. Migration `ProjectBackendFrontendUrls` (rename, not drop). Seed settings are now `Seed:*Project:BackendUrl`
+- Create/update requests and `ProjectResponse` carry both URLs; `HealthUrl` needs a `BackendUrl`; the URL rules apply to each URL given
+- `MyProjectResponse` gains `HasFrontend` and `HasBackend`
+- System projects keep their URLs locked, including `FrontendUrl`
+

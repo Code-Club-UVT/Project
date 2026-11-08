@@ -31,7 +31,7 @@ Account, token and email decisions moved to identity-api/docs/decisions.md and e
 | Every API lives behind the gateway at `/api/<slug>`; core-api is the system project `core` | One public origin (no CORS between APIs, one TLS endpoint, one place for limits, logs and auth) |
 | Authorization is by role only; no permission columns | Out of scope for now; the project role name is the `role` claim |
 | One role per user per project (PK `(UserId, ProjectId)`); a composite FK ties the role to the same project | Simple model; the database prevents a role from another project |
-| Public path is derived from the slug; `BaseUrl` may include a path (core: `.../api`, identity: `.../api`) | No path column or strip flag; identity's `/api/identity/auth` becomes `/api/auth` upstream |
+| Public path is derived from the slug; `BackendUrl` may include a path (core: `.../api`, identity: `.../api`) | No path column or strip flag; identity's `/api/identity/auth` becomes `/api/auth` upstream |
 | One `ProjectsController` holds the project, role and member endpoints | Nested routes (`/api/projects/{id}/roles`) without relying on how route attributes combine across base classes |
 | Project URLs are validated (http/https, no credentials, no loopback/link-local/metadata outside Development); private ranges allowed | The gateway calls these URLs, so an admin account must not be able to aim it at the host or a metadata service. Containers need private ranges |
 | `/health` checks PostgreSQL; `HealthUrl` per project for the gateway's probes | Cheap to add now; a monitoring dashboard is deferred (backlog) |
@@ -47,3 +47,5 @@ Account, token and email decisions moved to identity-api/docs/decisions.md and e
 | CHECK constraint: only a system project can be `PassThrough` | A row written another way must not make the gateway forward edge tokens to an admin-chosen URL (open point from the code review) |
 | Own schema `core` in the shared `platform` database; fresh initial migration | The split started from an empty database (no data worth keeping) |
 | `ResultControllerBase`, `Result` and the exception handler come from platform-kit | Same error format in every service |
+| `BaseUrl` renamed `BackendUrl` and made nullable; `FrontendUrl` added (nullable) | A project can have a backend, a frontend, both or neither. The gateway builds `/api/<slug>` from the backend and `/apps/<slug>` from the frontend. The migration renames the column instead of dropping it, so existing URLs survive (EF scaffolds drop + add; edited by hand) |
+| `me/projects` returns `hasFrontend`/`hasBackend`, not the URLs | The URLs are internal addresses (Docker host names); the browser only ever uses `/apps/<slug>/` and `/api/<slug>` |

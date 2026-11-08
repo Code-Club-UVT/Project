@@ -14,7 +14,8 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
         builder.Property(p => p.Slug).HasMaxLength(50).IsRequired();
         builder.Property(p => p.Name).HasMaxLength(100).IsRequired();
         builder.Property(p => p.Description).HasMaxLength(500);
-        builder.Property(p => p.BaseUrl).HasMaxLength(500).IsRequired();
+        builder.Property(p => p.BackendUrl).HasMaxLength(500);
+        builder.Property(p => p.FrontendUrl).HasMaxLength(500);
         builder.Property(p => p.HealthUrl).HasMaxLength(500);
         builder.Property(p => p.TokenMode).HasConversion<string>().HasMaxLength(20).HasDefaultValue(ProjectTokenMode.Exchange);
         builder.Property(p => p.IsActive).HasDefaultValue(true);

@@ -3,8 +3,10 @@
 ## Next steps
 - Move preprod to stack-v2 (`scripts/init-v2.sh preprod`, fresh database), then switch its Caddy block to `preprod-harness` (the comment in the Caddyfile has the exact change). Prod gets the same at its first release; nothing is deployed there yet.
 - Pages for the emailed links: confirm email, reset password (identity builds them from `Frontend:BaseUrl`, which is now `<domain>/<prefix>`), plus forgot password and change password. Needs a router.
-- Show the user's projects and roles from core.
-- Tests for the interceptors (refresh sharing, retries) once tests are added to the repo.
+- Show a project/role overview on the home tab (the tabs already come from `me/projects`).
+- Admin screens to register projects and their URLs (today a core admin calls the API by hand).
+- Tests of the frames, routing and `AppBridge` need a DOM test environment (jsdom); today they are checked end to end on dev. The shared library's own tests are not run by any image build (`npm test` in `platform-kit-web`).
+- Tests for the interceptors (refresh sharing, retries): vitest is now available.
 
 ## Open decisions
 - **Public registration** is open in every environment (identity). Decide whether prod needs invitations or admin approval.

@@ -6,7 +6,7 @@ import { defineConfig, loadEnv } from "vite";
 // so one build works under /dev/, /preprod/ and /.
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, ".", "");
-  const target = env.VITE_PROXY_TARGET || "http://localhost:5100";
+  const target = env.VITE_PROXY_TARGET || "http://localhost:8080";
   return {
     base: "./",
     plugins: [react(), tailwindcss()],
@@ -21,6 +21,8 @@ export default defineConfig(({ mode }) => {
           cookiePathRewrite: { "*": "/" },
           cookieDomainRewrite: "",
         },
+        // The projects' frontends are served by the gateway through the same door.
+        "/apps": { target, changeOrigin: true },
       },
     },
   };

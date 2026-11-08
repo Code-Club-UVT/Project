@@ -12,7 +12,8 @@ public static class ProjectMappings
             project.Slug,
             project.Name,
             project.Description,
-            project.BaseUrl,
+            project.BackendUrl,
+            project.FrontendUrl,
             project.HealthUrl,
             project.TokenMode.ToString(),
             project.IsActive,
@@ -49,6 +50,8 @@ public static class ProjectMappings
             member.Project.Name,
             member.Project.Description,
             member.ProjectRoleId,
-            member.Role.Name);
+            member.Role.Name,
+            member.Project.FrontendUrl is not null,
+            member.Project.BackendUrl is not null);
     }
 }

@@ -26,3 +26,9 @@
 - The stricter auth rate limit moved from `/api/core/auth/*` to `/api/identity/auth/*` (route id `identity/auth`); core is now an `Exchange` project
 - Library renamed from `gateway-auth` to `platform-kit` (settings section `PlatformAuth`); `Gateway.http` added
 - Verified on the dev server: routes for the seeded and new projects, PassThrough for identity, Exchange for core and mock (project token swapped in; a token minted for one project is rejected by another project's API), access changes after the cache time, the per-IP limit on `/api/identity/auth`, and nothing under `/internal` or `/.well-known` reachable
+
+## Harness shell: frontend routes
+- `ProjectRow` maps `BackendUrl` (renamed from `BaseUrl`, nullable) and `FrontendUrl` (new)
+- `ProxyConfigBuilder` builds the API route only with a backend and a new anonymous `/apps/<slug>/{**rest}` route (cluster `<slug>/web`) only with a frontend; `ProjectConfig` has a list of clusters; the fingerprint includes both URLs
+- `ProjectAccessMiddleware` skips frontend routes (strips identity headers, `Authorization` and cookies)
+- Added `Gateway.Tests` (xunit) for the route builder; the gateway project excludes that folder

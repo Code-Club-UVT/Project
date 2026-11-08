@@ -5,6 +5,9 @@
 FROM node:24-alpine AS build
 WORKDIR /src
 
+# The shared front-end library is a file dependency ("file:../platform-kit-web"), so it must sit next to /src.
+COPY platform-kit-web/ /platform-kit-web/
+
 # Install first, so the layer is cached until the dependencies change.
 COPY harness-web/package.json harness-web/package-lock.json ./
 RUN npm ci
@@ -16,7 +19,7 @@ RUN npm run ci && npm run build
 FROM nginxinc/nginx-unprivileged:1.30-alpine
 COPY --from=build /src/dist /usr/share/harness/site
 COPY harness-web/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY harness-web/nginx/security-headers.conf harness-web/nginx/api-proxy.conf harness-web/nginx/api-open.conf harness-web/nginx/api-restricted.conf /etc/harness/
+COPY harness-web/nginx/security-headers.conf harness-web/nginx/api-proxy.conf harness-web/nginx/api-open.conf harness-web/nginx/api-restricted.conf harness-web/nginx/apps.conf harness-web/nginx/apps-headers.conf /etc/harness/
 COPY --chmod=755 harness-web/nginx/entrypoint.sh /harness-entrypoint.sh
 
 EXPOSE 8080

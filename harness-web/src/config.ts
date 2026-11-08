@@ -3,6 +3,8 @@ export interface HarnessConfig {
   apiUrl: string;
   /** Slug of the mock project, used by the "mock whoami" button. */
   mockSlug: string;
+  /** Where the harness lives (/dev/, /preprod/, /), from the page's <base href>; apps are served below it. */
+  basePath: string;
 }
 
 declare global {
@@ -17,4 +19,5 @@ const raw = window.__HARNESS_CONFIG__ ?? {};
 export const config: HarnessConfig = {
   apiUrl: (raw.apiUrl ?? "/api").replace(/\/+$/, ""),
   mockSlug: raw.mockSlug ?? "mock",
+  basePath: new URL(document.baseURI).pathname,
 };

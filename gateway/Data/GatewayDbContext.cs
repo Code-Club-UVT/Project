@@ -26,7 +26,13 @@ public class ProjectRow
 {
     public Guid Id { get; set; }
     public string Slug { get; set; } = string.Empty;
-    public string BaseUrl { get; set; } = string.Empty;
+
+    /// <summary>Where API calls are forwarded (<c>/api/{slug}</c>). Null: the project has no backend.</summary>
+    public string? BackendUrl { get; set; }
+
+    /// <summary>Internal address of the static frontend, served at <c>/apps/{slug}/</c>. Null: no frontend.</summary>
+    public string? FrontendUrl { get; set; }
+
     public string? HealthUrl { get; set; }
 
     /// <summary><c>Exchange</c> or <c>PassThrough</c> (stored as text by the core API).</summary>

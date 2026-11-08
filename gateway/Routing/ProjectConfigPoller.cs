@@ -49,10 +49,15 @@ public sealed class ProjectConfigPoller(
             var routed = new List<string>();
             foreach (var project in projects)
             {
+                var routesBefore = routes.Count;
                 var problem = await TryAddAsync(project, routes, clusters);
                 if (problem is null)
                 {
-                    routed.Add(project.Slug);
+                    // A project with neither a backend nor a frontend is valid but has nothing to route.
+                    if (routes.Count > routesBefore)
+                    {
+                        routed.Add(project.Slug);
+                    }
                 }
                 else
                 {
@@ -88,14 +93,18 @@ public sealed class ProjectConfigPoller(
             errors.AddRange(await validator.ValidateRouteAsync(route));
         }
 
-        errors.AddRange(await validator.ValidateClusterAsync(config.Cluster));
+        foreach (var cluster in config.Clusters)
+        {
+            errors.AddRange(await validator.ValidateClusterAsync(cluster));
+        }
+
         if (errors.Count > 0)
         {
             return string.Join("; ", errors.Select(e => e.Message));
         }
 
         routes.AddRange(config.Routes);
-        clusters.Add(config.Cluster);
+        clusters.AddRange(config.Clusters);
         return null;
     }
 
