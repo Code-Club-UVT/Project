@@ -196,6 +196,32 @@ namespace CoreApi.Data.Postgres.Migrations
                     b.ToTable("UserProfiles", "core");
                 });
 
+            modelBuilder.Entity("CoreApi.Entities.UserTab", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("LastPath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "ProjectId");
+
+                    b.HasIndex("UserId", "Position");
+
+                    b.ToTable("UserTabs", "core");
+                });
+
             modelBuilder.Entity("CoreApi.Entities.Project", b =>
                 {
                     b.HasOne("CoreApi.Entities.ProjectRole", null)
@@ -246,6 +272,17 @@ namespace CoreApi.Data.Postgres.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("CoreApi.Entities.UserTab", b =>
+                {
+                    b.HasOne("CoreApi.Entities.ProjectMember", "Member")
+                        .WithMany()
+                        .HasForeignKey("UserId", "ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("CoreApi.Entities.Project", b =>

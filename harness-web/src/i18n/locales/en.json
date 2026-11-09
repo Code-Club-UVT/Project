@@ -9,6 +9,8 @@
   "apps": {
     "tabs": "Apps",
     "home": "Home",
+    "menu": "Your apps",
+    "close": "Close {{name}}",
     "role": "Your role: {{role}}",
     "loadError": "Could not load your apps. Reload the page to try again."
   },

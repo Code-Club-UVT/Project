@@ -18,6 +18,7 @@ Services/                      business logic, grouped by feature (interface nex
                                (identity's events: profile upsert, default roles on confirmation), UserErrors
   Projects/                    IProjectService/ProjectService, ProjectUrlRules, CoreRoles, ProjectErrors
   ProjectRoles/, ProjectMembers/
+  UserTabs/                    IUserTabService/UserTabService (the user's saved open tabs), UserTabRules, UserTabErrors
   Seeding/                     ProjectSeeder (core and identity projects, core roles)
 Models/Requests, Responses/    DTOs exchanged with the API clients
 Mappings/                      entity <-> model mapping (hand-written)

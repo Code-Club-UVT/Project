@@ -12,6 +12,7 @@ public class PostgresDbContext(DbContextOptions<PostgresDbContext> options) : Db
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<ProjectRole> ProjectRoles => Set<ProjectRole>();
     public DbSet<ProjectMember> ProjectMembers => Set<ProjectMember>();
+    public DbSet<UserTab> UserTabs => Set<UserTab>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

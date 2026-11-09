@@ -7,7 +7,11 @@ A tiny app that exercises the harness's iframe integration. Slug `mock`, served 
 ## Screens (hash routes)
 
 - `#/`: shows the user's name and role (from `init`; the role is a hint, the API decides), and two buttons: `GET whoami` and `GET whoami/admin`. They call `/api/mock/...` through the harness with `client.api.fetch` and print the status and body (`whoami/admin` is 403 for non-admins).
-- `#/about`: a static page, to check deep links: the app reports its path with `reportPath`, so the harness address is `#/app/mock/about`, and a reload opens the tab at that page.
+- `#/about`: a static page, to check deep links: the app reports its path with `reportPath`, so the harness address is `/app/mock/about` (below the environment's base path), and a reload opens the tab at that page.
+
+## Icon
+
+`public/icon.svg` is copied to the root of the build, so the gateway serves it at `/apps/mock/icon.svg`. The harness's app menu uses that file for every app (the convention is `icon.svg` at the app's root) and shows a default icon when it is missing.
 
 It also follows the harness: `theme` (sets `data-theme` on `<html>`), `role-changed` (updates the role line) and `logout`.
 

@@ -100,6 +100,11 @@
 - Dropped MailKit and the JwtBearer package reference (it comes with platform-kit); `CoreApi.http` replaced by `identity-api/IdentityApi.http` and `gateway/Gateway.http`
 - Verified on the dev server, which now runs the split services from `stack-v2/` (see implementation.md and the server README)
 
+## Saved tabs
+- New table `core.UserTabs` (migration `UserTabs`): the apps a user has open in the harness, in order, with the last path inside each. The foreign key to `ProjectMembers` cascades, so losing access or deleting the project removes the tab
+- New endpoints `GET` and `PUT /api/users/me/tabs` (`UserTabService`, whole-list replace, limits and path rules in `UserTabRules`); the API uses project ids
+- No unit-test project exists in core-api, so the service and the path rules are checked on dev only
+
 ## Harness shell: project URLs
 - `Project.BaseUrl` renamed `BackendUrl` (nullable); added nullable `FrontendUrl`. Migration `ProjectBackendFrontendUrls` (rename, not drop). Seed settings are now `Seed:*Project:BackendUrl`
 - Create/update requests and `ProjectResponse` carry both URLs; `HealthUrl` needs a `BackendUrl`; the URL rules apply to each URL given

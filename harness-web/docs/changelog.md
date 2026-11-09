@@ -12,8 +12,16 @@
 - `local-deploy/` added at the repo root: the whole stack on your own machine (see its README)
 - Not done: preprod was not moved to stack-v2 (it would stay down until the next merge to main; see backlog)
 
+## Saved tabs, app menu and clean URLs
+- The home page has an app menu (icon, name, role) of the apps the user can open; tabs exist only for open apps, with a close button
+- The open tabs are saved per user in core (`GET/PUT /core/users/me/tabs`, the whole list, debounced) and restored after login, filtered by the apps the user can still open; a deep link opens its tab
+- `AppIcon` shows the app's `icon.svg` (served by the app at `/apps/<slug>/icon.svg`) or a default icon
+- The harness no longer uses hash routing: `BrowserRouter` with the base path as basename, URLs like `/dev/app/mock/about`; the apps in the iframes keep hash routes
+- New files: `api/tabs.ts`, `apps/{OpenTabs.tsx,tabList.ts,debouncedSaver.ts,AppIcon.tsx,AppMenu.tsx}` and tests; 33 tests in total
+
 ## Harness shell: tabs and iframes
 - Hash router (`react-router-dom`), tabs from `me/projects` (projects with a frontend), one lazy, kept-alive iframe per app at `<base path>apps/<slug>/`
 - Bridge host from the new `platform-kit-web` (file dependency): init, API calls through the harness, deep-link path sync, events (theme, locale, logout, role-changed)
 - nginx `/apps/` location and headers; Vite dev proxy for `/apps`; the Dockerfile copies `platform-kit-web` before `npm ci`
 - vitest added (17 tests); `npm run ci` now runs them
+- Verified on dev (commit dfbdfd5, manual workflow run): migration kept the URLs; `/apps/mock/` served without a token with `frame-ancestors 'self'`; non-member 403 `Project.NotMember` on `/api/mock/...`, member 200 with the role in the project token; tab, iframe, `init`, API calls through the bridge (200 as Admin, 403 on `whoami/admin` as Viewer); deep link `#/app/mock/about` and reload; theme and role-changed events; tab switching keeps the app state; unknown slug and `core` redirect home; backend-only and no-URL projects get no tab, frontend-only gets one; invalid URLs and a health URL without a backend are 400; logout removes frames and tabs; the harness page itself still answers `X-Frame-Options: DENY`

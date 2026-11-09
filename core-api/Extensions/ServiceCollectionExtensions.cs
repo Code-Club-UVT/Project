@@ -7,6 +7,7 @@ using CoreApi.Services.ProjectMembers;
 using CoreApi.Services.ProjectRoles;
 using CoreApi.Services.Projects;
 using CoreApi.Services.Seeding;
+using CoreApi.Services.UserTabs;
 using CoreApi.Services.Users;
 using Microsoft.EntityFrameworkCore;
 using PlatformKit;
@@ -32,6 +33,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProjectRepository, PostgresProjectRepository>();
         services.AddScoped<IProjectRoleRepository, PostgresProjectRoleRepository>();
         services.AddScoped<IProjectMemberRepository, PostgresProjectMemberRepository>();
+        services.AddScoped<IUserTabRepository, PostgresUserTabRepository>();
 
         return services;
     }
@@ -45,6 +47,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<IProjectRoleService, ProjectRoleService>();
         services.AddScoped<IProjectMemberService, ProjectMemberService>();
+        services.AddScoped<IUserTabService, UserTabService>();
 
         services.AddOptions<SeedOptions>().BindConfiguration(SeedOptions.SectionName);
         services.AddHostedService<ProjectSeeder>();

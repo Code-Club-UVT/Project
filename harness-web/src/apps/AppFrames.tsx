@@ -4,6 +4,7 @@ import type { MyProject } from "../api/projects";
 import { config } from "../config";
 import { useAppBridge } from "./AppBridge";
 import { appPathFromRoute, appUrl } from "./appUrl";
+import { useOpenTabs } from "./OpenTabs";
 
 const VISIBLE =
   "block h-[calc(100vh-16rem)] min-h-96 w-full rounded-lg border border-slate-300 bg-white dark:border-slate-700";
@@ -38,23 +39,30 @@ interface Opened {
 }
 
 /**
- * One iframe per app the user has opened. A frame loads the first time its tab is opened and stays mounted (hidden)
- * when the user goes elsewhere, so the app keeps its state.
+ * One iframe per open tab. A frame loads the first time its tab is shown and stays mounted (hidden) when the user goes
+ * elsewhere, so the app keeps its state. Closing the tab removes the frame.
  */
 export function AppFrames({ apps }: { apps: MyProject[] }) {
   const match = useMatch("/app/:slug/*");
   const active = match?.params.slug ?? null;
   const rest = match?.params["*"];
+  const { tabs } = useOpenTabs();
   const [opened, setOpened] = useState<Opened[]>([]);
 
   useEffect(() => {
-    if (!active || !apps.some((app) => app.slug === active)) return;
-    setOpened((previous) =>
-      previous.some((item) => item.slug === active)
-        ? previous
-        : [...previous, { slug: active, initialPath: appPathFromRoute(rest) }],
+    const openSlugs = new Set(
+      tabs.flatMap((tab) =>
+        apps.filter((app) => app.projectId === tab.projectId).map((app) => app.slug),
+      ),
     );
-  }, [active, rest, apps]);
+    setOpened((previous) => {
+      const kept = previous.filter((item) => openSlugs.has(item.slug));
+      if (active && openSlugs.has(active) && !kept.some((item) => item.slug === active)) {
+        return [...kept, { slug: active, initialPath: appPathFromRoute(rest) }];
+      }
+      return kept.length === previous.length ? previous : kept;
+    });
+  }, [active, rest, apps, tabs]);
 
   return (
     <>

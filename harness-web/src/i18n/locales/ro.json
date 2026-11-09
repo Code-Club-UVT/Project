@@ -9,6 +9,8 @@
   "apps": {
     "tabs": "Aplicații",
     "home": "Acasă",
+    "menu": "Aplicațiile tale",
+    "close": "Închide {{name}}",
     "role": "Rolul tău: {{role}}",
     "loadError": "Nu am putut încărca aplicațiile tale. Reîncarcă pagina."
   },

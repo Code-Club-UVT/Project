@@ -18,15 +18,15 @@ core-api/
   Controllers/        ApiControllerBase (api/[controller] on platform-kit's ResultControllerBase), UsersController,
                       ProjectsController, InternalUsersController (/internal/users, identity only)
   Data/Postgres/      PostgresDbContext (schema core), DesignTimeDbContextFactory, Configurations/, Migrations/, Repositories/
-  Entities/           UserProfile, Project, ProjectRole, ProjectMember
+  Entities/           UserProfile, Project, ProjectRole, ProjectMember, UserTab
   Enums/              ProjectTokenMode
   Extensions/         DI (Postgres, repositories, services, auth), ClaimsPrincipal helper
-  Mappings/           UserMappings, ProjectMappings
+  Mappings/           UserMappings, ProjectMappings, UserTabMappings
   Models/             Requests/, Responses/
   Options/            SeedOptions
   Repositories/Abstractions/   IRepository<,>, IUnitOfWork, user profiles, projects, project roles, project members
   Services/           Users/ (UserService, UserProvisioningService), Projects/ (ProjectService, ProjectUrlRules, CoreRoles),
-                      ProjectRoles/, ProjectMembers/, Seeding/ (ProjectSeeder)
+                      ProjectRoles/, ProjectMembers/, UserTabs/ (UserTabService, UserTabRules), Seeding/ (ProjectSeeder)
   docker-compose.yml  local PostgreSQL (database platform) and pgAdmin
   docs/
 ```
@@ -38,6 +38,7 @@ See [architecture.md](architecture.md) for the layer rules.
 ```
 UserProfile 1 -- * ProjectMember * -- 1 Project
 ProjectRole 1 -- * ProjectMember
+ProjectMember 1 -- 0..1 UserTab
 Project 1 -- * ProjectRole
 Project * -- 0..1 ProjectRole (DefaultRoleId)
 ```
@@ -68,6 +69,9 @@ An API behind the gateway, reachable at `/api/{Slug}`.
 ### ProjectMember
 PK `(UserId, ProjectId)`: one role per user per project. `ProjectRoleId`, `GrantedByUserId?` (FK to `UserProfiles`, set null; null for default-role grants), `GrantedAt`, `UpdatedAt`. The FK `(ProjectId, ProjectRoleId)` to `ProjectRoles(ProjectId, Id)` guarantees the role belongs to the same project. Deleting a profile cascades to its memberships. A role cannot be deleted while a member uses it.
 
+### UserTab
+An app the user has open in the harness. PK `(UserId, ProjectId)` (one tab per app), `Position` (order, from 0), `LastPath` (varchar(500), an app-internal path such as `/about`; `/` is the start page), `UpdatedAt`. The composite FK `(UserId, ProjectId)` to `ProjectMembers` cascades: revoking access, deleting the user or deleting the project removes the tab. The list is replaced as a whole (`PUT`), updating rows in place so a key is never deleted and re-added in one save.
+
 ## Endpoints
 
 All public endpoints are reached through the gateway at `/api/core/...` with a **project token** (`aud=core`). The role in that token is the user's role in the `core` project: `User` or `Admin`.
@@ -77,6 +81,8 @@ All public endpoints are reached through the gateway at `/api/core/...` with a *
 | `GET /api/users/me` | any core member | the profile; 404 until identity's event arrived |
 | `PUT /api/users/me` | any core member | updates first and last name |
 | `GET /api/users/me/projects` | any core member | the user's active projects and role in each, with `hasFrontend` and `hasBackend` flags (never the URLs); the harness shows a tab for each project with a frontend |
+| `GET /api/users/me/tabs` | any core member | the user's saved open tabs, in order: `[{projectId, lastPath}]`, without apps whose project is inactive or has no frontend |
+| `PUT /api/users/me/tabs` | any core member | body `{tabs: [{projectId, lastPath}]}` replaces the saved list and returns it. At most 20 tabs; `lastPath` must start with a single `/`, at most 500 characters, no backslash or control characters (else 400 `UserTab.TooMany` / `UserTab.InvalidPath`). Projects the user is not a member of are dropped, a repeated project counts once (first position wins) |
 | `GET /api/users?page=&pageSize=` | Admin | paged profiles (username order) |
 | `/api/projects` `GET`, `GET {id}`, `POST`, `PUT {id}`, `DELETE {id}` | Admin | projects; `PUT` takes `defaultRoleId` (a role of this project, or null) |
 | `/api/projects/{id}/roles` `GET`, `POST`, `PUT {roleId}`, `DELETE {roleId}` | Admin | roles |
