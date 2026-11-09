@@ -98,7 +98,7 @@ Example: identity has `InternalAuth:Callers:gateway`; core-api and email-api hav
 
 ## Results and errors
 
-- `Result` / `Result<T>` for expected failures; `Error(Code, Message, Type)` with `ErrorType` Validation 400, Unauthorized 401, Forbidden 403, NotFound 404, Conflict 409. `ResultControllerBase` gives 200 with the value, 204 without one, and a ProblemDetails (RFC 9457) with the `code` extension for failures.
+- `Result` / `Result<T>` for expected failures; `Error(Code, Message, Type)` with `ErrorType` Validation 400, Unauthorized 401, Forbidden 403, NotFound 404, Conflict 409, TooManyRequests 429. `ResultControllerBase` gives 200 with the value, 204 without one, and a ProblemDetails (RFC 9457) with the `code` extension for failures.
 - `GlobalExceptionHandler`: logs the exception and returns a 500 ProblemDetails; the message is included only in Development. A request the client aborted is not reported.
 
 ## Verified

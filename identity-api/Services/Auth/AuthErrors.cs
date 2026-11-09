@@ -11,5 +11,6 @@ public static class AuthErrors
     public static readonly Error InvalidCurrentPassword = Error.Validation("Auth.InvalidCurrentPassword", "The current password is incorrect.");
     public static readonly Error UsernameTaken = Error.Conflict("Auth.UsernameTaken", "This username is already taken.");
     public static readonly Error UserNotFound = Error.NotFound("User.NotFound", "The user was not found.");
+    public static readonly Error TooManyAttempts = Error.TooManyRequests("Auth.TooManyAttempts", "Too many failed attempts. Try again later.");
     public static readonly Error EmailTaken = Error.Conflict("Auth.EmailTaken", "This email is already registered.");
 }

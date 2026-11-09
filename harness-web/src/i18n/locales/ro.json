@@ -49,6 +49,7 @@
     "Auth.EmailTaken": "Emailul este deja înregistrat.",
     "Auth.UsernameTaken": "Numele de utilizator este deja folosit.",
     "Auth.InvalidRefreshToken": "Sesiunea a expirat. Autentifică-te din nou.",
+    "Auth.TooManyAttempts": "Prea multe încercări eșuate. Așteaptă câteva minute și încearcă din nou, sau resetează parola.",
     "Http.400": "Unele valori nu sunt valide.",
     "Http.401": "Trebuie să te autentifici.",
     "Http.403": "Nu ai acces.",

@@ -81,7 +81,10 @@ public class AuthController(
         }
 
         var session = result.Value;
-        Response.Cookies.Append(_refresh.CookieName, session.RefreshToken, CreateCookieOptions(session.RefreshTokenExpiresAt));
+        if (session.RefreshToken is not null)
+        {
+            Response.Cookies.Append(_refresh.CookieName, session.RefreshToken, CreateCookieOptions(session.RefreshTokenExpiresAt));
+        }
 
         return Ok(session.Response);
     }

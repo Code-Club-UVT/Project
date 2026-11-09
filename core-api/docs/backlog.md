@@ -26,3 +26,6 @@ Account, token and email items moved to identity-api/docs/backlog.md and email-a
 - Path convention so the schema does not depend on the environment prefix (`/dev`, `/preprod`, `/prod`): strip the leading `/api` from the documented paths and set the server URL to the relative `..`, which resolves against the schema's own URL (`/<env>/api/core/openapi/v1.json` becomes `/<env>/api/core/`). Do it in a document transformer next to `BearerSecuritySchemeTransformer`; keep the Bearer security scheme.
 - The same applies to identity-api. Context and design: platform-kit/docs/backlog.md.
 - Parked idea: Swagger UI pages on dev only, served by Caddy straight from the containers (`/dev/docs/<api>/swagger/index.html`), with only the docs paths allowed through.
+
+## Review findings not fixed yet (2026-11-09)
+- **Project URLs are not resolved**: `ProjectUrlRules` checks the text only and allows private ranges (containers need them). An admin could point a project's `FrontendUrl` at an internal service, and that service's unauthenticated pages (for example `/health`) would become public at `/apps/<slug>/`. Internal endpoints still need the internal key, which the gateway strips. Admin-only; a list of host names that must not be used as project URLs (the platform's own services) would close it.

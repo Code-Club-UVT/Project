@@ -31,6 +31,7 @@ public abstract class ResultControllerBase : ControllerBase
             ErrorType.Forbidden => (StatusCodes.Status403Forbidden, "Forbidden"),
             ErrorType.NotFound => (StatusCodes.Status404NotFound, "Not Found"),
             ErrorType.Conflict => (StatusCodes.Status409Conflict, "Conflict"),
+            ErrorType.TooManyRequests => (StatusCodes.Status429TooManyRequests, "Too Many Requests"),
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
         };
 

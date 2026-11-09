@@ -10,6 +10,9 @@
 - `JwksKeyStore`: a failed download is retried after 5 seconds instead of after the full unknown-key interval; the timestamps are read and written atomically; a request does not queue behind a running download unless no key is loaded yet
 - Verified with the real core-api and a throwaway API: an API started while core-api was down rejected the first token, and accepted the same token seconds after core-api came back (it used to wait a minute)
 
+## Step 4: TooManyRequests
+- Public surface: `ErrorType.TooManyRequests`, `Error.TooManyRequests(code, message)`, and `ResultControllerBase` answers it with 429 (ProblemDetails with the `code`). Added for identity's login and email throttling; no other service is affected (a `switch` over `ErrorType` elsewhere would need the new case)
+
 ## Step 3: platform-kit (service split)
 - Renamed the folder, project and namespaces from `gateway-auth` / `GatewayAuth` to `platform-kit` / `PlatformKit`; the configuration section is now `PlatformAuth`; `AddGatewayAuthentication`, `AddGatewayHealth`, `MapGatewayHealth` became `AddPlatformAuthentication`, `AddPlatformHealth`, `MapPlatformHealth`. Breaking for every service; all were updated in the same change
 - Moved in from core-api: `Result`, `Result<T>`, `Error`, `ErrorType`, `PagedResult<T>` (`PlatformKit.Results`), `ResultControllerBase` and the global exception handler (`PlatformKit.Web`, `AddPlatformProblemDetails`)

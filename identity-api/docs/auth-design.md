@@ -22,8 +22,8 @@ All lifetimes, the cookie name and the `Secure` flag are configuration, not colu
 | `POST register` | username, email, password, firstName?, lastName? | 200 account summary; 409 if username or email is taken |
 | `POST confirm-email` | token | 204; 400 if the token is invalid, expired or used |
 | `POST resend-confirmation` | email | 204 always |
-| `POST login` | identifier (username or email), password | 200 `{ accessToken, expiresAt, user }` + refresh cookie |
-| `POST refresh` | none (cookie) | 200 as login, rotated cookie; 401 and the cookie is cleared if invalid |
+| `POST login` | identifier (username or email), password | 200 `{ accessToken, expiresAt, user }` + refresh cookie; 429 `Auth.TooManyAttempts` after too many failures for that identifier |
+| `POST refresh` | none (cookie) | 200 as login, rotated cookie (no cookie when the call lost a race, see Refresh below); 401 and the cookie is cleared if invalid |
 | `POST logout` | none (cookie) | 204, token revoked, cookie cleared |
 | `POST forgot-password` | email | 204 always |
 | `POST reset-password` | token, newPassword | 204; revokes all the user's refresh tokens |
@@ -47,10 +47,10 @@ Internal (never routed by the gateway):
 
 - **Register**: validate, check username and email are free, hash the password, insert `User` (not confirmed) and an `EmailConfirmation` token, and in the same transaction queue two outbox messages: `user-registered` to core (id, username, email, first and last name, so core creates the profile) and an `email-confirmation` email with the link. The name is not stored in identity.
 - **Confirm email**: find the token by hash and type, check not expired and not used, set `EmailConfirmed` and `UsedAt`, and queue `user-confirmed` to core (core then grants the projects' default roles).
-- **Login**: `identifier` containing `@` is an email, otherwise a username. Unknown user, wrong password and inactive account all return the same 401. A dummy hash check runs for unknown users so timing does not reveal them. "Email not confirmed" (403) is returned only after the password is verified. Success creates a refresh token with a new `FamilyId` and returns the access token.
-- **Refresh**: find the token by hash. Active and not expired: rotate (old token gets `RevokedAt` and `ReplacedByTokenId`, the new one keeps the `FamilyId` and `FamilyStartedAt`, and `ExpiresAt = min(now + 7 days, FamilyStartedAt + 30 days)`). A revoked token coming back is treated as theft: the whole family is revoked and the call fails. Inactive or unconfirmed users cannot refresh.
+- **Login**: `identifier` containing `@` is an email, otherwise a username. Unknown user, wrong password and inactive account all return the same 401. A dummy hash check runs for unknown users so timing does not reveal them. "Email not confirmed" (403) is returned only after the password is verified. Success creates a refresh token with a new `FamilyId` and returns the access token. **Throttle**: failures are counted per identifier (lowercased, known or unknown alike, in memory); after `Throttle:LoginFailures` (10) in `LoginWindowMinutes` (15) the login answers 429 `Auth.TooManyAttempts` before looking at the password, until the oldest failure leaves the window. A refused attempt is not counted. A successful login clears the count. This lets a stranger block someone's login but not enter; the password reset by email is not blocked.
+- **Refresh**: find the token by hash. Active and not expired: rotate (old token gets `RevokedAt` and `ReplacedByTokenId`, the new one keeps the `FamilyId` and `FamilyStartedAt`, and `ExpiresAt = min(now + 7 days, FamilyStartedAt + 30 days)`). A revoked token coming back is treated as theft: the whole family is revoked and the call fails, **except** a token that was rotated at most `RefreshToken:ReuseGraceSeconds` (10) ago whose replacement is still valid (two tabs refreshing at once): that call gets a new access token and no refresh token, and sets no cookie, so the cookie of the first response stays. Tokens revoked by logout or a password change have no replacement, so they never qualify. A token replayed inside the window by a thief gets one access token (15 minutes), never a refresh token. Inactive or unconfirmed users cannot refresh.
 - **Logout**: revoke the current refresh token and clear the cookie; always succeeds.
-- **Forgot / reset password**: forgot creates a `PasswordReset` token (older unused ones are marked used) and queues the `password-reset` email, always returning 204. Reset sets the new hash, marks the token used and revokes all refresh tokens.
+- **Forgot / reset password**: forgot creates a `PasswordReset` token (older unused ones are marked used) and queues the `password-reset` email, always returning 204. **Throttle**: emails (confirmation, resend, reset) to one address wait `Throttle:EmailMinIntervalSeconds` (120) after the previous one and stop at `EmailsPerHour` (5); over the limit the call still answers success and sends nothing (the earlier link stays valid). Reset sets the new hash, marks the token used and revokes all refresh tokens.
 - **Change password**: verifies the current password, sets the new hash, revokes all refresh tokens. The current access token stays valid until it expires.
 - **Project token** (gateway): the user must exist and be active, the project must be active and `Exchange`, and the user must be a member; the role name is read from core's tables (read-only, schema `core`).
 - **First admin**: `Seed:Admin` creates the account already confirmed and queues `user-registered` + `user-confirmed`. Core grants `Admin` on the core project because its `Seed:AdminEmail` is the same address.
@@ -74,7 +74,8 @@ Internal (never routed by the gateway):
 | `InternalAuth:Callers` | `gateway`: the key the gateway sends |
 | `Services` | `Core:Url`, `Core:Key`, `Email:Url`, `Email:Key` (where the outbox delivers, and the key each expects), `TimeoutSeconds` |
 | `Outbox` | `PollSeconds` (2), `BatchSize` (20), `MaxAttempts` (30), `FirstBackoffSeconds` (2), `MaxBackoffSeconds` (600), `LeaseSeconds` (60) |
-| `RefreshToken` | `Days`, `AbsoluteDays`, `CookieName`, `CookiePath`, `CookieSecure` |
+| `RefreshToken` | `Days`, `AbsoluteDays`, `CookieName`, `CookiePath`, `CookieSecure`, `ReuseGraceSeconds` (10; 0 turns the race tolerance off) |
+| `Throttle` | `LoginFailures` (10), `LoginWindowMinutes` (15), `EmailMinIntervalSeconds` (120), `EmailsPerHour` (5) |
 | `Auth` | `EmailConfirmationHours`, `PasswordResetHours` |
 | `Frontend` | `BaseUrl`, `ConfirmEmailPath`, `ResetPasswordPath` (used for the emailed links) |
 | `Seed:Admin` | `Username`, `Email`, `Password` (first admin; created at startup only if all three are set and the user does not exist) |

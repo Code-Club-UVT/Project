@@ -20,6 +20,7 @@ public class AccountService(
     IUnitOfWork unitOfWork,
     IPasswordHasher<User> passwordHasher,
     ITokenService tokenService,
+    IAttemptLimiter limiter,
     IOutbox outbox,
     IOptions<AuthOptions> authOptions,
     IOptions<FrontendOptions> frontendOptions,
@@ -54,6 +55,9 @@ public class AccountService(
             UpdatedAt = now
         };
         user.PasswordHash = passwordHasher.HashPassword(user, request.Password);
+
+        // Counts this first email, so a "resend" right after registering waits for the minimum interval too.
+        limiter.TryAcquireEmail(user.Email);
 
         await users.CreateAsync(user, cancellationToken);
         var rawToken = await CreateUserTokenAsync(user.Id, UserTokenType.EmailConfirmation, TimeSpan.FromHours(_auth.EmailConfirmationHours), now, cancellationToken);
@@ -96,6 +100,13 @@ public class AccountService(
             return Result.Success();
         }
 
+        // Too soon after the last email to this address: answer as if sent (nothing reveals the limit to a stranger),
+        // and keep the link the user already has valid.
+        if (!limiter.TryAcquireEmail(user.Email))
+        {
+            return Result.Success();
+        }
+
         var now = timeProvider.GetUtcNow().UtcDateTime;
         var rawToken = await CreateUserTokenAsync(user.Id, UserTokenType.EmailConfirmation, TimeSpan.FromHours(_auth.EmailConfirmationHours), now, cancellationToken);
         await QueueLinkEmailAsync(EmailTemplates.EmailConfirmation, user.Email, _frontend.ConfirmEmailPath, rawToken, cancellationToken);
@@ -108,6 +119,11 @@ public class AccountService(
     {
         var user = await users.GetByEmailAsync(request.Email.Trim(), cancellationToken);
         if (user is null || !user.IsActive)
+        {
+            return Result.Success();
+        }
+
+        if (!limiter.TryAcquireEmail(user.Email))
         {
             return Result.Success();
         }

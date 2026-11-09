@@ -51,6 +51,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton<ITokenService, TokenService>();
 
+        services.AddOptions<ThrottleOptions>().BindConfiguration(ThrottleOptions.SectionName).ValidateDataAnnotations().ValidateOnStart();
+        services.AddSingleton<IAttemptLimiter, AttemptLimiter>();
+
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IProjectTokenService, ProjectTokenService>();

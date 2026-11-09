@@ -17,6 +17,7 @@ public class AuthService(
     IUnitOfWork unitOfWork,
     IPasswordHasher<User> passwordHasher,
     ITokenService tokenService,
+    IAttemptLimiter limiter,
     IOptions<RefreshTokenOptions> refreshOptions,
     TimeProvider timeProvider,
     ILogger<AuthService> logger) : IAuthService
@@ -29,18 +30,31 @@ public class AuthService(
 
     public async Task<Result<AuthSession>> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
     {
-        var user = await users.GetByIdentifierAsync(request.Identifier.Trim(), cancellationToken);
+        var identifier = request.Identifier.Trim();
+
+        // Counted per identifier whether or not the account exists, so this answer never reveals which accounts exist.
+        // A refused attempt is not counted again, so the block ends when the oldest failure leaves the window.
+        if (limiter.IsLoginBlocked(identifier))
+        {
+            return AuthErrors.TooManyAttempts;
+        }
+
+        var user = await users.GetByIdentifierAsync(identifier, cancellationToken);
         if (user is null)
         {
             passwordHasher.VerifyHashedPassword(DummyUser, DummyHash, request.Password);
+            limiter.RecordLoginFailure(identifier);
             return AuthErrors.InvalidCredentials;
         }
 
         var verification = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
         if (verification == PasswordVerificationResult.Failed || !user.IsActive)
         {
+            limiter.RecordLoginFailure(identifier);
             return AuthErrors.InvalidCredentials;
         }
+
+        limiter.ClearLogin(identifier);
 
         // Only reported after the password is verified, so it does not reveal which accounts exist.
         if (!user.EmailConfirmed)
@@ -78,6 +92,14 @@ public class AuthService(
 
         if (stored.RevokedAt is not null)
         {
+            // Two refreshes with the same cookie at the same moment (two tabs): the second came right after the first rotated
+            // the token. The first response already set the new cookie, so this one only gets an access token.
+            if (await IsRotationRaceAsync(stored, now, cancellationToken))
+            {
+                logger.LogInformation("Refresh token of user {UserId} reused {Seconds:N1}s after its rotation; access token only", stored.UserId, (now - stored.RevokedAt.Value).TotalSeconds);
+                return CreateAccessOnlySession(stored.User);
+            }
+
             // A revoked token came back: assume it was stolen and end every session of its family.
             logger.LogWarning("Reuse of a revoked refresh token for user {UserId}; revoking family {FamilyId}", stored.UserId, stored.FamilyId);
             await RevokeFamilyAsync(stored.FamilyId, now, cancellationToken);
@@ -143,6 +165,33 @@ public class AuthService(
         var response = new AuthResponse(accessToken.Token, accessToken.ExpiresAt, user.ToResponse());
 
         return new AuthSession(response, rawToken, token.ExpiresAt);
+    }
+
+    /// <summary>
+    /// The token was rotated (it has a replacement), a moment ago, and the replacement is still valid, and the account is
+    /// usable. A token revoked by logout or a password change has no replacement, so it never qualifies.
+    /// </summary>
+    private async Task<bool> IsRotationRaceAsync(RefreshToken stored, DateTime now, CancellationToken cancellationToken)
+    {
+        if (_refresh.ReuseGraceSeconds <= 0
+            || stored.RevokedAt is not { } revokedAt
+            || stored.ReplacedByTokenId is not { } replacementId
+            || now - revokedAt > TimeSpan.FromSeconds(_refresh.ReuseGraceSeconds)
+            || stored.ExpiresAt <= now
+            || !stored.User.IsActive
+            || !stored.User.EmailConfirmed)
+        {
+            return false;
+        }
+
+        var active = await refreshTokens.GetActiveByFamilyAsync(stored.FamilyId, cancellationToken);
+        return active.Any(token => token.Id == replacementId && token.ExpiresAt > now);
+    }
+
+    private AuthSession CreateAccessOnlySession(User user)
+    {
+        var accessToken = tokenService.CreateAccessToken(user);
+        return new AuthSession(new AuthResponse(accessToken.Token, accessToken.ExpiresAt, user.ToResponse()), null, null);
     }
 
     private async Task RevokeFamilyAsync(Guid familyId, DateTime now, CancellationToken cancellationToken)

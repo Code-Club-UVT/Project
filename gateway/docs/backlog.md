@@ -27,3 +27,9 @@
 - Add a second, more specific route per project: `/api/<slug>/openapi/{**rest}`, `Order = -1`, authorization policy `anonymous`, GET only, the normal rate limit, no token exchange (nothing sensitive is forwarded). Core already has an anonymous route; this makes the Exchange-mode projects reachable too.
 - Do the same for the `openapi` sub-path inside `ProxyConfigBuilder.TryBuild`, with a test that a project route still requires a token everywhere else.
 - Context and design: platform-kit/docs/backlog.md (OpenAPI schema for the planned APIM-like app).
+
+## Review findings not fixed yet (2026-11-09)
+- **Forwarded headers**: `Proxy:TrustedNetworks` defaults to all of `172.16.0.0/12`, so any container on the shared Docker network could set `X-Forwarded-For` and dodge the per-IP rate limit. Narrow it to the harness container's network or address.
+- **`/apps/<slug>/` is anonymous** (by design) and shares the per-IP limit of 300 requests per minute; many users behind one address, each page load fetching several files, could hit it. Slugs of projects with a frontend can be discovered. Consider a separate, higher limit for static files.
+- **Access staleness**: a revoked or disabled user keeps access for up to `AccessCacheSeconds` (30 s) at the gateway, and up to the access-token lifetime (15 min) on identity's own endpoints.
+- **Internal trust**: the internal key and the JWKS download travel over plain HTTP inside the Docker network (`AllowInsecureJwksUrl`).
