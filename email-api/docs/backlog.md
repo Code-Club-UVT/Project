@@ -7,4 +7,4 @@
 - **Localisation**: templates are English only; a `locale` field and per-locale texts would be needed for Romanian.
 - **More templates** as features need them (welcome, access granted, project invitation).
 - **Preview**: a Development-only endpoint that renders a template without sending, for designing emails.
-- Tests: none yet.
+- **Tests that need a real database** (phase 2, not built): the unique key on the message id (the lost race in `SentEmailRepository.TryAddAsync`) and the migrations. `EmailApi.Tests` covers the templates, the service and the startup rules with fakes; `SmtpEmailSender` needs a mail server to be tested.

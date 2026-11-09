@@ -17,7 +17,7 @@ Account, token and email items moved to identity-api/docs/backlog.md and email-a
 
 ## Future / maintenance
 - **Queryable logs in a database**, for every action: (1) application logs (errors, warnings), for example a Serilog sink; (2) an audit/action log (who did what, when, status, duration), a good fit for MongoDB. The correlation id from platform-kit is already in every log scope.
-- Test project: none yet. The repositories need a test database to be tested for real.
+- Tests that need a real database (phase 2, not built): the EF mappings, the cascades (a revoked membership removes the saved tab, a deleted project removes its roles and members), unique keys, `citext` and the migrations. `CoreApi.Tests` covers the services and rules with in-memory repositories; a Postgres container (Testcontainers) in CI would cover the rest.
 - More profile fields (display name, avatar, bio, ...).
 
 ## TODO: publish the OpenAPI schema in every environment

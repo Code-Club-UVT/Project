@@ -11,6 +11,7 @@ The email service (ASP.NET Core Web API, .NET 10, controllers, project `EmailApi
 Run from `email-api/`:
 
 - Build: `dotnet build`
+- Test: `dotnet test EmailApi.Tests` (no Docker or database needed)
 - Run: `dotnet run` (http://localhost:5070, Development; emails are written to the log unless `Smtp:Enabled`)
 - Add a migration: `dotnet ef migrations add <Name> --output-dir Data/Postgres/Migrations`
 - Apply migrations: `dotnet ef database update`
@@ -26,6 +27,10 @@ Run from `email-api/`:
 - Every endpoint requires the internal key (fallback policy on the `InternalKey` scheme).
 - Ask before adding NuGet dependencies.
 - Configuration lives in `appsettings*.json`, overridable with environment variables (`Smtp__Password`, ...). Committed secrets are clearly marked placeholders (`CHANGE-ME...`). The local SMTP password goes in the git-ignored `appsettings.Development.local.json`. Outside Development startup fails unless `Smtp:Enabled` is true with a real password.
+
+## Tests
+
+`EmailApi.Tests/` is its own project (xunit, fakes written by hand, no mocking library) inside this folder; the API project excludes it and the Docker context leaves it out. A change to behaviour comes with a test. `.github/workflows/ci.yml` runs it on every pull request and before every deployment, so a failing test blocks a deploy. Tests that need a real database are not built yet (see the backlog).
 
 ## Documentation
 

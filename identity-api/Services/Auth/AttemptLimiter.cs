@@ -12,6 +12,9 @@ public sealed class AttemptLimiter(IOptions<ThrottleOptions> options, TimeProvid
     private const int MaxEntries = 50_000;
 
     private static readonly TimeSpan EmailWindow = TimeSpan.FromHours(1);
+    private static readonly TimeSpan SweepEvery = TimeSpan.FromMinutes(1);
+
+    private long _nextSweepTicks;
 
     private readonly ThrottleOptions _options = options.Value;
     private readonly ConcurrentDictionary<string, Entry> _entries = new();
@@ -33,7 +36,7 @@ public sealed class AttemptLimiter(IOptions<ThrottleOptions> options, TimeProvid
 
     public void RecordLoginFailure(string identifier)
     {
-        var entry = GetOrAdd(LoginKey(identifier));
+        var entry = GetOrAdd(LoginKey(identifier), LoginWindow);
         if (entry is null)
         {
             return;
@@ -54,7 +57,7 @@ public sealed class AttemptLimiter(IOptions<ThrottleOptions> options, TimeProvid
 
     public bool TryAcquireEmail(string address)
     {
-        var entry = GetOrAdd(EmailKey(address));
+        var entry = GetOrAdd(EmailKey(address), EmailWindow);
         if (entry is null)
         {
             return true;
@@ -83,11 +86,17 @@ public sealed class AttemptLimiter(IOptions<ThrottleOptions> options, TimeProvid
 
     private static string EmailKey(string address) => "email:" + address.Trim().ToLowerInvariant();
 
-    private Entry? GetOrAdd(string key)
+    private Entry? GetOrAdd(string key, TimeSpan window)
     {
+        // Above the threshold, at most one sweep a minute: sweeping on every call would make each request walk the whole table.
         if (_entries.Count > SweepAbove)
         {
-            Sweep();
+            var nowTicks = timeProvider.GetUtcNow().UtcTicks;
+            var due = Volatile.Read(ref _nextSweepTicks);
+            if (nowTicks >= due && Interlocked.CompareExchange(ref _nextSweepTicks, nowTicks + SweepEvery.Ticks, due) == due)
+            {
+                Sweep();
+            }
         }
 
         if (_entries.Count >= MaxEntries && !_entries.ContainsKey(key))
@@ -95,19 +104,19 @@ public sealed class AttemptLimiter(IOptions<ThrottleOptions> options, TimeProvid
             return null;
         }
 
-        return _entries.GetOrAdd(key, _ => new Entry());
+        return _entries.GetOrAdd(key, _ => new Entry(window));
     }
 
-    /// <summary>Drops the entries whose times are all older than the longest window.</summary>
+    /// <summary>Drops the entries whose times are all older than their own window.</summary>
     private void Sweep()
     {
-        var cutoff = timeProvider.GetUtcNow() - (LoginWindow > EmailWindow ? LoginWindow : EmailWindow);
+        var now = timeProvider.GetUtcNow();
         foreach (var (key, entry) in _entries)
         {
             bool expired;
             lock (entry)
             {
-                Trim(entry, cutoff);
+                Trim(entry, now - entry.Window);
                 expired = entry.Times.Count == 0;
             }
 
@@ -126,8 +135,11 @@ public sealed class AttemptLimiter(IOptions<ThrottleOptions> options, TimeProvid
         }
     }
 
-    private sealed class Entry
+    private sealed class Entry(TimeSpan window)
     {
+        /// <summary>How long a time counts: failed logins and emails have different windows.</summary>
+        public TimeSpan Window { get; } = window;
+
         public Queue<DateTimeOffset> Times { get; } = new();
 
         /// <summary>The time of the last email, meaningful while <see cref="Times"/> is not empty.</summary>

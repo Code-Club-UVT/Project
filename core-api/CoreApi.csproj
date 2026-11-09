@@ -6,6 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- The tests live in a folder of this project but are their own project. -->
+  <ItemGroup>
+    <Compile Remove="CoreApi.Tests/**" />
+    <Content Remove="CoreApi.Tests/**" />
+    <EmbeddedResource Remove="CoreApi.Tests/**" />
+    <None Remove="CoreApi.Tests/**" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\platform-kit\PlatformKit.csproj" />
   </ItemGroup>

@@ -25,5 +25,5 @@
 
 ## Review findings not fixed yet (2026-11-09)
 - **Apps can get the user's token**: an app in an iframe is same-origin, so it can call `/api/identity/auth/refresh` with the cookie and get an access token for every project the user belongs to. Fine for first-party apps; a XSS bug in any app is then an account takeover. If a less trusted or third-party app is ever added, serve apps from a separate origin.
-- **No tests gate the deployment** for the shared libraries and services: the image builds run Biome, `tsc` and the tests of the harness only (Biome and `tsc` for mock-web). `gateway/Gateway.Tests` and `platform-kit-web`'s tests are not run by any build, and core-api and identity have no tests.
+- ~~No tests gate the deployment~~ Done: `.github/workflows/ci.yml` runs every test project and the web checks, on pull requests and before every deployment (`deploy.yml` calls it and waits). Still missing: tests of the frames, routing and `AppBridge` in a DOM (see above).
 - Two saves of the tab list at the same moment (two browsers) can hit a duplicate key and fail with 500; the harness ignores a failed save. Rare, self-healing at the next change.

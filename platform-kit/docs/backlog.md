@@ -8,7 +8,7 @@
 - **Real client IP**: document or wrap a `UseForwardedHeaders` setup trusting the gateway.
 - **Internal key rotation**: `InternalAuth:Callers` takes one key per caller. To rotate without downtime, allow a list per caller (old and new) for a while.
 - **Idempotency helper**: identity sends `Idempotency-Key` on outbox deliveries; receivers are idempotent by design today. A shared helper (a table of seen keys) would help the next receiver that is not naturally idempotent.
-- **Tests**: no test project. The behaviours listed in `implementation.md` were checked by hand; an automated test project would keep them checked.
+- **Tests of the wiring in a running app**: `PlatformKit.Tests` covers the handlers, the key store, the token validation (against a real local JWKS endpoint) and the options, but not `AddPlatformAuthentication` inside a full pipeline (that is covered by each service on dev).
 
 ## TODO: audit log of important actions (discussed 2026-11-08, nothing decided yet)
 

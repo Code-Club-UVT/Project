@@ -7,3 +7,6 @@
 **/.vs
 email-api/docs
 email-api/appsettings.*.local.json
+
+platform-kit/PlatformKit.Tests
+email-api/EmailApi.Tests

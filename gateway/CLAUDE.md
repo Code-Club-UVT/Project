@@ -13,6 +13,7 @@ Read [../identity-api/docs/auth-design.md](../identity-api/docs/auth-design.md) 
 Run from `gateway/` (identity-api, core-api and PostgreSQL must be running):
 
 - Build: `dotnet build`
+- Test: `dotnet test Gateway.Tests` (no Docker or database needed)
 - Run: `dotnet run` (http://localhost:5100, Development). Identity must be at http://localhost:5060 and core at http://localhost:5054 (their default launch URLs), because the seeded project rows point there.
 - Docker image (repo root as context, because of `platform-kit`): `docker build -f gateway/Dockerfile -t gateway .`
 
@@ -26,6 +27,10 @@ Run from `gateway/` (identity-api, core-api and PostgreSQL must be running):
 - YARP reserves the policy names `default` and `disable` for CORS and rate limiting; use other names.
 - Ask before adding NuGet dependencies.
 - Configuration lives in `appsettings*.json` and can be overridden by environment variables (`Section__Key`). Committed secrets must be clearly marked placeholders (`CHANGE-ME...`).
+
+## Tests
+
+`Gateway.Tests/` is its own project (xunit, fakes written by hand, no mocking library) inside this folder; the API project excludes it and the Docker context leaves it out. A change to behaviour comes with a test. `.github/workflows/ci.yml` runs it on every pull request and before every deployment, so a failing test blocks a deploy. Tests that need a real database are not built yet (see the backlog).
 
 ## Documentation
 

@@ -5,7 +5,7 @@ Moved from core-api with the split where they concern accounts and tokens.
 ## Open decisions
 - **Refresh concurrency check**: two truly simultaneous calls with the same unrotated token can both succeed because there is no concurrency token on `RefreshToken` (the grace window only covers a call that arrives after the first rotated). Harmless so far (both get valid tokens); add a concurrency token if it matters.
 - **Throttle state is in memory**: counts of failed logins and emails reset on restart and are per instance. Move to the database or a shared cache when identity runs in more than one instance.
-- **Tests**: identity has no test project, so the limiter and the refresh grace window were checked on dev only. A test project (xunit, like `gateway/Gateway.Tests`) was postponed by the owner.
+- **Tests that need a real database** (phase 2, not built): the EF mappings, unique keys (the duplicate-registration race above), the outbox claim (`ClaimDueAsync` with row locks) and `ProjectAccessReader`. `Identity.Tests` covers the services, the limiter, the dispatcher and the controllers with in-memory repositories.
 - **Duplicate registration race**: two simultaneous registrations of the same username pass the existence check and the second hits the unique index (500). Map the unique violation to 409.
 - **Deactivated users** keep a valid access token for up to 15 minutes. There is no endpoint to deactivate a user yet (it would live here, called by core's admin side through an internal endpoint).
 - **Instant access-token revocation**: not possible with stateless JWTs; if needed, a token-version or `jti` check against a cache.

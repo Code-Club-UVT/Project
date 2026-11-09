@@ -17,7 +17,7 @@
 - **Request logging / audit**: log denied requests (403/401) with user, project and reason in a queryable store (see core-api backlog).
 - **Edge token revocation**: a disabled user is refused after the access cache time; a stolen edge token otherwise works until it expires (15 minutes).
 - **Identity path allow-list**: the whole `/api/identity/**` is anonymous at the gateway; identity decides per endpoint. Fine while identity is the only one that knows its endpoints.
-- **Tests**: no test project. The behaviour in `implementation.md` was verified with a scripted run; an automated integration test project would keep it verified.
+- **Tests that need a real database or a running proxy** (phase 2, not built): `ProjectAccessService` (the three-table read), `ProjectConfigPoller` and a request through YARP end to end. `Gateway.Tests` covers the route builder, the cache, the token exchange, the access middleware and the wiring with fakes.
 - **Startup order**: routes load a moment after start; `/health` stays 503 until then. A probe-based start order in compose makes this invisible.
 - **PassThrough only for identity**: core-api now has a CHECK constraint (`TokenMode <> 'PassThrough' OR IsSystem`). The gateway could additionally honour `PassThrough` only for the `identity` slug.
 - **Access query**: `ProjectAccessService` runs two queries per cache miss (user, membership); one joined query would halve the load (open from the code review).

@@ -112,3 +112,7 @@ Against the real core-api and PostgreSQL, with a throwaway sample API that used 
 - correlation id: kept when valid, replaced when unsafe, returned on the response, sent on outgoing `HttpClient` calls; `/health` is anonymous
 
 Not covered: https JWKS with a real certificate, behaviour behind the real gateway, concurrency under load.
+
+## Tests
+
+`PlatformKit.Tests/` (xunit, run with `dotnet test PlatformKit.Tests`): the results and ProblemDetails mapping, the internal key scheme, the request context middleware, the exception handler, `JwksKeyStore` with a fake HTTP handler and clock, and the token validation setup against a local JWKS server started inside the test (a real ES256 key pair signs good and bad tokens). Run by `.github/workflows/ci.yml`.

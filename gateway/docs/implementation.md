@@ -95,3 +95,7 @@ Before the service split, scripted run against the real core-api (which then als
 - downstream API down: 502/503, gateway stays healthy; the image builds and refuses to start without configuration
 
 Not covered: active health checks actually marking a destination unhealthy, WebSockets / streaming, large uploads, several gateway instances, https and a real proxy in front, behaviour under load.
+
+## Tests
+
+`Gateway.Tests/` (xunit, `dotnet test Gateway.Tests`, no Docker or database): the route builder, `TtlCache`, the token client and provider, `ProjectAccessMiddleware` (with a fake YARP route feature and fakes for access and tokens), the options, forwarded headers, CORS and the readiness check. `ProjectAccessService` and `ProjectConfigPoller` need a database and are not covered. Run by `.github/workflows/ci.yml`.

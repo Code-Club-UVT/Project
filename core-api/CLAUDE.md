@@ -13,6 +13,7 @@ Accounts, passwords and tokens are identity-api's job; email is email-api's. Beh
 Run from `core-api/`:
 
 - Build: `dotnet build`
+- Test: `dotnet test CoreApi.Tests` (in-memory fakes of the repositories: no Docker or database needed)
 - Run: `dotnet run` (default URL in `Properties/launchSettings.json`)
 - Add a migration: `dotnet ef migrations add <Name> --output-dir Data/Postgres/Migrations`
 - Apply migrations: `dotnet ef database update`
@@ -39,6 +40,10 @@ N-layer (Controller, Service, Repository) in this single project; details in [do
 - Repositories use only entities, are behind interfaces, and never call `SaveChanges`; services commit through `IUnitOfWork`. Do not expose `IQueryable`. `GetAll` is always paged.
 - DTOs go in `Models/Requests` and `Models/Responses` (not `Dtos`); hand-written mapping in `Mappings/`.
 - All I/O is async with a `CancellationToken`; keep pure code synchronous.
+
+## Tests
+
+`CoreApi.Tests/` is its own project (xunit, fakes written by hand, no mocking library) inside this folder; the API project excludes it and the Docker context leaves it out. A change to behaviour comes with a test. `.github/workflows/ci.yml` runs it on every pull request and before every deployment, so a failing test blocks a deploy. Tests that need a real database are not built yet (see the backlog).
 
 ## Documentation
 

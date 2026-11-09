@@ -10,6 +10,19 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <!-- The tests live in a folder of this project but are their own project. -->
+  <ItemGroup>
+    <Compile Remove="PlatformKit.Tests/**" />
+    <Content Remove="PlatformKit.Tests/**" />
+    <EmbeddedResource Remove="PlatformKit.Tests/**" />
+    <None Remove="PlatformKit.Tests/**" />
+  </ItemGroup>
+
+  <!-- The shared library keeps its handlers internal; the tests need to see them. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="PlatformKit.Tests" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.14" />
   </ItemGroup>

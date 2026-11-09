@@ -7,6 +7,14 @@
     <RootNamespace>Identity</RootNamespace>
   </PropertyGroup>
 
+  <!-- The tests live in a folder of this project but are their own project. -->
+  <ItemGroup>
+    <Compile Remove="Identity.Tests/**" />
+    <Content Remove="Identity.Tests/**" />
+    <EmbeddedResource Remove="Identity.Tests/**" />
+    <None Remove="Identity.Tests/**" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\platform-kit\PlatformKit.csproj" />
   </ItemGroup>

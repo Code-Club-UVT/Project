@@ -19,6 +19,7 @@ It is not a web app and has no business logic.
 Run from `platform-kit/`:
 
 - Build: `dotnet build`
+- Test: `dotnet test PlatformKit.Tests` (no Docker or database needed). Add or change a test with every change to the shared behaviour; a breaking change here breaks every service.
 
 Services reference it by project reference (`<ProjectReference Include="..\platform-kit\PlatformKit.csproj" />`). Because of that, a service's Dockerfile must use the repo root as build context.
 
@@ -30,6 +31,10 @@ Services reference it by project reference (`<ProjectReference Include="..\platf
 - Ask before adding NuGet dependencies.
 - Settings come from the `PlatformAuth` and `InternalAuth` configuration sections and can be overridden by environment variables (`PlatformAuth__Audience`, `InternalAuth__Callers__gateway`, ...).
 - All claim names (`sub`, `username`, `role`) must match what identity-api's `TokenService` writes; change both together.
+
+## Tests
+
+`PlatformKit.Tests/` is its own project (xunit, no mocking library); `PlatformKit.csproj` excludes it and lets it see the internal types (`InternalsVisibleTo`). `.github/workflows/ci.yml` runs it on every pull request and before every deployment.
 
 ## Documentation
 

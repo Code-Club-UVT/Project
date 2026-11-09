@@ -19,6 +19,7 @@ Read [docs/auth-design.md](docs/auth-design.md) for the token design and flows.
 Run from `identity-api/`:
 
 - Build: `dotnet build`
+- Test: `dotnet test Identity.Tests` (in-memory fakes of the repositories: no Docker or database needed)
 - Run: `dotnet run` (http://localhost:5060, Development)
 - Add a migration: `dotnet ef migrations add <Name> --context PostgresDbContext --output-dir Data/Postgres/Migrations`
 - Apply migrations: `dotnet ef database update --context PostgresDbContext`
@@ -35,6 +36,10 @@ Run from `identity-api/`:
 - The claim names in `TokenService` (`sub`, `username`, `role`, `email`) are what platform-kit and the gateway read; change them together.
 - Ask before adding NuGet dependencies.
 - Configuration lives in `appsettings*.json`, overridable with environment variables (`Section__Key`). Committed secrets are clearly marked placeholders (`CHANGE-ME...`); real values come from the environment (on the server: `<env>/config/identity-api.json`). Local real values go in the git-ignored `appsettings.Development.local.json`.
+
+## Tests
+
+`Identity.Tests/` is its own project (xunit, fakes written by hand, no mocking library) inside this folder; the API project excludes it and the Docker context leaves it out. A change to behaviour comes with a test. `.github/workflows/ci.yml` runs it on every pull request and before every deployment, so a failing test blocks a deploy. Tests that need a real database are not built yet (see the backlog).
 
 ## Documentation
 

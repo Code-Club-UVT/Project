@@ -7,3 +7,6 @@
 **/.vs
 identity-api/docs
 identity-api/appsettings.*.local.json
+
+platform-kit/PlatformKit.Tests
+identity-api/Identity.Tests

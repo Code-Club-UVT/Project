@@ -1,5 +1,8 @@
 # Changelog
 
+## Tests
+- `Gateway.Tests` grew from 13 to 64 tests: `TtlCache` (fresh, stale within the grace, fail closed after it, one load for parallel callers), `IdentityTokenClient` and `ProjectTokenProvider` (outcomes, caching, role in the key), `ProjectAccessMiddleware` (frontend routes strip identity headers and cookies, 401, 403, 404 and 503 cases, project token swap, pass-through), the options checks, forwarded headers, CORS and the readiness check
+
 ## Step 1: the gateway
 - Created the `Gateway` project (YARP 2.3.0, EF Core read-only models, reference to `gateway-auth`)
 - Routes and clusters built from the `Projects` table and refreshed by a poller; new, changed and deactivated projects take effect without a restart

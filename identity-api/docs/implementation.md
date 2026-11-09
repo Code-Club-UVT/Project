@@ -72,3 +72,7 @@ PostgreSQL with the database `platform` (core-api's `docker-compose.yml`, or the
 ## Verified
 
 On the dev server (2026-11-05, commit 3252626, through Caddy and the gateway at `https://codeclub.info.uvt.ro/dev`), a scripted run of 83 checks: 79 passed; the other 4 were test mistakes, not bugs (the outbox still retrying rows from a broken earlier deploy, a wrong field name, the gateway's 30-second access cache, and the per-IP auth rate limit kicking in). A re-check confirmed a grant takes effect after the cache time. One real email was sent over SMTP. Covered here: register (409 on a taken name), login blocked until confirmed, confirm (single use), login, the refresh cookie (`/dev/api/identity/auth`, HttpOnly, Secure, Strict), refresh rotation and reuse detection (the family is revoked), change password, forgot/reset (204 for an unknown email), the seeded admin, no role in the edge token, project tokens for core and mock, and the outbox: with core-api and email-api stopped, registration still succeeds, the messages retry with backoff and are delivered (profile created, email sent once) after they come back. `/internal/...` and `/.well-known/...` are not reachable from outside.
+
+## Tests
+
+`Identity.Tests/` (xunit, `dotnet test Identity.Tests`, no Docker or database): real services on hand-written in-memory repositories (`Support/Fakes.cs`, `Support/IdentityFixture.cs`) and a fake clock. The dispatcher tests start the real `OutboxDispatcher`, which delivers one batch before it waits for its timer. Run by `.github/workflows/ci.yml`.

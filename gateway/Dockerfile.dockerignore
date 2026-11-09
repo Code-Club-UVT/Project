@@ -6,3 +6,5 @@
 **/obj
 **/.vs
 gateway/Gateway.Tests
+
+platform-kit/PlatformKit.Tests

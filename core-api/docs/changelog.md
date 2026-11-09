@@ -1,5 +1,8 @@
 # Changelog
 
+## Tests
+- New `CoreApi.Tests` (139 tests, in-memory fakes of the repositories): `ProjectUrlRules` (loopback, link-local, metadata, mapped addresses, credentials), `ProjectService` (slugs, reserved names, URLs, system projects, default role, delete order), `ProjectRoleService`, `ProjectMemberService` (grant, change, revoke, my projects without URLs), `UserService`, `UserProvisioningService` (idempotent upsert and confirmation, the seed admin), `UserTabService` and `UserTabRules`, and the authorization attributes of every controller
+
 ## Step 1: project setup
 - Created `core-api` (.NET 10 Web API with controllers), project `CoreApi`
 - Removed the sample weather controller and model
@@ -103,7 +106,7 @@
 ## Saved tabs
 - New table `core.UserTabs` (migration `UserTabs`): the apps a user has open in the harness, in order, with the last path inside each. The foreign key to `ProjectMembers` cascades, so losing access or deleting the project removes the tab
 - New endpoints `GET` and `PUT /api/users/me/tabs` (`UserTabService`, whole-list replace, limits and path rules in `UserTabRules`); the API uses project ids
-- No unit-test project exists in core-api, so the service and the path rules are checked on dev only
+- The service and the path rules were checked on dev; `CoreApi.Tests` (added later, see below) now covers them
 
 ## Harness shell: project URLs
 - `Project.BaseUrl` renamed `BackendUrl` (nullable); added nullable `FrontendUrl`. Migration `ProjectBackendFrontendUrls` (rename, not drop). Seed settings are now `Seed:*Project:BackendUrl`

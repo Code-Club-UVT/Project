@@ -1,5 +1,9 @@
 # Changelog
 
+## Step 5: tests
+- New `PlatformKit.Tests` (85 tests): `Result`, `Error`, `PagedResult`; `ResultControllerBase` status mapping; the internal-key handler (right, wrong, near-miss and doubled keys) and its options checks; `InternalKeyHandler` and `CorrelationIdHandler`; the request context and the correlation id rules; the exception handler; `JwksKeyStore` (first download, refresh time, unknown key, backoff, failures and empty key sets keep the old keys); and the token validation of every API against a real local JWKS endpoint (wrong audience, issuer, expiry, key, algorithm, unsigned and altered tokens)
+- `PlatformKit.csproj` excludes the folder and has `InternalsVisibleTo` for the tests
+
 ## Step 1: library
 - Created the `GatewayAuth` class library with `AddGatewayAuthentication` (ES256, issuer, audience = slug, keys from the JWKS), `JwksKeyStore`, `IRequestContext` with `AddRequestContext` / `UseRequestContext`, the correlation id middleware and `CorrelationIdHandler`, `AddGatewayHealth` / `MapGatewayHealth`
 - Added `CLAUDE.md`, this `docs/` folder and a `.gitignore`

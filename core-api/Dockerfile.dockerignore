@@ -8,3 +8,6 @@
 core-api/docker
 core-api/docs
 core-api/appsettings.*.local.json
+
+platform-kit/PlatformKit.Tests
+core-api/CoreApi.Tests
