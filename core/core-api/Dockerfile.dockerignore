@@ -1,0 +1,13 @@
+# The build context is the repository root; send only what the core-api image needs.
+*
+!core/core-api
+!common/platform-kit
+**/bin
+**/obj
+**/.vs
+core/core-api/docker
+core/core-api/docs
+core/core-api/appsettings.*.local.json
+
+common/platform-kit/PlatformKit.Tests
+core/core-api/CoreApi.Tests

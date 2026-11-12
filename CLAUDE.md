@@ -15,30 +15,30 @@ This is the root instruction file. Read it at the start of every session.
 - After each implementation, report the changes made in the chat: the most important files and what each one does. If the report is too long, use a temporary markdown file in the session scratchpad and point to it.
 - Never save plans or change reports inside the repo (not even in the gitignored root `docs/`).
 - Delete any temporary plan or report file once the implementation or its review is done.
-- Every code project keeps a `docs/` folder inside its own directory (for example `core-api/docs/`) with markdown files for the current implementation, what has been done, pending decisions, and things to look at in the future. Update it at the end of each step.
+- Every code project keeps a `docs/` folder inside its own directory (for example `core/core-api/docs/`) with markdown files for the current implementation, what has been done, pending decisions, and things to look at in the future. Update it at the end of each step.
 
 ## Projects
 
 | Directory | What it is | Instructions |
 |-----------|------------|--------------|
 | `licenta-victor/` | Thesis (LaTeX) | [licenta-victor/CLAUDE.md](licenta-victor/CLAUDE.md) |
-| `identity-api/` | Accounts, login, edge/refresh/project tokens, JWKS | [identity-api/CLAUDE.md](identity-api/CLAUDE.md) |
-| `core-api/` | Profiles, projects, project roles, members, default roles | [core-api/CLAUDE.md](core-api/CLAUDE.md) |
-| `email-api/` | Templated email (internal only) | [email-api/CLAUDE.md](email-api/CLAUDE.md) |
-| `gateway/` | The single entry point (YARP): routing, access check, token swap | [gateway/CLAUDE.md](gateway/CLAUDE.md) |
-| `platform-kit/` | Shared library: token validation, request context, results/ProblemDetails, internal-key auth | [platform-kit/CLAUDE.md](platform-kit/CLAUDE.md) |
-| `mock-api/` | Throw-away project API for end-to-end tests | [mock-api/CLAUDE.md](mock-api/CLAUDE.md) |
-| `harness-web/` | React front end (test page) and the nginx that is each environment's public door to the gateway | [harness-web/CLAUDE.md](harness-web/CLAUDE.md) |
-| `platform-kit-web/` | Shared front-end library: the bridge between the harness and the apps in its iframes | [platform-kit-web/CLAUDE.md](platform-kit-web/CLAUDE.md) |
-| `mock-web/` | Throw-away project frontend (iframe app) for end-to-end tests | [mock-web/CLAUDE.md](mock-web/CLAUDE.md) |
+| `core/identity-api/` | Accounts, login, edge/refresh/project tokens, JWKS | [core/identity-api/CLAUDE.md](core/identity-api/CLAUDE.md) |
+| `core/core-api/` | Profiles, projects, project roles, members, default roles | [core/core-api/CLAUDE.md](core/core-api/CLAUDE.md) |
+| `core/email-api/` | Templated email (internal only) | [core/email-api/CLAUDE.md](core/email-api/CLAUDE.md) |
+| `core/gateway/` | The single entry point (YARP): routing, access check, token swap | [core/gateway/CLAUDE.md](core/gateway/CLAUDE.md) |
+| `common/platform-kit/` | Shared library: token validation, request context, results/ProblemDetails, internal-key auth | [common/platform-kit/CLAUDE.md](common/platform-kit/CLAUDE.md) |
+| `mock/api/` | Throw-away project API for end-to-end tests | [mock/api/CLAUDE.md](mock/api/CLAUDE.md) |
+| `core/harness-web/` | React front end (test page) and the nginx that is each environment's public door to the gateway | [core/harness-web/CLAUDE.md](core/harness-web/CLAUDE.md) |
+| `common/platform-kit-web/` | Shared front-end library: the bridge between the harness and the apps in its iframes | [common/platform-kit-web/CLAUDE.md](common/platform-kit-web/CLAUDE.md) |
+| `mock/web/` | Throw-away project frontend (iframe app) for end-to-end tests | [mock/web/CLAUDE.md](mock/web/CLAUDE.md) |
 
-When a new project directory is added to this repo, give it its own `CLAUDE.md` and a `docs/` folder, and add a row to the table above.
+Layout: `core/` holds the platform itself (the services, the gateway and the harness), `common/` the shared libraries every project uses, and each app has its own top-level folder with its API and frontend inside (`mock/api`, `mock/web`). When a new project directory is added to this repo, put it in the folder that matches (a new app gets its own top-level folder), give it its own `CLAUDE.md` and a `docs/` folder, and add a row to the table above.
 
 How they fit together: the browser talks only to the gateway (`/api/<slug>/...`), through the harness container's nginx, which is the only thing Caddy exposes per environment (the gateway has no public route). Identity is the one signer of tokens; every other API validates project tokens with platform-kit. Each service owns one schema of the single PostgreSQL database `platform` (`identity`, `core`, `email`); only the owner writes, and the gateway and identity read the few tables they need. Identity tells core and email what happened through an outbox (internal HTTP with `X-Internal-Key`, retried).
 
 ## Repo-wide notes
 
-- The root `/docs` is gitignored (temporary files). Do not rely on it being tracked. Project `docs/` folders (such as `core-api/docs/`) are tracked.
+- The root `/docs` is gitignored (temporary files). Do not rely on it being tracked. Project `docs/` folders (such as `core/core-api/docs/`) are tracked.
 - LaTeX build artifacts (`.aux`, `.log`, `.bbl`, etc.) are gitignored. Do not commit them.
 - Tests: every .NET project has a `*.Tests` project next to its code (`dotnet test <Name>.Tests` from the project folder) and the web projects run `npm run ci`. `.github/workflows/ci.yml` runs them all on pull requests and `deploy.yml` calls it first, so a failing test blocks every deployment. Write or update tests with each change.
 - Deployment: the server setup (`/home/ubuntu/codeclub-uvt`: compose files, scripts, Caddy, per-environment config with secrets) lives only on the server, not in this repo. Its `README.md` documents it. The repo holds the Dockerfiles and `.github/workflows/deploy.yml` (push to main to preprod, a published GitHub Release to prod, any other branch started by hand to dev; images are tagged with the commit sha, plus `latest` on main, or with the release tag on a release). Do not run deploy commands against the server unless asked.

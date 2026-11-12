@@ -34,16 +34,16 @@ jobs:
             fail-fast: true
             matrix:
                 include:
-                    - { name: identity-api, dockerfile: identity-api/Dockerfile, target: api }
-                    - { name: identity-api-migrate, dockerfile: identity-api/Dockerfile, target: migrate }
-                    - { name: core-api, dockerfile: core-api/Dockerfile, target: api }
-                    - { name: core-api-migrate, dockerfile: core-api/Dockerfile, target: migrate }
-                    - { name: email-api, dockerfile: email-api/Dockerfile, target: api }
-                    - { name: email-api-migrate, dockerfile: email-api/Dockerfile, target: migrate }
-                    - { name: gateway, dockerfile: gateway/Dockerfile, target: "" }
-                    - { name: mock-api, dockerfile: mock-api/Dockerfile, target: "" }
-                    - { name: mock-web, dockerfile: mock-web/Dockerfile, target: "" }
-                    - { name: harness, dockerfile: harness-web/Dockerfile, target: "" }
+                    - { name: identity-api, dockerfile: core/identity-api/Dockerfile, target: api }
+                    - { name: identity-api-migrate, dockerfile: core/identity-api/Dockerfile, target: migrate }
+                    - { name: core-api, dockerfile: core/core-api/Dockerfile, target: api }
+                    - { name: core-api-migrate, dockerfile: core/core-api/Dockerfile, target: migrate }
+                    - { name: email-api, dockerfile: core/email-api/Dockerfile, target: api }
+                    - { name: email-api-migrate, dockerfile: core/email-api/Dockerfile, target: migrate }
+                    - { name: gateway, dockerfile: core/gateway/Dockerfile, target: "" }
+                    - { name: mock-api, dockerfile: mock/api/Dockerfile, target: "" }
+                    - { name: mock-web, dockerfile: mock/web/Dockerfile, target: "" }
+                    - { name: harness, dockerfile: core/harness-web/Dockerfile, target: "" }
 
         steps:
             - name: Checkout code

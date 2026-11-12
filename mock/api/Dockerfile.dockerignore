@@ -1,0 +1,9 @@
+# The build context is the repository root; send only what the mock-api image needs.
+*
+!mock/api
+!common/platform-kit
+**/bin
+**/obj
+**/.vs
+
+common/platform-kit/PlatformKit.Tests

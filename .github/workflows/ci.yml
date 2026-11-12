@@ -18,11 +18,11 @@ jobs:
             fail-fast: false
             matrix:
                 project:
-                    - platform-kit/PlatformKit.Tests
-                    - identity-api/Identity.Tests
-                    - core-api/CoreApi.Tests
-                    - email-api/EmailApi.Tests
-                    - gateway/Gateway.Tests
+                    - common/platform-kit/PlatformKit.Tests
+                    - core/identity-api/Identity.Tests
+                    - core/core-api/CoreApi.Tests
+                    - core/email-api/EmailApi.Tests
+                    - core/gateway/Gateway.Tests
 
         steps:
             - name: Checkout code
@@ -43,9 +43,9 @@ jobs:
             fail-fast: false
             matrix:
                 project:
-                    - platform-kit-web
-                    - harness-web
-                    - mock-web
+                    - common/platform-kit-web
+                    - core/harness-web
+                    - mock/web
 
         steps:
             - name: Checkout code
@@ -56,7 +56,7 @@ jobs:
               with:
                   node-version: 24
 
-            # harness-web and mock-web depend on ../platform-kit-web (file dependency), which sits next to them in the checkout.
+            # core/harness-web and mock/web depend on common/platform-kit-web (file dependency), which is in the same checkout.
             - name: Install
               working-directory: ${{ matrix.project }}
               run: npm ci

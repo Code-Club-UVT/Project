@@ -46,18 +46,18 @@ curl -X POST http://localhost:8080/api/identity/auth/confirm-email -H "Content-T
 
 If you chose not to send real email, the same link is in the log: `docker compose logs email-api`.
 
-**The mock project** (the third button) only works after an admin creates a project with slug `mock`, backend URL `http://mock-api:8080/api`, health URL `http://mock-api:8080/health` and, for the iframe tab, frontend URL `http://mock-web:8080/`, and adds a member or default role. See `mock-api/docs` and `mock-web/docs`. The harness then shows a `Mock` tab for members; `/apps/<slug>/` is served by the gateway.
+**The mock project** (the third button) only works after an admin creates a project with slug `mock`, backend URL `http://mock-api:8080/api`, health URL `http://mock-api:8080/health` and, for the iframe tab, frontend URL `http://mock-web:8080/`, and adds a member or default role. See `mock/api/docs` and `mock/web/docs`. The harness then shows a `Mock` tab for members; `/apps/<slug>/` is served by the gateway.
 
 ## Work on the front end with hot reload
 
-Keep the stack running, then in `harness-web/`:
+Keep the stack running, then in `core/harness-web/`:
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Open http://localhost:5173. Vite forwards `/api` to http://localhost:8080 (see `harness-web/.env.example`).
+Open http://localhost:5173. Vite forwards `/api` to http://localhost:8080 (see `core/harness-web/.env.example`).
 
 ## Everyday commands
 

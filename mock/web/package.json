@@ -1,0 +1,23 @@
+{
+  "name": "mock-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "ci": "biome ci . && tsc --noEmit"
+  },
+  "dependencies": {
+    "platform-kit-web": "file:../../common/platform-kit-web"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6"
+  }
+}

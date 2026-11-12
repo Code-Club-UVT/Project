@@ -1,0 +1,64 @@
+{
+  "app": {
+    "title": "Harness",
+    "subtitle": "Pagină de test pentru conturile și gateway-ul platformei"
+  },
+  "theme": { "label": "Temă", "light": "Luminoasă", "dark": "Întunecată", "system": "Sistem" },
+  "language": { "label": "Limbă", "en": "English", "ro": "Română" },
+  "common": { "loading": "Se încarcă…", "working": "Se lucrează…" },
+  "apps": {
+    "tabs": "Aplicații",
+    "home": "Acasă",
+    "menu": "Aplicațiile tale",
+    "close": "Închide {{name}}",
+    "role": "Rolul tău: {{role}}",
+    "loadError": "Nu am putut încărca aplicațiile tale. Reîncarcă pagina."
+  },
+  "register": {
+    "title": "Înregistrare",
+    "username": "Nume de utilizator",
+    "email": "Email",
+    "password": "Parolă",
+    "firstName": "Prenume (opțional)",
+    "lastName": "Nume (opțional)",
+    "submit": "Înregistrează-te",
+    "success": "Cont creat. Confirmă emailul, apoi autentifică-te."
+  },
+  "login": {
+    "title": "Autentificare",
+    "identifier": "Nume de utilizator sau email",
+    "password": "Parolă",
+    "submit": "Autentifică-te"
+  },
+  "session": {
+    "title": "Sesiune",
+    "anonymous": "Nu ești autentificat.",
+    "loggedInAs": "Autentificat ca {{username}} ({{email}})",
+    "expiresAt": "Tokenul de acces expiră la {{time}}",
+    "logout": "Deconectare",
+    "profile": "GET /core/users/me",
+    "projects": "GET /core/users/me/projects",
+    "mock": "GET /{{slug}}/whoami",
+    "gatewayHint": "Aceste apeluri trec prin gateway, care schimbă tokenul de acces într-un token de proiect."
+  },
+  "errors": {
+    "Network": "Serverul nu poate fi contactat. Verifică conexiunea și încearcă din nou.",
+    "Unknown": "Ceva nu a mers bine.",
+    "Auth.InvalidCredentials": "Nume de utilizator, email sau parolă greșite.",
+    "Auth.EmailNotConfirmed": "Confirmă mai întâi emailul.",
+    "Auth.EmailTaken": "Emailul este deja înregistrat.",
+    "Auth.EmailLimitReached": "Nu mai putem trimite emailuri acum. Încearcă din nou peste o oră.",
+    "Auth.UsernameTaken": "Numele de utilizator este deja folosit.",
+    "Auth.InvalidRefreshToken": "Sesiunea a expirat. Autentifică-te din nou.",
+    "Auth.TooManyAttempts": "Prea multe încercări eșuate. Așteaptă câteva minute și încearcă din nou, sau resetează parola.",
+    "Http.400": "Unele valori nu sunt valide.",
+    "Http.401": "Trebuie să te autentifici.",
+    "Http.403": "Nu ai acces.",
+    "Http.404": "Nu a fost găsit.",
+    "Http.429": "Prea multe cereri. Așteaptă puțin și încearcă din nou.",
+    "Http.502": "Serviciul nu este disponibil momentan.",
+    "Http.503": "Serviciul nu este disponibil momentan.",
+    "Project.NotMember": "Nu ești membru al acestui proiect.",
+    "Project.NotFound": "Proiectul nu există."
+  }
+}

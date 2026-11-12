@@ -1,7 +1,0 @@
-# The build context is the repository root; send only what the harness image needs.
-*
-!harness-web
-!platform-kit-web
-harness-web/node_modules
-harness-web/dist
-platform-kit-web/node_modules
