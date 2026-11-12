@@ -1,7 +1,0 @@
-# The build context is the repository root; send only what the gateway image needs.
-*
-!gateway
-!gateway-auth
-**/bin
-**/obj
-**/.vs

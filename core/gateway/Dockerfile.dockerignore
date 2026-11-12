@@ -1,0 +1,10 @@
+# The build context is the repository root; send only what the gateway image needs.
+*
+!core/gateway
+!common/platform-kit
+**/bin
+**/obj
+**/.vs
+core/gateway/Gateway.Tests
+
+common/platform-kit/PlatformKit.Tests

@@ -1,0 +1,67 @@
+name: CI
+
+# Runs the automated tests of every API, the shared libraries and the web projects.
+#   pull_request   -> on the commits of a pull request (not on every push to any branch)
+#   workflow_call  -> deploy.yml runs it first and builds and deploys nothing unless it passes
+on:
+    pull_request:
+    workflow_call:
+
+permissions:
+    contents: read
+
+jobs:
+    dotnet-tests:
+        name: tests (${{ matrix.project }})
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                project:
+                    - common/platform-kit/PlatformKit.Tests
+                    - core/identity-api/Identity.Tests
+                    - core/core-api/CoreApi.Tests
+                    - core/email-api/EmailApi.Tests
+                    - core/gateway/Gateway.Tests
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Set up .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: 10.0.x
+
+            - name: Run the tests
+              run: dotnet test ${{ matrix.project }} --nologo --verbosity minimal
+
+    web-tests:
+        name: tests (${{ matrix.project }})
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                project:
+                    - common/platform-kit-web
+                    - core/harness-web
+                    - mock/web
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Set up Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+
+            # core/harness-web and mock/web depend on common/platform-kit-web (file dependency), which is in the same checkout.
+            - name: Install
+              working-directory: ${{ matrix.project }}
+              run: npm ci
+
+            # Biome, type check and the unit tests (the same command the image builds run).
+            - name: Check and test
+              working-directory: ${{ matrix.project }}
+              run: npm run ci

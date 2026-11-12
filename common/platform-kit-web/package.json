@@ -1,0 +1,26 @@
+{
+  "name": "platform-kit-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Shared code of the platform's front ends: the bridge between the harness and the apps in its iframes.",
+  "exports": {
+    "./sdk": {
+      "types": "./src/sdk/index.ts",
+      "default": "./src/sdk/index.ts"
+    }
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "ci": "biome ci . && tsc --noEmit && vitest run"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.6",
+    "typescript": "^7.0.2",
+    "vitest": "^4.0.0"
+  }
+}

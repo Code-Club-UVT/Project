@@ -1,0 +1,61 @@
+# Direct calls to identity on localhost. Through the gateway the same paths are /api/identity/... on port 5100.
+@Identity = http://localhost:5060
+@accessToken =
+
+### Register (the confirmation link is written to the email service's log in Development)
+POST {{Identity}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "john",
+  "email": "john@example.com",
+  "password": "brand-new-password-1",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+### Confirm email (token from the link)
+POST {{Identity}}/api/auth/confirm-email
+Content-Type: application/json
+
+{ "token": "" }
+
+### Resend the confirmation email
+POST {{Identity}}/api/auth/resend-confirmation
+Content-Type: application/json
+
+{ "email": "john@example.com" }
+
+### Login (identifier = username or email). Sets the refresh cookie; copy accessToken above
+POST {{Identity}}/api/auth/login
+Content-Type: application/json
+
+{ "identifier": "john", "password": "brand-new-password-1" }
+
+### Refresh (uses the refresh cookie)
+POST {{Identity}}/api/auth/refresh
+
+### Logout
+POST {{Identity}}/api/auth/logout
+
+### Forgot password
+POST {{Identity}}/api/auth/forgot-password
+Content-Type: application/json
+
+{ "email": "john@example.com" }
+
+### Reset password
+POST {{Identity}}/api/auth/reset-password
+Content-Type: application/json
+
+{ "token": "", "newPassword": "another-long-password-456" }
+
+### Change password (edge token)
+POST {{Identity}}/api/account/change-password
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "currentPassword": "brand-new-password-1", "newPassword": "another-long-password-456" }
+
+### Public keys
+GET {{Identity}}/.well-known/jwks.json
